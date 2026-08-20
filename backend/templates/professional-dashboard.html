@@ -549,6 +549,74 @@
             background: #16a34a;
             transform: scale(1.05);
         }
+
+        /* ===== LOCATION STYLES ===== */
+        .location-toggle-btn {
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .location-toggle-btn.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        .location-toggle-btn.active:hover {
+            background: #16a34a;
+        }
+
+        .location-toggle-btn.inactive {
+            background: #ef4444;
+            color: white;
+        }
+
+        .location-toggle-btn.inactive:hover {
+            background: #dc2626;
+        }
+
+        .location-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .location-status-badge.active {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        body.dark-mode .location-status-badge.active {
+            background: #064e3b;
+            color: #34d399;
+        }
+
+        .location-status-badge.inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        body.dark-mode .location-status-badge.inactive {
+            background: #7f1d1d;
+            color: #f87171;
+        }
+
+        .location-info {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        body.dark-mode .location-info {
+            color: #94a3b8;
+        }
     </style>
 </head>
 <body>
@@ -620,16 +688,16 @@
                             <h2 class="fw-bold mb-1">Professional Dashboard</h2>
                             <p class="text-muted" id="welcomeMessage">Welcome back! Here's your overview.</p>
                         </div>
-                        <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0">
+                        <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0 flex-wrap">
                             <span class="status-badge bg-success text-white" id="statusBadge">🟢 Available</span>
                             <button class="btn btn-sm btn-outline-primary" id="toggleStatus">Change</button>
                         </div>
                     </div>
 
-                    <!-- ===== PROFILE CARD ===== -->
+                    <!-- ===== PROFILE CARD WITH LOCATION ===== -->
                     <div class="profile-card mb-4">
                         <div class="row align-items-center">
-                            <div class="col-md-8 d-flex align-items-center gap-3 flex-wrap">
+                            <div class="col-md-7 d-flex align-items-center gap-3 flex-wrap">
                                 <div class="profile-avatar" id="userAvatar">JD</div>
                                 <div>
                                     <h5 class="fw-bold mb-0" id="userName">John Doe</h5>
@@ -637,10 +705,19 @@
                                     <p class="text-muted mb-0 small" id="userPhone">+91 98765 43210</p>
                                 </div>
                             </div>
-                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <div class="col-md-5 text-md-end mt-3 mt-md-0">
                                 <span class="badge bg-primary" id="serviceTypeBadge">Plumber</span>
                                 <span class="badge bg-warning text-dark ms-1" id="experienceBadge">5 years</span>
                                 <span class="badge bg-success ms-1" id="ratingBadge">⭐ 0.0</span>
+                                <br>
+                                <!-- ===== LOCATION TOGGLE ===== -->
+                                <button class="location-toggle-btn inactive mt-2" id="locationToggle" onclick="toggleLocation()">
+                                    <i class="bi bi-geo-alt"></i> <span id="locationText">Enable Location</span>
+                                </button>
+                                <span class="location-status-badge inactive ms-1" id="locationStatus">
+                                    <i class="bi bi-circle-fill"></i> Off
+                                </span>
+                                <div class="location-info mt-1" id="locationInfo">Enable location to appear in user searches within 5km</div>
                             </div>
                         </div>
                     </div>
@@ -820,10 +897,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ============================================
-        // PROFESSIONAL DASHBOARD - COMPLETE
+        // PROFESSIONAL DASHBOARD - WITH LOCATION
         // ============================================
 
         let currentBookingId = null;
+        let isLocationEnabled = false;
+        let userLocation = null;
 
         // ============================================
         // LOGOUT FUNCTION
@@ -877,6 +956,70 @@
                 mobileSidebar.classList.remove('show');
             }
         });
+
+        // ============================================
+        // LOCATION TOGGLE - NEW
+        // ============================================
+        function toggleLocation() {
+            if (!navigator.geolocation) {
+                alert('Geolocation is not supported by your browser.');
+                return;
+            }
+
+            if (!isLocationEnabled) {
+                // Request location
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        isLocationEnabled = true;
+                        userLocation = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        // Save to localStorage
+                        localStorage.setItem('professionalLocation', JSON.stringify(userLocation));
+                        localStorage.setItem('locationEnabled', 'true');
+                        updateLocationUI();
+                        alert('✅ Location enabled! You will now appear within 5km radius to users.');
+                        console.log('📍 Location:', userLocation);
+                    },
+                    function(error) {
+                        alert('❌ Unable to get location. Please enable location permissions.');
+                        console.error('Location error:', error);
+                    }
+                );
+            } else {
+                // Disable location
+                isLocationEnabled = false;
+                userLocation = null;
+                localStorage.removeItem('professionalLocation');
+                localStorage.setItem('locationEnabled', 'false');
+                updateLocationUI();
+                alert('🔴 Location disabled. You will not appear in user searches.');
+            }
+        }
+
+        function updateLocationUI() {
+            const locationToggle = document.getElementById('locationToggle');
+            const locationText = document.getElementById('locationText');
+            const locationStatus = document.getElementById('locationStatus');
+            const locationInfo = document.getElementById('locationInfo');
+
+            if (isLocationEnabled) {
+                locationToggle.className = 'location-toggle-btn active mt-2';
+                locationToggle.innerHTML = '<i class="bi bi-geo-alt-fill"></i> <span id="locationText">Disable Location</span>';
+                locationStatus.className = 'location-status-badge active ms-1';
+                locationStatus.innerHTML = '<i class="bi bi-circle-fill"></i> On';
+                locationInfo.textContent = '📍 Location active - Visible within 5km radius';
+                locationInfo.style.color = '#22c55e';
+            } else {
+                locationToggle.className = 'location-toggle-btn inactive mt-2';
+                locationToggle.innerHTML = '<i class="bi bi-geo-alt"></i> <span id="locationText">Enable Location</span>';
+                locationStatus.className = 'location-status-badge inactive ms-1';
+                locationStatus.innerHTML = '<i class="bi bi-circle-fill"></i> Off';
+                locationInfo.textContent = 'Enable location to appear in user searches within 5km';
+                locationInfo.style.color = '';
+            }
+        }
 
         // ============================================
         // OTP MOVE FUNCTION
@@ -972,6 +1115,17 @@
                 window.location.href = '/';
                 return;
             }
+
+            // Load location status from localStorage
+            const locationEnabled = localStorage.getItem('locationEnabled') === 'true';
+            if (locationEnabled) {
+                const savedLocation = localStorage.getItem('professionalLocation');
+                if (savedLocation) {
+                    isLocationEnabled = true;
+                    userLocation = JSON.parse(savedLocation);
+                }
+            }
+            updateLocationUI();
 
             try {
                 const response = await fetch('/api/auth/dashboard/', {
@@ -1193,9 +1347,7 @@
             const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
             const pending = bookings.filter(b => b.status === 'pending');
             if (pending.length > 0) {
-                // Update pending count
                 document.getElementById('pendingCount').textContent = `${pending.length} pending`;
-                // Refresh dashboard
                 loadDashboard();
             }
         }, 30000);
@@ -1209,7 +1361,6 @@
             const userData = JSON.parse(user);
             if (userData.role !== 'technician') { window.location.href = '/'; return; }
 
-            // Ensure bookings exists in localStorage
             if (!localStorage.getItem('bookings')) {
                 localStorage.setItem('bookings', JSON.stringify([]));
             }
@@ -1229,8 +1380,10 @@
         window.finishWork = finishWork;
         window.otpMove = otpMove;
         window.loadDashboard = loadDashboard;
+        window.toggleLocation = toggleLocation;
 
         console.log('🚀 Professional Dashboard Ready!');
+        console.log('📍 Location feature added - toggle to enable/disable');
         console.log('ℹ️ Bookings are stored in localStorage');
         console.log('📱 OTP for each booking is shown in user dashboard');
     </script>
