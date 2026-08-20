@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>30 Minutes - Service Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">
+                <i class="bi bi-clock-history text-primary"></i>
+                <span class="brand-text">30 Minutes</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><i class="bi bi-house"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services"><i class="bi bi-grid"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works"><i class="bi bi-info-circle"></i> How It Works</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+                    <li class="nav-item">
+                        <a href="register.html" class="btn btn-primary btn-sm rounded-pill px-3">
+                            <i class="bi bi-person-plus"></i> Register
+                        </a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <button class="btn btn-outline-secondary btn-sm rounded-circle" id="themeToggle">
+                            <i class="bi bi-moon-fill"></i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-center text-lg-start">
+                    <h1 class="display-3 fw-bold mb-3">
+                        Professional Services <br>
+                        <span class="text-primary">Within 30 Minutes</span>
+                    </h1>
+                    <p class="lead text-muted mb-4">
+                        Connect with verified technicians for plumbing, electrical, carpentry, and more.
+                        Get service at your doorstep in 30 minutes.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+                        <button class="btn btn-primary btn-lg rounded-pill px-4" onclick="showBookingModal()">
+                            <i class="bi bi-search"></i> Find a Service
+                        </button>
+                        <a href="register.html" class="btn btn-outline-primary btn-lg rounded-pill px-4">
+                            <i class="bi bi-person-plus"></i> Join Now
+                        </a>
+                    </div>
+                    <div class="mt-4">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <span class="ms-2 text-muted">4.8/5 (2.5k reviews)</span>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="https://via.placeholder.com/600x400/2563eb/ffffff?text=30+Minutes+App" alt="Hero" class="img-fluid rounded-4 shadow-lg">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES ===== -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-3 col-6">
+                    <div class="feature-box text-center">
+                        <i class="bi bi-shield-check display-4 text-primary"></i>
+                        <h6 class="mt-2">Verified Pros</h6>
+                        <small class="text-muted">Aadhaar & Voter ID</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="feature-box text-center">
+                        <i class="bi bi-geo-alt display-4 text-success"></i>
+                        <h6 class="mt-2">Live Tracking</h6>
+                        <small class="text-muted">Real-time location</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="feature-box text-center">
+                        <i class="bi bi-credit-card display-4 text-warning"></i>
+                        <h6 class="mt-2">Easy Payments</h6>
+                        <small class="text-muted">UPI, Card, Wallet</small>
+                    </div>
+                </div>
+                <div class="col-md-3 col-6">
+                    <div class="feature-box text-center">
+                        <i class="bi bi-clock display-4 text-danger"></i>
+                        <h6 class="mt-2">30 Min Guarantee</h6>
+                        <small class="text-muted">Quick service</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== SERVICES ===== -->
+    <section id="services" class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-3">Popular Services</h2>
+            <p class="text-center text-muted mb-5">Choose from a wide range of professional services</p>
+            <div class="row g-4" id="servicesGrid">
+                <!-- Loaded by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== HOW IT WORKS ===== -->
+    <section id="how-it-works" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">How It Works</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="step-card text-center">
+                        <div class="step-number">1</div>
+                        <i class="bi bi-search display-4 text-primary"></i>
+                        <h5 class="mt-3">Find a Service</h5>
+                        <p class="text-muted">Search and select a verified technician</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card text-center">
+                        <div class="step-number">2</div>
+                        <i class="bi bi-calendar-check display-4 text-success"></i>
+                        <h5 class="mt-3">Book & Track</h5>
+                        <p class="text-muted">Book and track in real-time</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="step-card text-center">
+                        <div class="step-number">3</div>
+                        <i class="bi bi-star display-4 text-warning"></i>
+                        <h5 class="mt-3">Rate & Review</h5>
+                        <p class="text-muted">Pay securely and rate your experience</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">What Our Customers Say</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="avatar bg-primary">R</div>
+                            <div class="ms-3">
+                                <h6 class="mb-0">Rajesh Kumar</h6>
+                                <small class="text-muted">Plumbing Service</small>
+                            </div>
+                        </div>
+                        <p>"Excellent service! The plumber arrived within 20 minutes."</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="avatar bg-success">P</div>
+                            <div class="ms-3">
+                                <h6 class="mb-0">Priya Sharma</h6>
+                                <small class="text-muted">Electrical Service</small>
+                            </div>
+                        </div>
+                        <p>"Very professional electrician. Completed work efficiently."</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="testimonial-card">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="avatar bg-warning">A</div>
+                            <div class="ms-3">
+                                <h6 class="mb-0">Amit Patel</h6>
+                                <small class="text-muted">Carpenter Service</small>
+                            </div>
+                        </div>
+                        <p>"Best carpentry service. Quality of work was outstanding."</p>
+                        <div class="text-warning">
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5 class="fw-bold"><i class="bi bi-clock-history"></i> 30 Minutes</h5>
+                    <p class="text-muted small">Professional services at your doorstep within 30 minutes.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled small">
+                        <li><a href="#" class="text-muted text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-muted text-decoration-none">Services</a></li>
+                        <li><a href="register.html" class="text-muted text-decoration-none">Become a Technician</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h6>Contact</h6>
+                    <ul class="list-unstyled small">
+                        <li><i class="bi bi-envelope"></i> support@30minutes.com</li>
+                        <li><i class="bi bi-phone"></i> +91 98765 43210</li>
+                        <li><i class="bi bi-geo-alt"></i> Mumbai, India</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <div class="text-center text-muted small">© 2026 30 Minutes. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- ===== MODALS ===== -->
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title"><i class="bi bi-box-arrow-in-right text-primary"></i> Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label class="form-label">Email or Phone</label>
+                            <input type="text" class="form-control" placeholder="Enter email or phone" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" placeholder="Enter password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                        <hr>
+                        <div class="text-center mt-3">
+                            <small class="text-muted">Don't have an account? <a href="register.html" class="text-primary">Register</a></small>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title"><i class="bi bi-calendar-check text-primary"></i> Book a Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookingForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Service Type</label>
+                                <select class="form-select" required>
+                                    <option value="">Select service</option>
+                                    <option value="plumber">Plumber</option>
+                                    <option value="electrician">Electrician</option>
+                                    <option value="carpenter">Carpenter</option>
+                                    <option value="mechanic">Mechanic</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Preferred Date & Time</label>
+                                <input type="datetime-local" class="form-control" required>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" rows="2" placeholder="Enter your full address" required></textarea>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Payment Method</label>
+                                <select class="form-select">
+                                    <option value="upi">UPI</option>
+                                    <option value="card">Card</option>
+                                    <option value="wallet">Wallet</option>
+                                    <option value="cash">Cash</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Book Now</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Minutes - Choose Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        body.dark-mode { background: #0f172a; }
+        .register-wrapper { width: 100%; max-width: 700px; }
+        .register-card {
+            background: #ffffff; border-radius: 24px; padding: 45px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        body.dark-mode .register-card { background: #1e293b; }
+        .register-header { text-align: center; margin-bottom: 35px; }
+        .register-header .logo {
+            font-size: 32px; font-weight: 800; color: #2563eb; text-decoration: none;
+        }
+        body.dark-mode .register-header .logo { color: #60a5fa; }
+        .register-header h2 { font-weight: 700; font-size: 28px; margin-top: 5px; }
+        .register-header p { color: #64748b; font-size: 15px; }
+        .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
+        .option-card {
+            border: 3px solid #e2e8f0; border-radius: 20px; padding: 40px 25px;
+            text-align: center; transition: all 0.3s; background: #fafbfc;
+            text-decoration: none; display: block;
+        }
+        body.dark-mode .option-card { background: #0f172a; border-color: #334155; }
+        .option-card:hover { transform: translateY(-6px); box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .option-card.user:hover { border-color: #2563eb; }
+        .option-card.professional:hover { border-color: #059669; }
+        .option-card .icon { font-size: 56px; margin-bottom: 15px; display: block; }
+        .option-card.user .icon { color: #2563eb; }
+        .option-card.professional .icon { color: #059669; }
+        .option-card h4 { font-weight: 700; margin-bottom: 8px; }
+        .option-card p { color: #64748b; font-size: 14px; }
+        .option-card .badge {
+            padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+        }
+        .option-card.user .badge { background: #dbeafe; color: #2563eb; }
+        .option-card.professional .badge { background: #d1fae5; color: #059669; }
+        .back-link {
+            color: #64748b; text-decoration: none; font-size: 14px; font-weight: 500;
+        }
+        .back-link:hover { color: #2563eb; }
+        @media (max-width: 576px) {
+            .register-card { padding: 30px 20px; }
+            .option-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="register-wrapper">
+        <div class="register-card">
+            <div class="register-header">
+                <a href="/" class="logo"><i class="bi bi-clock-history"></i> 30 Minutes</a>
+                <h2>Choose Registration Type</h2>
+                <p>Select how you want to use our platform</p>
+            </div>
+            <div class="option-grid">
+                <!-- FIXED: Removed .html from links -->
+                <a href="/user-register/" class="option-card user">
+                    <span class="icon"><i class="bi bi-person-circle"></i></span>
+                    <h4>User</h4>
+                    <p>Book services and track professionals</p>
+                    <span class="badge">Popular</span>
+                </a>
+                <a href="/professional-register/" class="option-card professional">
+                    <span class="icon"><i class="bi bi-briefcase"></i></span>
+                    <h4>Professional</h4>
+                    <p>Offer services and earn money</p>
+                    <span class="badge">Verified</span>
+                </a>
+            </div>
+            <div class="text-center">
+                <a href="/" class="back-link"><i class="bi bi-arrow-left"></i> Back to Home</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1238 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>30 Minutes - Professional Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           PROFESSIONAL DASHBOARD - COMPLETE STYLES
+           ============================================ */
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f0f4ff;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+
+        body.dark-mode {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            background: white !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        body.dark-mode .navbar {
+            background: #1e293b !important;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: #0f172a;
+        }
+
+        body.dark-mode .brand-text {
+            color: #e2e8f0;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: #64748b;
+            padding: 8px 16px !important;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        body.dark-mode .nav-link {
+            color: #94a3b8;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #2563eb !important;
+            background: #dbeafe;
+        }
+
+        body.dark-mode .nav-link:hover,
+        body.dark-mode .nav-link.active {
+            background: rgba(37,99,235,0.15);
+            color: #60a5fa !important;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 80px;
+        }
+
+        body.dark-mode .sidebar {
+            background: #1e293b;
+        }
+
+        .sidebar-link {
+            padding: 12px 16px;
+            border-radius: 12px;
+            color: #64748b;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+        }
+
+        body.dark-mode .sidebar-link {
+            color: #94a3b8;
+        }
+
+        .sidebar-link:hover {
+            background: #f1f5f9;
+            color: #2563eb;
+        }
+
+        body.dark-mode .sidebar-link:hover {
+            background: #0f172a;
+            color: #60a5fa;
+        }
+
+        .sidebar-link.active {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        body.dark-mode .sidebar-link.active {
+            background: #0f172a;
+            color: #60a5fa;
+        }
+
+        .sidebar-link i {
+            font-size: 18px;
+            width: 24px;
+        }
+
+        .sidebar-link.danger {
+            color: #ef4444;
+        }
+
+        .sidebar-link.danger:hover {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        body.dark-mode .sidebar-link.danger:hover {
+            background: #7f1d1d;
+            color: #f87171;
+        }
+
+        /* ===== STAT CARDS ===== */
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            height: 100%;
+        }
+
+        body.dark-mode .stat-card {
+            background: #1e293b;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-color: #dbeafe;
+        }
+
+        body.dark-mode .stat-card:hover {
+            border-color: #334155;
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        body.dark-mode .stat-label {
+            color: #94a3b8;
+        }
+
+        /* ===== STATUS BADGE ===== */
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-accepted { background: #dbeafe; color: #1e40af; }
+        .status-in_progress { background: #dbeafe; color: #1e40af; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+
+        body.dark-mode .status-pending { background: #78350f; color: #fcd34d; }
+        body.dark-mode .status-accepted { background: #1e3a5f; color: #60a5fa; }
+        body.dark-mode .status-in_progress { background: #1e3a5f; color: #60a5fa; }
+        body.dark-mode .status-completed { background: #064e3b; color: #34d399; }
+        body.dark-mode .status-cancelled { background: #7f1d1d; color: #f87171; }
+
+        /* ===== TABLE CONTAINER ===== */
+        .table-container {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            overflow-x: auto;
+        }
+
+        body.dark-mode .table-container {
+            background: #1e293b;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            font-weight: 600;
+            color: #64748b;
+            border-bottom: 2px solid #e2e8f0;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        body.dark-mode .table th {
+            color: #94a3b8;
+            border-bottom-color: #334155;
+        }
+
+        .table td {
+            vertical-align: middle;
+            padding: 12px 8px;
+            font-size: 14px;
+        }
+
+        body.dark-mode .table td {
+            color: #e2e8f0;
+        }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e2e8f0;
+            border-top-color: #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: #64748b;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        body.dark-mode .loading-text {
+            color: #94a3b8;
+        }
+
+        /* ===== PROFILE CARD ===== */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        body.dark-mode .profile-card {
+            background: #1e293b;
+        }
+
+        .profile-avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        /* ===== SECTION HEADER ===== */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-header h5 {
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* ===== DARK MODE TOGGLE ===== */
+        .dark-mode-toggle {
+            background: transparent;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 20px;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: #94a3b8;
+        }
+
+        .dark-mode-toggle:hover {
+            background: #f1f5f9;
+            color: #2563eb;
+        }
+
+        body.dark-mode .dark-mode-toggle:hover {
+            background: #0f172a;
+            color: #60a5fa;
+        }
+
+        /* ===== LOGOUT BUTTON ===== */
+        .logout-btn {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            opacity: 0.8;
+            transform: scale(0.98);
+        }
+
+        /* ===== MOBILE SIDEBAR ===== */
+        .mobile-sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            font-size: 24px;
+            box-shadow: 0 4px 20px rgba(37,99,235,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mobile-sidebar-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(37,99,235,0.4);
+        }
+
+        .mobile-sidebar {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            width: 200px;
+            display: none;
+            z-index: 999;
+        }
+
+        body.dark-mode .mobile-sidebar {
+            background: #1e293b;
+        }
+
+        .mobile-sidebar.show {
+            display: block;
+        }
+
+        @media (max-width: 991px) {
+            .sidebar {
+                display: none;
+            }
+            .mobile-sidebar-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .stat-number {
+                font-size: 24px;
+            }
+            .stat-card {
+                padding: 16px;
+            }
+            .profile-card .row {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-card .d-flex {
+                justify-content: center !important;
+            }
+            .profile-avatar {
+                margin: 0 auto;
+            }
+            .table-container {
+                padding: 12px;
+            }
+            .table td, .table th {
+                font-size: 12px;
+                padding: 8px 4px;
+            }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 575px) {
+            .table td, .table th {
+                font-size: 11px;
+                padding: 6px 3px;
+            }
+            .status-badge {
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+            .stat-number {
+                font-size: 20px;
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        body.dark-mode ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2563eb;
+            border-radius: 3px;
+        }
+
+        /* ===== OTP INPUT ===== */
+        .otp-input {
+            width: 50px;
+            height: 56px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: #fafbfc;
+            transition: all 0.3s;
+            margin: 0 5px;
+        }
+
+        body.dark-mode .otp-input {
+            background: #0f172a;
+            border-color: #334155;
+            color: #e2e8f0;
+        }
+
+        .otp-input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+            outline: none;
+        }
+
+        @media (max-width: 575px) {
+            .otp-input {
+                width: 40px;
+                height: 46px;
+                font-size: 18px;
+            }
+        }
+
+        /* ===== NOTIFICATION ALERT ===== */
+        .notification-alert {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 400px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .btn-finish {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-finish:hover {
+            background: #16a34a;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar navbar-expand-lg bg-white">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-clock-history text-primary"></i>
+                <span class="brand-text">30 Minutes</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" href="/professional-dashboard/"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/professional-bookings/"><i class="bi bi-calendar-check"></i> Bookings</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/professional-earnings/"><i class="bi bi-wallet2"></i> Earnings</a></li>
+                    <li class="nav-item"><button class="dark-mode-toggle" id="themeToggle"><i class="bi bi-moon-fill"></i></button></li>
+                    <li class="nav-item ms-2">
+                        <a href="#" class="btn btn-outline-danger btn-sm rounded-pill px-3 logout-btn" id="logoutBtn" onclick="logoutUser(event)">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== MOBILE SIDEBAR ===== -->
+    <button class="mobile-sidebar-toggle" id="mobileSidebarToggle">
+        <i class="bi bi-list"></i>
+    </button>
+    <div class="mobile-sidebar" id="mobileSidebar">
+        <a href="/professional-dashboard/" class="sidebar-link active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a href="/professional-bookings/" class="sidebar-link"><i class="bi bi-calendar-check"></i> Bookings</a>
+        <a href="/professional-earnings/" class="sidebar-link"><i class="bi bi-wallet2"></i> Earnings</a>
+        <hr>
+        <a href="#" class="sidebar-link danger logout-btn" id="logoutMobile" onclick="logoutUser(event)"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </div>
+
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- ===== DESKTOP SIDEBAR ===== -->
+            <div class="col-lg-2 d-none d-lg-block">
+                <div class="sidebar">
+                    <a href="/professional-dashboard/" class="sidebar-link active"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                    <a href="/professional-bookings/" class="sidebar-link"><i class="bi bi-calendar-check"></i> Bookings</a>
+                    <a href="/professional-earnings/" class="sidebar-link"><i class="bi bi-wallet2"></i> Earnings</a>
+                    <hr>
+                    <a href="#" class="sidebar-link danger logout-btn" id="logoutSidebar" onclick="logoutUser(event)"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                </div>
+            </div>
+
+            <!-- ===== MAIN CONTENT ===== -->
+            <div class="col-lg-10">
+                <!-- Loading Spinner -->
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <div class="loading-text">Loading your dashboard...</div>
+                </div>
+
+                <!-- Dashboard Content -->
+                <div id="dashboardContent" style="display: none;">
+
+                    <!-- ===== HEADER ===== -->
+                    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+                        <div>
+                            <h2 class="fw-bold mb-1">Professional Dashboard</h2>
+                            <p class="text-muted" id="welcomeMessage">Welcome back! Here's your overview.</p>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mt-2 mt-sm-0">
+                            <span class="status-badge bg-success text-white" id="statusBadge">🟢 Available</span>
+                            <button class="btn btn-sm btn-outline-primary" id="toggleStatus">Change</button>
+                        </div>
+                    </div>
+
+                    <!-- ===== PROFILE CARD ===== -->
+                    <div class="profile-card mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-8 d-flex align-items-center gap-3 flex-wrap">
+                                <div class="profile-avatar" id="userAvatar">JD</div>
+                                <div>
+                                    <h5 class="fw-bold mb-0" id="userName">John Doe</h5>
+                                    <p class="text-muted mb-0" id="userEmail">john@example.com</p>
+                                    <p class="text-muted mb-0 small" id="userPhone">+91 98765 43210</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                <span class="badge bg-primary" id="serviceTypeBadge">Plumber</span>
+                                <span class="badge bg-warning text-dark ms-1" id="experienceBadge">5 years</span>
+                                <span class="badge bg-success ms-1" id="ratingBadge">⭐ 0.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== STATISTICS ===== -->
+                    <div class="row g-4 mb-4" id="statistics">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="stat-number text-primary" id="totalBookings">0</div>
+                                        <div class="stat-label">Total Bookings</div>
+                                    </div>
+                                    <i class="bi bi-calendar3 display-4 text-primary opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="stat-number text-success" id="completedBookings">0</div>
+                                        <div class="stat-label">Completed</div>
+                                    </div>
+                                    <i class="bi bi-check-circle display-4 text-success opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="stat-number text-warning" id="pendingBookings">0</div>
+                                        <div class="stat-label">Pending</div>
+                                    </div>
+                                    <i class="bi bi-clock display-4 text-warning opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="stat-number text-success" id="totalEarnings">₹0</div>
+                                        <div class="stat-label">Total Earnings</div>
+                                    </div>
+                                    <i class="bi bi-currency-rupee display-4 text-success opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== EARNINGS & RATING ===== -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-muted small">Hourly Rate</div>
+                                        <h3 class="fw-bold" id="hourlyRate">₹0</h3>
+                                    </div>
+                                    <i class="bi bi-clock-history text-primary fs-1 opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-muted small">Rating</div>
+                                        <h3 class="fw-bold" id="ratingDisplay">⭐ 0.0</h3>
+                                    </div>
+                                    <i class="bi bi-star-fill text-warning fs-1 opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <div class="text-muted small">Total Reviews</div>
+                                        <h3 class="fw-bold" id="totalReviews">0</h3>
+                                    </div>
+                                    <i class="bi bi-chat-dots text-info fs-1 opacity-50"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ===== PENDING BOOKINGS ===== -->
+                    <div class="table-container mb-4">
+                        <div class="section-header">
+                            <h5><i class="bi bi-clock-history text-warning"></i> Pending Bookings</h5>
+                            <span class="text-muted small" id="pendingCount">0 pending</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Customer</th>
+                                        <th>Service</th>
+                                        <th>Location</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="pendingBookingsTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            <i class="bi bi-inbox display-6 d-block mb-2"></i>
+                                            No pending bookings
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- ===== RECENT BOOKINGS ===== -->
+                    <div class="table-container">
+                        <div class="section-header">
+                            <h5><i class="bi bi-list-ul"></i> Recent Bookings</h5>
+                            <span class="text-muted small" id="bookingCount">0 bookings</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Customer</th>
+                                        <th>Service</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentBookingsTable">
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            <i class="bi bi-inbox display-6 d-block mb-2"></i>
+                                            No bookings yet
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OTP VERIFICATION MODAL ===== -->
+    <div class="modal fade" id="otpModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-shield-lock text-success"></i> Verify OTP</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-muted">Enter the 4-digit OTP sent to customer</p>
+                    <div class="d-flex justify-content-center gap-2 my-3">
+                        <input type="text" class="otp-input" id="otp1" maxlength="1" oninput="otpMove(this, 'otp2')" autofocus>
+                        <input type="text" class="otp-input" id="otp2" maxlength="1" oninput="otpMove(this, 'otp3')">
+                        <input type="text" class="otp-input" id="otp3" maxlength="1" oninput="otpMove(this, 'otp4')">
+                        <input type="text" class="otp-input" id="otp4" maxlength="1" oninput="otpMove(this, null)">
+                    </div>
+                    <div id="otpError" class="text-danger small" style="display:none;">Invalid OTP. Please try again.</div>
+                    <button class="btn btn-success w-100 mt-3" onclick="verifyOTP()">Verify OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============================================
+        // PROFESSIONAL DASHBOARD - COMPLETE
+        // ============================================
+
+        let currentBookingId = null;
+
+        // ============================================
+        // LOGOUT FUNCTION
+        // ============================================
+        function logoutUser(event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            console.log('🔴 Logging out...');
+            localStorage.clear();
+            window.location.href = '/';
+        }
+
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        const themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                const icon = this.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.className = 'bi bi-sun-fill';
+                    localStorage.setItem('darkMode', 'true');
+                } else {
+                    icon.className = 'bi bi-moon-fill';
+                    localStorage.setItem('darkMode', 'false');
+                }
+            });
+        }
+
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            const toggle = document.getElementById('themeToggle');
+            if (toggle) { const icon = toggle.querySelector('i'); if (icon) icon.className = 'bi bi-sun-fill'; }
+        }
+
+        // ============================================
+        // MOBILE SIDEBAR
+        // ============================================
+        const mobileToggle = document.getElementById('mobileSidebarToggle');
+        const mobileSidebar = document.getElementById('mobileSidebar');
+
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                mobileSidebar.classList.toggle('show');
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (mobileSidebar && !mobileSidebar.contains(e.target) && e.target !== mobileToggle) {
+                mobileSidebar.classList.remove('show');
+            }
+        });
+
+        // ============================================
+        // OTP MOVE FUNCTION
+        // ============================================
+        function otpMove(current, nextId) {
+            if (current.value.length >= 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+        }
+
+        // ============================================
+        // SHOW OTP MODAL
+        // ============================================
+        function showOTPModal(bookingId) {
+            currentBookingId = bookingId;
+            document.getElementById('otpError').style.display = 'none';
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById('otp' + i).value = '';
+            }
+            new bootstrap.Modal(document.getElementById('otpModal')).show();
+        }
+
+        // ============================================
+        // VERIFY OTP
+        // ============================================
+        function verifyOTP() {
+            let otp = '';
+            for (let i = 1; i <= 4; i++) {
+                otp += document.getElementById('otp' + i).value;
+            }
+            if (otp.length !== 4) {
+                document.getElementById('otpError').style.display = 'block';
+                return;
+            }
+
+            // Check OTP against bookings
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const booking = bookings.find(b => b.otp == otp && b.status === 'pending');
+
+            if (booking) {
+                booking.status = 'completed';
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                document.getElementById('otpError').style.display = 'none';
+                alert('✅ OTP Verified! Work completed successfully.');
+                bootstrap.Modal.getInstance(document.getElementById('otpModal'))?.hide();
+                loadDashboard();
+            } else {
+                document.getElementById('otpError').style.display = 'block';
+                alert('❌ Invalid OTP. Please try again.');
+            }
+        }
+
+        // ============================================
+        // ACCEPT BOOKING
+        // ============================================
+        function acceptBooking(index) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            if (bookings[index]) {
+                bookings[index].status = 'accepted';
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                alert('✅ Booking accepted!');
+                loadDashboard();
+            }
+        }
+
+        // ============================================
+        // START WORK
+        // ============================================
+        function startWork(index) {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            if (bookings[index]) {
+                bookings[index].status = 'in_progress';
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                alert('🔄 Work started!');
+                loadDashboard();
+            }
+        }
+
+        // ============================================
+        // FINISH WORK - Show OTP Modal
+        // ============================================
+        function finishWork(bookingId) {
+            showOTPModal(bookingId);
+        }
+
+        // ============================================
+        // LOAD DASHBOARD DATA
+        // ============================================
+        async function loadDashboard() {
+            const token = localStorage.getItem('access_token');
+
+            if (!token) {
+                window.location.href = '/';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/dashboard/', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401) {
+                    logoutUser();
+                    return;
+                }
+
+                const data = await response.json();
+                console.log('📊 Dashboard Data:', data);
+
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('dashboardContent').style.display = 'block';
+
+                // ===== UPDATE USER PROFILE =====
+                const user = JSON.parse(localStorage.getItem('user') || '{}');
+                document.getElementById('userName').textContent = `${user.first_name || 'Professional'} ${user.last_name || ''}`;
+                document.getElementById('userEmail').textContent = user.email || 'N/A';
+                document.getElementById('userPhone').textContent = user.phone ? `+91 ${user.phone}` : 'N/A';
+
+                const initials = `${(user.first_name || 'P')[0]}${(user.last_name || '')[0]}`;
+                document.getElementById('userAvatar').textContent = initials || 'P';
+
+                if (data.profile) {
+                    document.getElementById('serviceTypeBadge').textContent = data.profile.service_type || 'N/A';
+                    document.getElementById('experienceBadge').textContent = `${data.profile.experience_years || 0} years`;
+                }
+
+                // ===== UPDATE STATISTICS =====
+                if (data.statistics) {
+                    document.getElementById('totalBookings').textContent = data.statistics.total_bookings || 0;
+                    document.getElementById('completedBookings').textContent = data.statistics.completed || 0;
+                    document.getElementById('pendingBookings').textContent = data.statistics.pending || 0;
+                }
+
+                // ===== UPDATE EARNINGS =====
+                if (data.earnings) {
+                    document.getElementById('totalEarnings').textContent = `₹${data.earnings.total_earnings || 0}`;
+                    document.getElementById('hourlyRate').textContent = `₹${data.earnings.hourly_rate || 0}`;
+                    document.getElementById('ratingDisplay').textContent = `⭐ ${data.earnings.rating || 0}`;
+                    document.getElementById('totalReviews').textContent = data.earnings.total_reviews || 0;
+                    document.getElementById('ratingBadge').textContent = `⭐ ${data.earnings.rating || 0}`;
+                }
+
+                document.getElementById('welcomeMessage').textContent =
+                    `Welcome back! You are a ${data.profile?.service_type || 'Professional'}.`;
+
+                // ===== UPDATE STATUS BADGE =====
+                const statusBadge = document.getElementById('statusBadge');
+                if (data.profile?.is_available) {
+                    statusBadge.className = 'status-badge bg-success text-white';
+                    statusBadge.textContent = '🟢 Available';
+                } else {
+                    statusBadge.className = 'status-badge bg-danger text-white';
+                    statusBadge.textContent = '🔴 Unavailable';
+                }
+
+                // ===== LOAD BOOKINGS FROM LOCALSTORAGE =====
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+
+                // ===== UPDATE PENDING BOOKINGS =====
+                const pendingBookings = bookings.filter(b => b.status === 'pending' || b.status === 'accepted' || b.status === 'in_progress');
+                const pendingTable = document.getElementById('pendingBookingsTable');
+                document.getElementById('pendingCount').textContent = `${pendingBookings.length} pending`;
+
+                if (pendingBookings.length > 0) {
+                    pendingTable.innerHTML = pendingBookings.map((booking, idx) => {
+                        const actualIndex = bookings.indexOf(booking);
+                        let actionButtons = '';
+                        if (booking.status === 'pending') {
+                            actionButtons = `
+                                <button class="btn btn-success btn-sm me-1" onclick="acceptBooking(${actualIndex})">Accept</button>
+                                <button class="btn btn-danger btn-sm" onclick="rejectBooking(${actualIndex})">Reject</button>
+                            `;
+                        } else if (booking.status === 'accepted') {
+                            actionButtons = `
+                                <button class="btn btn-primary btn-sm me-1" onclick="startWork(${actualIndex})">Start Work</button>
+                            `;
+                        } else if (booking.status === 'in_progress') {
+                            actionButtons = `
+                                <button class="btn btn-success btn-sm" onclick="finishWork(${booking.id})">Finish Work</button>
+                            `;
+                        }
+
+                        return `
+                            <tr>
+                                <td><span class="fw-bold">#${booking.id}</span></td>
+                                <td>
+                                    <div class="fw-semibold">${booking.technician || 'Customer'}</div>
+                                    <small class="text-muted">${booking.customer_phone || 'N/A'}</small>
+                                </td>
+                                <td>${booking.service || 'N/A'}</td>
+                                <td>
+                                    <small>${booking.address || 'N/A'}</small>
+                                </td>
+                                <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                                <td>${actionButtons}</td>
+                            </tr>
+                        `;
+                    }).join('');
+                } else {
+                    pendingTable.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="bi bi-inbox display-6 d-block mb-2"></i>
+                                No pending bookings
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                // ===== UPDATE RECENT BOOKINGS =====
+                const allBookings = bookings.slice(0, 10);
+                const recentTable = document.getElementById('recentBookingsTable');
+                document.getElementById('bookingCount').textContent = `${bookings.length} bookings`;
+
+                if (allBookings.length > 0) {
+                    recentTable.innerHTML = allBookings.map(booking => `
+                        <tr>
+                            <td><span class="fw-bold">#${booking.id}</span></td>
+                            <td>
+                                <div class="fw-semibold">${booking.technician || 'Customer'}</div>
+                                <small class="text-muted">${booking.customer_phone || 'N/A'}</small>
+                            </td>
+                            <td>${booking.service || 'N/A'}</td>
+                            <td>
+                                <div>${booking.scheduled_time || booking.created_at}</div>
+                                <small class="text-muted">${booking.created_at}</small>
+                            </td>
+                            <td><span class="fw-bold">₹${booking.price || 0}</span></td>
+                            <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
+                        </tr>
+                    `).join('');
+                } else {
+                    recentTable.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center text-muted py-4">
+                                <i class="bi bi-inbox display-6 d-block mb-2"></i>
+                                No bookings yet
+                            </td>
+                        </tr>
+                    `;
+                }
+
+                // ===== CHECK FOR NEW BOOKINGS (Notification) =====
+                const pending = bookings.filter(b => b.status === 'pending');
+                if (pending.length > 0) {
+                    showNotification(`📋 ${pending.length} new booking(s) waiting for your response!`);
+                }
+
+            } catch (error) {
+                console.error('❌ Error loading dashboard:', error);
+                document.getElementById('loadingSpinner').innerHTML = `
+                    <div class="text-center">
+                        <i class="bi bi-exclamation-triangle display-4 text-danger"></i>
+                        <p class="mt-3 text-danger">Error loading dashboard. Please try again.</p>
+                        <button class="btn btn-primary" onclick="loadDashboard()">Retry</button>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // REJECT BOOKING
+        // ============================================
+        function rejectBooking(index) {
+            if (confirm('Are you sure you want to reject this booking?')) {
+                const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                bookings[index].status = 'cancelled';
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                alert('❌ Booking rejected.');
+                loadDashboard();
+            }
+        }
+
+        // ============================================
+        // SHOW NOTIFICATION
+        // ============================================
+        function showNotification(message) {
+            const container = document.querySelector('.col-lg-10');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-info alert-dismissible fade show notification-alert';
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                <strong><i class="bi bi-bell"></i> New Booking!</strong><br>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 10000);
+        }
+
+        // ============================================
+        // TOGGLE AVAILABILITY
+        // ============================================
+        document.getElementById('toggleStatus')?.addEventListener('click', function() {
+            const badge = document.getElementById('statusBadge');
+            if (badge.textContent.includes('Available')) {
+                badge.className = 'status-badge bg-danger text-white';
+                badge.textContent = '🔴 Unavailable';
+                this.textContent = 'Set Available';
+            } else {
+                badge.className = 'status-badge bg-success text-white';
+                badge.textContent = '🟢 Available';
+                this.textContent = 'Set Unavailable';
+            }
+            alert('🔄 Status toggled!');
+        });
+
+        // ============================================
+        // LISTEN FOR NEW BOOKINGS (Real-time)
+        // ============================================
+        setInterval(function() {
+            const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            const pending = bookings.filter(b => b.status === 'pending');
+            if (pending.length > 0) {
+                // Update pending count
+                document.getElementById('pendingCount').textContent = `${pending.length} pending`;
+                // Refresh dashboard
+                loadDashboard();
+            }
+        }, 30000);
+
+        // ============================================
+        // PAGE LOAD
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = localStorage.getItem('user');
+            if (!user) { window.location.href = '/'; return; }
+            const userData = JSON.parse(user);
+            if (userData.role !== 'technician') { window.location.href = '/'; return; }
+
+            // Ensure bookings exists in localStorage
+            if (!localStorage.getItem('bookings')) {
+                localStorage.setItem('bookings', JSON.stringify([]));
+            }
+
+            loadDashboard();
+        });
+
+        // ============================================
+        // EXPOSE FUNCTIONS GLOBALLY
+        // ============================================
+        window.logoutUser = logoutUser;
+        window.showOTPModal = showOTPModal;
+        window.verifyOTP = verifyOTP;
+        window.acceptBooking = acceptBooking;
+        window.rejectBooking = rejectBooking;
+        window.startWork = startWork;
+        window.finishWork = finishWork;
+        window.otpMove = otpMove;
+        window.loadDashboard = loadDashboard;
+
+        console.log('🚀 Professional Dashboard Ready!');
+        console.log('ℹ️ Bookings are stored in localStorage');
+        console.log('📱 OTP for each booking is shown in user dashboard');
+    </script>
+</body>
+</html>

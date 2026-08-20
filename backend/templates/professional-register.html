@@ -1,0 +1,562 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30 Minutes - Professional Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        body.dark-mode { background: #0f172a; }
+        .register-wrapper { width: 100%; max-width: 520px; }
+        .register-card {
+            background: white; border-radius: 24px; padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        body.dark-mode .register-card { background: #1e293b; }
+        .register-header { text-align: center; margin-bottom: 30px; }
+        .register-header .logo {
+            font-size: 28px; font-weight: 800; color: #059669; text-decoration: none;
+        }
+        body.dark-mode .register-header .logo { color: #34d399; }
+        .register-header h2 { font-weight: 700; font-size: 24px; margin-top: 5px; }
+        .register-header p { color: #64748b; font-size: 14px; }
+        body.dark-mode .register-header p { color: #94a3b8; }
+        .badge-pro {
+            background: #d1fae5; color: #059669; padding: 4px 12px;
+            border-radius: 20px; font-size: 12px; font-weight: 600;
+        }
+        body.dark-mode .badge-pro { background: #064e3b; color: #34d399; }
+        .form-label { font-weight: 600; font-size: 13px; color: #334155; }
+        body.dark-mode .form-label { color: #e2e8f0; }
+        .form-control, .form-select {
+            border-radius: 12px; padding: 12px 16px; border: 1.5px solid #e2e8f0;
+            font-size: 14px; transition: all 0.3s;
+        }
+        body.dark-mode .form-control, body.dark-mode .form-select {
+            background: #0f172a; border-color: #334155; color: #e2e8f0;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #059669; box-shadow: 0 0 0 3px rgba(5,150,105,0.1);
+        }
+        .btn-next-pro {
+            background: #059669; color: white; border: none; padding: 14px;
+            border-radius: 12px; font-weight: 700; font-size: 16px;
+            transition: all 0.3s; width: 100%; cursor: pointer;
+        }
+        .btn-next-pro:hover { background: #047857; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(5,150,105,0.3); }
+        .btn-verify-pro {
+            background: #059669; color: white; border: none; padding: 14px;
+            border-radius: 12px; font-weight: 700; font-size: 16px;
+            transition: all 0.3s; width: 100%; cursor: pointer;
+        }
+        .btn-verify-pro:hover { background: #047857; transform: translateY(-2px); }
+        .btn-back-pro {
+            background: transparent; color: #64748b; border: 2px solid #e2e8f0;
+            padding: 12px; border-radius: 12px; font-weight: 600;
+            transition: all 0.3s; width: 100%; cursor: pointer;
+        }
+        body.dark-mode .btn-back-pro { color: #94a3b8; border-color: #334155; }
+        .btn-back-pro:hover { background: #f1f5f9; }
+        .otp-container { display: flex; gap: 10px; justify-content: center; margin: 20px 0; }
+        .otp-input {
+            width: 48px; height: 56px; text-align: center; font-size: 22px;
+            font-weight: 700; border: 2px solid #e2e8f0; border-radius: 12px;
+            background: #fafbfc; transition: all 0.3s;
+        }
+        body.dark-mode .otp-input { background: #0f172a; border-color: #334155; color: #e2e8f0; }
+        .otp-input:focus { border-color: #059669; box-shadow: 0 0 0 3px rgba(5,150,105,0.15); outline: none; }
+        .step-content { display: none; animation: fadeIn 0.4s ease; }
+        .step-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .success-icon { font-size: 64px; color: #22c55e; }
+        .resend-link { color: #059669; cursor: pointer; font-weight: 600; }
+        body.dark-mode .resend-link { color: #34d399; }
+        .timer-text { color: #94a3b8; font-size: 14px; }
+        .back-link { color: #64748b; text-decoration: none; font-size: 14px; font-weight: 500; }
+        .back-link:hover { color: #059669; }
+        body.dark-mode .back-link { color: #94a3b8; }
+        body.dark-mode .back-link:hover { color: #34d399; }
+        .divider { border: none; border-top: 2px dashed #e2e8f0; margin: 20px 0; }
+        body.dark-mode .divider { border-color: #334155; }
+        .password-requirements { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .alert-success { background: #d1fae5; color: #065f46; border: none; }
+        body.dark-mode .alert-success { background: #064e3b; color: #34d399; }
+        .password-requirements .text-success { color: #22c55e; }
+        .password-requirements .text-danger { color: #ef4444; }
+    </style>
+</head>
+<body>
+    <div class="register-wrapper">
+        <div class="register-card">
+            <div class="register-header">
+                <a href="/" class="logo"><i class="bi bi-clock-history"></i> 30 Minutes</a>
+                <h2>Professional Registration</h2>
+                <p>Start offering services and earn money</p>
+                <span class="badge-pro"><i class="bi bi-briefcase"></i> Professional</span>
+            </div>
+
+            <!-- Step 1: Personal Info -->
+            <div class="step-content active" id="step1">
+                <form id="proForm">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="firstName" placeholder="John" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="lastName" placeholder="Doe" required>
+                        </div>
+                    </div>
+                    <div class="mb-3 mt-2">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" placeholder="98765 43210" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="8+ chars, 1 upper, 1 lower, 1 number, 1 special" required>
+                        <div class="password-requirements" id="passwordRequirements">
+                            <span id="reqLength"><i class="bi bi-circle"></i> At least 8 characters</span><br>
+                            <span id="reqUpper"><i class="bi bi-circle"></i> 1 uppercase letter</span><br>
+                            <span id="reqLower"><i class="bi bi-circle"></i> 1 lowercase letter</span><br>
+                            <span id="reqNumber"><i class="bi bi-circle"></i> 1 number</span><br>
+                            <span id="reqSpecial"><i class="bi bi-circle"></i> 1 special character (!@#$%^&*)</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Re-enter password" required>
+                    </div>
+
+                    <hr class="divider">
+                    <h6 class="mb-3"><i class="bi bi-briefcase"></i> Professional Details</h6>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Service Type</label>
+                        <select class="form-select" id="serviceType" required>
+                            <option value="">Select your service</option>
+                            <option value="plumber">Plumber</option>
+                            <option value="electrician">Electrician</option>
+                            <option value="carpenter">Carpenter</option>
+                            <option value="mechanic">Mechanic</option>
+                            <option value="painter">Painter</option>
+                            <option value="cleaner">Cleaner</option>
+                        </select>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label">Experience (Years)</label>
+                            <input type="number" class="form-control" id="experience" placeholder="Years" min="0" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label">Hourly Rate (₹)</label>
+                            <input type="number" class="form-control" id="hourlyRate" placeholder="500" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-2">
+                        <label class="form-label">Aadhaar Number</label>
+                        <input type="text" class="form-control" id="aadhaar" placeholder="12-digit Aadhaar" maxlength="12" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Voter ID (Optional)</label>
+                        <input type="text" class="form-control" id="voterId" placeholder="Voter ID number">
+                    </div>
+
+                    <button type="button" class="btn-next-pro" id="registerBtn">
+                        <i class="bi bi-arrow-right"></i> Register
+                    </button>
+                </form>
+            </div>
+
+            <!-- Step 2: OTP Verification -->
+            <div class="step-content" id="step2">
+                <h5 class="text-center mb-2">Verify Your Phone</h5>
+                <p class="text-center text-muted small">
+                    Enter the 6-digit code sent to <br>
+                    <strong id="displayPhone">+91 98765 43210</strong>
+                </p>
+                <div class="otp-container">
+                    <input type="text" class="otp-input" id="otp1" maxlength="1" oninput="otpMove(this, 'otp2')" autofocus>
+                    <input type="text" class="otp-input" id="otp2" maxlength="1" oninput="otpMove(this, 'otp3')">
+                    <input type="text" class="otp-input" id="otp3" maxlength="1" oninput="otpMove(this, 'otp4')">
+                    <input type="text" class="otp-input" id="otp4" maxlength="1" oninput="otpMove(this, 'otp5')">
+                    <input type="text" class="otp-input" id="otp5" maxlength="1" oninput="otpMove(this, 'otp6')">
+                    <input type="text" class="otp-input" id="otp6" maxlength="1" oninput="otpMove(this, null)">
+                </div>
+                <div id="otpError" class="text-center text-danger small mb-2" style="display:none;">
+                    <i class="bi bi-exclamation-circle"></i> Invalid OTP. Please try again.
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="timer-text" id="timer">2:00 remaining</span>
+                    <a class="resend-link" onclick="resendOTP()">Resend OTP</a>
+                </div>
+                <button class="btn-verify-pro" id="verifyBtn">
+                    <i class="bi bi-check-circle"></i> Verify & Complete
+                </button>
+                <div class="mt-3">
+                    <button type="button" class="btn-back-pro" onclick="goToStep(1)">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 3: Success -->
+            <div class="step-content" id="step3">
+                <div class="text-center py-3">
+                    <div class="success-icon"><i class="bi bi-check-circle-fill"></i></div>
+                    <h3 class="mt-3">Registration Successful! 🎉</h3>
+                    <p class="text-muted" id="successMsg">Welcome to 30 Minutes!</p>
+                    <div class="alert alert-success mt-3">
+                        <i class="bi bi-check-circle"></i> Your professional account has been created.
+                    </div>
+                    <a href="/professional-dashboard/" class="btn-next-pro mt-3 text-center" style="text-decoration:none; display:inline-block;">
+                        <i class="bi bi-speedometer2"></i> Go to Dashboard
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <a href="/register/" class="back-link"><i class="bi bi-arrow-left"></i> Back to Registration Options</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // PROFESSIONAL REGISTRATION - COMPLETE
+        // ============================================
+
+        let userData = {};
+        let timerInterval;
+        let timeLeft = 120;
+
+        console.log('🚀 Professional Registration System Loaded!');
+
+        // ============================================
+        // PASSWORD VALIDATION - REAL TIME
+        // ============================================
+        document.getElementById('password').addEventListener('input', function() {
+            var password = this.value;
+            
+            document.getElementById('reqLength').innerHTML = 
+                '<i class="bi bi-' + (password.length >= 8 ? 'check-circle-fill text-success' : 'circle') + '"></i> At least 8 characters';
+            document.getElementById('reqUpper').innerHTML = 
+                '<i class="bi bi-' + (/[A-Z]/.test(password) ? 'check-circle-fill text-success' : 'circle') + '"></i> 1 uppercase letter';
+            document.getElementById('reqLower').innerHTML = 
+                '<i class="bi bi-' + (/[a-z]/.test(password) ? 'check-circle-fill text-success' : 'circle') + '"></i> 1 lowercase letter';
+            document.getElementById('reqNumber').innerHTML = 
+                '<i class="bi bi-' + (/[0-9]/.test(password) ? 'check-circle-fill text-success' : 'circle') + '"></i> 1 number';
+            document.getElementById('reqSpecial').innerHTML = 
+                '<i class="bi bi-' + (/[!@#$%^&*(),.?":{}|<>]/.test(password) ? 'check-circle-fill text-success' : 'circle') + '"></i> 1 special character (!@#$%^&*)';
+        });
+
+        // ============================================
+        // REGISTER BUTTON
+        // ============================================
+        document.getElementById('registerBtn').addEventListener('click', function() {
+            console.log('🔄 Professional Register button clicked!');
+            
+            var firstName = document.getElementById('firstName').value.trim();
+            var lastName = document.getElementById('lastName').value.trim();
+            var email = document.getElementById('email').value.trim();
+            var phone = document.getElementById('phone').value.trim();
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmPassword').value;
+            var serviceType = document.getElementById('serviceType').value;
+            var experience = document.getElementById('experience').value;
+            var hourlyRate = document.getElementById('hourlyRate').value;
+            var aadhaar = document.getElementById('aadhaar').value.trim();
+            var voterId = document.getElementById('voterId').value.trim();
+            
+            if (!firstName || !lastName || !email || !phone || !password || !confirmPassword) {
+                alert('❌ Please fill in all required fields!');
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert('❌ Passwords do not match!');
+                return;
+            }
+            
+            // Validate password strength
+            var checks = {
+                length: password.length >= 8,
+                upper: /[A-Z]/.test(password),
+                lower: /[a-z]/.test(password),
+                number: /[0-9]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+            
+            if (!checks.length || !checks.upper || !checks.lower || !checks.number || !checks.special) {
+                alert('❌ Password must meet all requirements:\n- At least 8 characters\n- 1 uppercase letter\n- 1 lowercase letter\n- 1 number\n- 1 special character');
+                return;
+            }
+            
+            if (!serviceType || !experience || !hourlyRate || !aadhaar) {
+                alert('❌ Please fill in all professional details!');
+                return;
+            }
+            
+            userData = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                password: password,
+                serviceType: serviceType,
+                experience: experience,
+                hourlyRate: hourlyRate,
+                aadhaar: aadhaar,
+                voterId: voterId || '',
+                type: 'technician'
+            };
+            
+            registerProfessional();
+        });
+
+        // ============================================
+        // SAVE PROFESSIONAL SERVICE TO LOCALSTORAGE
+        // ============================================
+        function saveProfessionalService(data) {
+            console.log('💾 Saving professional service:', data);
+            
+            var services = JSON.parse(localStorage.getItem('professionalServices') || '[]');
+            
+            var service = {
+                name: data.serviceType,
+                icon: 'bi-tools',
+                color: '#2563eb',
+                count: 1,
+                desc: data.serviceType + ' services offered by ' + data.firstName + ' ' + data.lastName,
+                technician: data.firstName + ' ' + data.lastName,
+                phone: data.phone,
+                experience: data.experience,
+                rate: data.hourlyRate,
+                email: data.email
+            };
+            
+            // Check if service already exists
+            var exists = false;
+            for (var i = 0; i < services.length; i++) {
+                if (services[i].name.toLowerCase() === data.serviceType.toLowerCase()) {
+                    exists = true;
+                    services[i].count = (services[i].count || 1) + 1;
+                    break;
+                }
+            }
+            
+            if (!exists) {
+                services.push(service);
+                console.log('✅ New service added:', service.name);
+            } else {
+                console.log('✅ Service count updated:', data.serviceType);
+            }
+            
+            localStorage.setItem('professionalServices', JSON.stringify(services));
+            console.log('📋 All services:', services);
+        }
+
+        // ============================================
+        // REGISTER API CALL
+        // ============================================
+        async function registerProfessional() {
+            try {
+                var response = await fetch('/api/auth/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firstName: userData.firstName,
+                        lastName: userData.lastName,
+                        email: userData.email,
+                        phone: userData.phone,
+                        password: userData.password,
+                        type: 'technician',
+                        serviceType: userData.serviceType,
+                        experience: parseInt(userData.experience),
+                        hourlyRate: parseFloat(userData.hourlyRate),
+                        aadhaar: userData.aadhaar,
+                        voterId: userData.voterId || ''
+                    })
+                });
+
+                var result = await response.json();
+                console.log('📥 Server response:', result);
+                
+                if (response.status === 201) {
+                    // Save service to localStorage
+                    saveProfessionalService(userData);
+                    
+                    localStorage.setItem('user_phone', userData.phone);
+                    document.getElementById('displayPhone').textContent = '+91 ' + userData.phone;
+                    startTimer();
+                    goToStep(2);
+                    alert('✅ Registration successful! OTP sent to your phone.\n\n📱 Demo OTP: 123456');
+                    console.log('📱 OTP for testing: 123456');
+                } else {
+                    alert('❌ Registration failed: ' + (result.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('❌ Registration error:', error);
+                alert('❌ Registration failed. Please try again.');
+            }
+        }
+
+        // ============================================
+        // VERIFY OTP
+        // ============================================
+        document.getElementById('verifyBtn').addEventListener('click', function() {
+            console.log('🔐 Verify button clicked!');
+            verifyOTP();
+        });
+
+        async function verifyOTP() {
+            var otp = '';
+            for (var i = 1; i <= 6; i++) {
+                otp += document.getElementById('otp' + i).value;
+            }
+            
+            if (otp.length !== 6) {
+                document.getElementById('otpError').style.display = 'block';
+                alert('❌ Please enter all 6 digits of the OTP.');
+                return;
+            }
+            
+            var phone = localStorage.getItem('user_phone');
+            
+            try {
+                var response = await fetch('/api/auth/verify-otp/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        phone: phone,
+                        otp: otp
+                    })
+                });
+
+                var result = await response.json();
+                
+                if (response.status === 200) {
+                    document.getElementById('otpError').style.display = 'none';
+                    clearInterval(timerInterval);
+                    
+                    localStorage.setItem('access_token', result.access_token);
+                    localStorage.setItem('refresh_token', result.refresh_token);
+                    localStorage.setItem('user', JSON.stringify(result.user));
+                    
+                    goToStep(3);
+                    document.getElementById('successMsg').textContent = 
+                        'Welcome ' + result.user.first_name + '! Your professional account is ready.';
+                    
+                    console.log('✅ Registration complete! Redirecting to dashboard...');
+                    
+                    setTimeout(function() {
+                        window.location.href = '/professional-dashboard/';
+                    }, 2000);
+                } else {
+                    document.getElementById('otpError').style.display = 'block';
+                    alert('❌ ' + (result.error || 'Invalid OTP. Please try again.'));
+                }
+            } catch (error) {
+                console.error('❌ OTP verification error:', error);
+                alert('❌ OTP verification failed. Please try again.');
+            }
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function goToStep(step) {
+            document.querySelectorAll('.step-content').forEach(function(el) {
+                el.classList.remove('active');
+            });
+            document.getElementById('step' + step).classList.add('active');
+            console.log('➡️ Switched to step:', step);
+        }
+
+        function otpMove(current, nextId) {
+            if (current.value.length >= 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+        }
+
+        function startTimer() {
+            timeLeft = 120;
+            updateTimerDisplay();
+            clearInterval(timerInterval);
+            timerInterval = setInterval(function() {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer').textContent = 'OTP expired';
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            var mins = Math.floor(timeLeft / 60);
+            var secs = timeLeft % 60;
+            var display = '';
+            if (mins < 10) display += '0';
+            display += mins + ':';
+            if (secs < 10) display += '0';
+            display += secs + ' remaining';
+            document.getElementById('timer').textContent = display;
+        }
+
+        function resendOTP() {
+            startTimer();
+            alert('✅ OTP resent successfully!');
+        }
+
+        // ============================================
+        // ENTER KEY FOR OTP
+        // ============================================
+        document.querySelectorAll('.otp-input').forEach(function(input) {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('verifyBtn').click();
+                }
+                if (e.key === 'Backspace' && this.value === '') {
+                    var prev = this.previousElementSibling;
+                    if (prev && prev.classList.contains('otp-input')) {
+                        prev.focus();
+                    }
+                }
+            });
+        });
+
+        // ============================================
+        // THEME
+        // ============================================
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+        console.log('✅ Professional Registration System Ready!');
+        console.log('ℹ️  Use OTP: 123456 for testing');
+        console.log('ℹ️  Services will be saved to localStorage after registration');
+    </script>
+</body>
+</html>
