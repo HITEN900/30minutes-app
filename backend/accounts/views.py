@@ -18,20 +18,12 @@ from services.models import Service
 logger = logging.getLogger(__name__)
 
 def validate_password(password):
-    if len(password) < 8:
-        return False, "Password must be at least 8 characters long."
-    if not re.search(r'[A-Z]', password):
-        return False, "Password must contain at least one uppercase letter."
-    if not re.search(r'[a-z]', password):
-        return False, "Password must contain at least one lowercase letter."
-    if not re.search(r'[0-9]', password):
-        return False, "Password must contain at least one number."
-    if not re.search(r'[!@#$%^&*(),.?":{}|<>]', password):
-        return False, "Password must contain at least one special character."
+    if len(password) < 6:
+        return False, "Password must be at least 6 characters long."
     return True, "Password is valid."
 
 # ============================================
-# REGISTER USER
+# REGISTER USER - NO OTP
 # ============================================
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -62,6 +54,7 @@ def register_user(request):
         return Response({'error': 'Phone number already registered'}, status=status.HTTP_400_BAD_REQUEST)
     
     try:
+        # Create user - NO OTP, directly verified
         user = User.objects.create(
             username=data['email'],
             email=data['email'],
@@ -70,13 +63,14 @@ def register_user(request):
             last_name=data['lastName'],
             password=make_password(data['password']),
             role=user_type,
-            is_phone_verified=True
+            is_phone_verified=True  # Directly verified, NO OTP
         )
         print(f"✅ User created: {user.email} (ID: {user.id})")
     except Exception as e:
         print(f"❌ Error creating user: {e}")
         return Response({'error': 'User creation failed. Please try again.'}, status=status.HTTP_400_BAD_REQUEST)
     
+    # If technician, create technician profile
     if user_type == 'technician':
         tech_fields = ['serviceType', 'experience', 'hourlyRate', 'aadhaar']
         for field in tech_fields:
@@ -106,6 +100,7 @@ def register_user(request):
             user.delete()
             return Response({'error': 'Failed to create technician profile'}, status=status.HTTP_400_BAD_REQUEST)
         
+        # Create welcome notification
         Notification.objects.create(
             user=user,
             type='system',
@@ -113,6 +108,7 @@ def register_user(request):
             message=f'Welcome {user.first_name}! Your professional account has been created.'
         )
     
+    # Generate tokens - NO OTP REQUIRED
     refresh = RefreshToken.for_user(user)
     
     technician_data = None
@@ -126,6 +122,7 @@ def register_user(request):
             'is_available': profile.is_available
         }
     
+    # Return success - NO OTP MESSAGE
     return Response({
         'message': 'Registration successful!',
         'access_token': str(refresh.access_token),

@@ -17,7 +17,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=10, unique=True, validators=[phone_regex])
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='customer')
-    is_phone_verified = models.BooleanField(default=True)
+    is_phone_verified = models.BooleanField(default=True)  # NO OTP - auto verified
     address = models.TextField(null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
