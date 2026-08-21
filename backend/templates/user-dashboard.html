@@ -182,6 +182,104 @@
         .badge.bg-success { background: var(--teal) !important; }
         .badge.bg-light.text-dark { background: #eef1f6 !important; color: var(--navy) !important; }
         body.dark-mode .badge.bg-light.text-dark { background: #1c2c52 !important; color: #9db4e6 !important; }
+
+        /* ===== LOCATION BANNER ===== */
+        .location-banner {
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        body.dark-mode .location-banner {
+            background: linear-gradient(135deg, #1a1a2e, #0f3460);
+        }
+        .location-banner .left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .location-banner .left .icon {
+            font-size: 1.8rem;
+            color: var(--amber);
+        }
+        .location-banner .left .info h6 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1rem;
+        }
+        .location-banner .left .info p {
+            margin: 0;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        .location-banner .btn-location {
+            background: var(--amber);
+            color: var(--navy);
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .location-banner .btn-location:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(242,167,27,0.4);
+        }
+        .location-banner .btn-location.location-on {
+            background: var(--teal);
+            color: white;
+        }
+        .location-banner .btn-location.location-on:hover {
+            box-shadow: 0 4px 20px rgba(15,113,115,0.4);
+        }
+        .location-status-text {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+        .location-status-text .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .location-status-text .dot.on {
+            background: #2ecc71;
+            animation: pulse-dot 1.5s infinite;
+        }
+        .location-status-text .dot.off {
+            background: #e74c3c;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+
+        @media (max-width: 575px) {
+            .location-banner {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .location-banner .left {
+                flex-direction: column;
+                text-align: center;
+            }
+            .location-banner .btn-location {
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -223,6 +321,26 @@
 
         <!-- ===== SERVICES SECTION ===== -->
         <div class="page-section active" id="servicesSection">
+            
+            <!-- ===== LOCATION BANNER ===== -->
+            <div class="location-banner" id="locationBanner">
+                <div class="left">
+                    <span class="icon"><i class="bi bi-geo-alt-fill"></i></span>
+                    <div class="info">
+                        <h6 id="locationStatusTitle">📍 Location Services</h6>
+                        <p id="locationStatusDesc">Turn on location to find professionals near you</p>
+                        <span class="location-status-text" id="locationStatusText">
+                            <span class="dot off" id="locationDot"></span>
+                            <span id="locationStatusLabel">Off</span>
+                        </span>
+                    </div>
+                </div>
+                <button class="btn-location" id="locationToggleBtn" onclick="toggleLocation()">
+                    <i class="bi bi-satellite"></i>
+                    <span id="locationBtnText">Turn On Location</span>
+                </button>
+            </div>
+
             <h2 class="fw-bold mb-3"><i class="bi bi-grid" style="color:var(--amber-dark);"></i> Available Services</h2>
             <p class="text-muted mb-4">Select a service to find professionals near you</p>
             <div class="row g-4" id="servicesGrid"></div>
@@ -338,15 +456,128 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ============================================
-        // USER DASHBOARD - WITH OTP DISPLAY
+        // USER DASHBOARD - WITH LOCATION TOGGLE
         // ============================================
 
         var currentUser = null;
         var selectedTechnician = null;
         var allProfessionals = [];
+        var isLocationOn = false;
 
         // ============================================
-        // GET CURRENT LOCATION
+        // TOGGLE LOCATION
+        // ============================================
+        function toggleLocation() {
+            if (!navigator.geolocation) {
+                alert('❌ Geolocation is not supported by your browser.');
+                return;
+            }
+
+            var btn = document.getElementById('locationToggleBtn');
+            var btnText = document.getElementById('locationBtnText');
+            var statusLabel = document.getElementById('locationStatusLabel');
+            var statusDot = document.getElementById('locationDot');
+            var statusTitle = document.getElementById('locationStatusTitle');
+            var statusDesc = document.getElementById('locationStatusDesc');
+
+            if (!isLocationOn) {
+                btnText.textContent = 'Getting location...';
+                btn.disabled = true;
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        var lat = position.coords.latitude;
+                        var lng = position.coords.longitude;
+                        
+                        console.log('📍 Location obtained:', lat, lng);
+                        
+                        isLocationOn = true;
+                        localStorage.setItem('location_lat', lat);
+                        localStorage.setItem('location_lng', lng);
+                        
+                        btn.className = 'btn-location location-on';
+                        btnText.textContent = '✅ Location On';
+                        statusLabel.textContent = 'On';
+                        statusDot.className = 'dot on';
+                        statusTitle.textContent = '📍 Location Active';
+                        statusDesc.textContent = 'Finding professionals near you';
+                        btn.disabled = false;
+                        
+                        // Refresh services with location
+                        loadServices();
+                        
+                        showNotification('✅ Location turned on! Finding professionals near you.', 'success');
+                    },
+                    function(error) {
+                        var errorMsg = '';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMsg = 'Location permission denied. Please enable location in your browser settings.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMsg = 'Location information unavailable.';
+                                break;
+                            case error.TIMEOUT:
+                                errorMsg = 'Location request timed out.';
+                                break;
+                            default:
+                                errorMsg = 'An unknown error occurred.';
+                        }
+                        alert('❌ ' + errorMsg);
+                        btnText.textContent = 'Turn On Location';
+                        btn.disabled = false;
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                // Turn off location
+                isLocationOn = false;
+                localStorage.removeItem('location_lat');
+                localStorage.removeItem('location_lng');
+                
+                btn.className = 'btn-location';
+                btnText.textContent = 'Turn On Location';
+                statusLabel.textContent = 'Off';
+                statusDot.className = 'dot off';
+                statusTitle.textContent = '📍 Location Services';
+                statusDesc.textContent = 'Turn on location to find professionals near you';
+                
+                showNotification('📍 Location turned off. Use manual address for bookings.', 'info');
+                loadServices();
+            }
+        }
+
+        // ============================================
+        // CHECK LOCATION ON LOAD
+        // ============================================
+        function checkLocationStatus() {
+            var lat = localStorage.getItem('location_lat');
+            var lng = localStorage.getItem('location_lng');
+            
+            if (lat && lng) {
+                isLocationOn = true;
+                var btn = document.getElementById('locationToggleBtn');
+                var btnText = document.getElementById('locationBtnText');
+                var statusLabel = document.getElementById('locationStatusLabel');
+                var statusDot = document.getElementById('locationDot');
+                var statusTitle = document.getElementById('locationStatusTitle');
+                var statusDesc = document.getElementById('locationStatusDesc');
+                
+                btn.className = 'btn-location location-on';
+                btnText.textContent = '✅ Location On';
+                statusLabel.textContent = 'On';
+                statusDot.className = 'dot on';
+                statusTitle.textContent = '📍 Location Active';
+                statusDesc.textContent = 'Finding professionals near you';
+            }
+        }
+
+        // ============================================
+        // GET CURRENT LOCATION (for booking form)
         // ============================================
         function getCurrentLocation() {
             var statusDiv = document.getElementById('locationStatus');
@@ -363,6 +594,10 @@
                 function(position) {
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
+                    
+                    // Store location
+                    localStorage.setItem('location_lat', lat);
+                    localStorage.setItem('location_lng', lng);
                     
                     fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
                         .then(function(response) { return response.json(); })
@@ -403,6 +638,28 @@
                     maximumAge: 0
                 }
             );
+        }
+
+        // ============================================
+        // SHOW NOTIFICATION
+        // ============================================
+        function showNotification(message, type) {
+            type = type || 'info';
+            var alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-' + type + ' alert-dismissible fade show';
+            alertDiv.role = 'alert';
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.top = '80px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.zIndex = '9999';
+            alertDiv.style.maxWidth = '400px';
+            alertDiv.style.animation = 'fadeIn 0.5s ease';
+            alertDiv.innerHTML = message + 
+                '<button type="button" class="btn-close" data-bs-dismiss="alert"></button>';
+            document.body.appendChild(alertDiv);
+            setTimeout(function() { 
+                if (alertDiv) alertDiv.remove(); 
+            }, 5000);
         }
 
         // ============================================
@@ -752,7 +1009,6 @@
                 if (data.booking_id) {
                     bootstrap.Modal.getInstance(document.getElementById('bookingModal'))?.hide();
                     
-                    // Generate 4-digit OTP
                     var otp = Math.floor(1000 + Math.random() * 9000);
                     
                     var booking = {
@@ -775,7 +1031,6 @@
                     bookings.push(booking);
                     localStorage.setItem('bookings', JSON.stringify(bookings));
                     
-                    // Show OTP to customer
                     alert('✅ Booking confirmed!\n\n📱 Your OTP is: ' + otp + '\n\nShare this OTP with the technician when they finish the work.');
                     
                     addNotification('Booking Confirmed', 'Your booking with ' + selectedTechnician.name + ' has been confirmed. OTP: ' + otp, 'success');
@@ -900,7 +1155,7 @@
         }
 
         // ============================================
-        // RENDER BOOKINGS - WITH OTP DISPLAY
+        // RENDER BOOKINGS
         // ============================================
         function renderBookings() {
             var container = document.getElementById('bookingsList');
@@ -937,7 +1192,6 @@
                     timerHtml = '<div class="timer-text text-danger"><i class="bi bi-clock"></i> Cancellation expired</div>';
                 }
 
-                // Display OTP prominently for pending bookings
                 var otpDisplay = '';
                 if (isPending) {
                     otpDisplay = '<div class="mt-2"><span class="text-muted small">OTP for this booking:</span><br><span class="otp-display">' + booking.otp + '</span></div>';
@@ -1136,13 +1390,13 @@
                 localStorage.setItem('notifications', JSON.stringify([]));
             }
 
+            checkLocationStatus();
             loadServices();
             fetchBookingsFromDatabase();
             renderBookings();
             renderNotifications();
             updateNotificationBadge();
             
-            // Update timers every second
             setInterval(function() {
                 renderBookings();
             }, 1000);
@@ -1160,9 +1414,11 @@
         window.verifyOTP = verifyOTP;
         window.otpMove = otpMove;
         window.getCurrentLocation = getCurrentLocation;
+        window.toggleLocation = toggleLocation;
 
         console.log('🚀 User Dashboard Ready!');
         console.log('ℹ️ OTP is shown to customer after booking');
+        console.log('📍 Click "Turn On Location" to find nearby professionals');
     </script>
 </body>
 </html>
