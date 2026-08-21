@@ -1,897 +1,11 @@
 ﻿{% comment %} 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>30 Minutes - User Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <style>
-        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #f0f4ff; transition: all 0.3s ease; min-height: 100vh; }
-        body.dark-mode { background: #0f172a; color: #e2e8f0; }
-        .navbar { background: white !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
-        body.dark-mode .navbar { background: #1e293b !important; }
-        .brand-text { font-weight: 700; font-size: 1.25rem; color: #0f172a; }
-        body.dark-mode .brand-text { color: #e2e8f0; }
-        .nav-link { font-weight: 500; color: #64748b; padding: 8px 16px !important; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
-        body.dark-mode .nav-link { color: #94a3b8; }
-        .nav-link:hover, .nav-link.active { color: #2563eb !important; background: #dbeafe; }
-        body.dark-mode .nav-link:hover, body.dark-mode .nav-link.active { background: rgba(37,99,235,0.15); color: #60a5fa !important; }
-        .dark-mode-toggle { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 20px; padding: 8px; border-radius: 50%; transition: all 0.3s; }
-        body.dark-mode .dark-mode-toggle { color: #94a3b8; }
-        .dark-mode-toggle:hover { background: #f1f5f9; color: #2563eb; }
-        body.dark-mode .dark-mode-toggle:hover { background: #0f172a; color: #60a5fa; }
-        .service-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid transparent; cursor: pointer; }
-        body.dark-mode .service-card { background: #1e293b; }
-        .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: #dbeafe; }
-        .service-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px; background: #dbeafe; color: #2563eb; }
-        body.dark-mode .service-icon { background: #1e3a5f; color: #60a5fa; }
-        .technician-card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid transparent; margin-bottom: 12px; }
-        body.dark-mode .technician-card { background: #1e293b; }
-        .technician-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: #dbeafe; }
-        .btn-primary { background: #2563eb; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
-        .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,0.3); }
-        .btn-success { background: #22c55e; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
-        .btn-success:hover { background: #16a34a; transform: translateY(-2px); }
-        .btn-danger { background: #ef4444; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
-        .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
-        .btn-outline-secondary { border: 2px solid #94a3b8; color: #64748b; border-radius: 12px; font-weight: 600; }
-        .btn-outline-secondary:hover { background: #f1f5f9; }
-        .btn-outline-primary { border: 2px solid #2563eb; color: #2563eb; border-radius: 12px; font-weight: 600; transition: all 0.3s; }
-        .btn-outline-primary:hover { background: #2563eb; color: white; }
-        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-confirmed { background: #dbeafe; color: #1e40af; }
-        .status-in_progress { background: #dbeafe; color: #1e40af; }
-        .status-completed { background: #d1fae5; color: #065f46; }
-        .status-cancelled { background: #fee2e2; color: #991b1b; }
-        body.dark-mode .status-pending { background: #78350f; color: #fcd34d; }
-        body.dark-mode .status-confirmed { background: #1e3a5f; color: #60a5fa; }
-        body.dark-mode .status-in_progress { background: #1e3a5f; color: #60a5fa; }
-        body.dark-mode .status-completed { background: #064e3b; color: #34d399; }
-        body.dark-mode .status-cancelled { background: #7f1d1d; color: #f87171; }
-        .loading-spinner { display: flex; justify-content: center; align-items: center; min-height: 400px; flex-direction: column; gap: 20px; }
-        .spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .page-section { display: none; animation: fadeIn 0.3s ease; }
-        .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .logout-btn { cursor: pointer; transition: all 0.3s; }
-        .logout-btn:hover { opacity: 0.8; transform: scale(0.98); }
-        .otp-input { width: 50px; height: 56px; text-align: center; font-size: 22px; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 12px; background: #fafbfc; transition: all 0.3s; margin: 0 5px; }
-        body.dark-mode .otp-input { background: #0f172a; border-color: #334155; color: #e2e8f0; }
-        .otp-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); outline: none; }
-        @media (max-width: 575px) { .otp-input { width: 40px; height: 46px; font-size: 18px; } }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        body.dark-mode ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 3px; }
-        .notification-badge { position: relative; }
-        .notification-badge .badge { position: absolute; top: -5px; right: -5px; font-size: 10px; }
-        .profile-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; color: white; background: linear-gradient(135deg, #667eea, #764ba2); flex-shrink: 0; }
-        .no-services { text-align: center; padding: 60px 20px; }
-        .no-services i { font-size: 64px; color: #94a3b8; }
-        .no-services h5 { margin-top: 16px; font-weight: 600; }
-        .no-services p { color: #64748b; }
-        body.dark-mode .no-services i { color: #64748b; }
-        body.dark-mode .no-services p { color: #94a3b8; }
-        .location-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-        .location-badge.active { background: #d1fae5; color: #065f46; }
-        body.dark-mode .location-badge.active { background: #064e3b; color: #34d399; }
-        .location-badge.inactive { background: #fee2e2; color: #991b1b; }
-        body.dark-mode .location-badge.inactive { background: #7f1d1d; color: #f87171; }
-        .tech-details { font-size: 13px; color: #64748b; }
-        body.dark-mode .tech-details { color: #94a3b8; }
-        .technician-card .btn-book { margin-top: 10px; width: 100%; }
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-        .section-header h5 { font-weight: 700; margin: 0; }
-        .no-technicians { text-align: center; padding: 40px 20px; }
-        .no-technicians i { font-size: 48px; color: #94a3b8; }
-        .no-technicians h6 { margin-top: 12px; font-weight: 600; }
-        .no-technicians p { color: #64748b; }
-        body.dark-mode .no-technicians i { color: #64748b; }
-        body.dark-mode .no-technicians p { color: #94a3b8; }
-        .address-input-group { position: relative; }
-        .address-input-group .location-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; }
-        .location-loading { display: inline-block; width: 16px; height: 16px; border: 2px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg bg-white">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="/user-dashboard/">
-                <i class="bi bi-clock-history text-primary"></i>
-                <span class="brand-text">30 Minutes</span>
-            </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link active" onclick="showSection('services')"><i class="bi bi-grid"></i> Services</a></li>
-                    <li class="nav-item"><a class="nav-link" onclick="showSection('bookings')"><i class="bi bi-calendar-check"></i> My Bookings</a></li>
-                    <li class="nav-item notification-badge">
-                        <a class="nav-link" onclick="showSection('notifications')">
-                            <i class="bi bi-bell"></i>
-                            <span class="badge bg-danger" id="notificationCount">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item"><button class="dark-mode-toggle" id="themeToggle"><i class="bi bi-moon-fill"></i></button></li>
-                    <li class="nav-item ms-2">
-                        <a href="#" class="btn btn-outline-danger btn-sm rounded-pill px-3 logout-btn" onclick="logoutUser(event)">
-                            <i class="bi bi-box-arrow-right"></i> Logout
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <div class="container py-4">
-        <div id="loadingSpinner" class="loading-spinner">
-            <div class="spinner"></div>
-            <div class="loading-text">Loading your dashboard...</div>
-        </div>
 
-        <!-- ===== SERVICES SECTION ===== -->
-        <div class="page-section active" id="servicesSection">
-            <h2 class="fw-bold mb-3"><i class="bi bi-grid text-primary"></i> Available Services</h2>
-            <p class="text-muted mb-4">Select a service to find professionals near you</p>
-            <div class="row g-4" id="servicesGrid"></div>
 
-            <!-- Technicians List -->
-            <div id="techniciansContainer" style="display:none;" class="mt-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold"><i class="bi bi-geo-alt text-success"></i> Professionals Near You (Within 5km)</h5>
-                    <button class="btn btn-outline-secondary btn-sm" onclick="hideTechnicians()"><i class="bi bi-arrow-left"></i> Back to Services</button>
-                </div>
-                <div class="row g-4" id="techniciansGrid"></div>
-            </div>
-        </div>
 
-        <!-- ===== BOOKINGS SECTION ===== -->
-        <div class="page-section" id="bookingsSection">
-            <h2 class="fw-bold mb-3"><i class="bi bi-calendar-check text-primary"></i> My Bookings</h2>
-            <p class="text-muted mb-4">View and manage your bookings</p>
-            <div id="bookingsList">
-                <div class="text-center text-muted py-5">
-                    <i class="bi bi-inbox display-1 d-block mb-3"></i>
-                    <h5>No Bookings Yet</h5>
-                    <p>Book a service to get started</p>
-                </div>
-            </div>
-        </div>
 
-        <!-- ===== NOTIFICATIONS SECTION ===== -->
-        <div class="page-section" id="notificationsSection">
-            <h2 class="fw-bold mb-3"><i class="bi bi-bell text-primary"></i> Notifications</h2>
-            <p class="text-muted mb-4">Your notifications and alerts</p>
-            <div id="notificationsList">
-                <div class="text-center text-muted py-5">
-                    <i class="bi bi-bell display-1 d-block mb-3"></i>
-                    <h5>No Notifications</h5>
-                    <p>You're all caught up!</p>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- ===== BOOKING MODAL ===== -->
-    <div class="modal fade" id="bookingModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-calendar-check text-primary"></i> Book Service</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <div id="bookingTechnicianInfo" class="mb-3"></div>
-                    <form id="bookingForm">
-                        <div class="row">
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Service Address <span class="text-danger">*</span></label>
-                                <div class="address-input-group">
-                                    <textarea class="form-control" id="bookingAddress" rows="2" placeholder="Enter your full address" required></textarea>
-                                    <button type="button" class="btn btn-outline-primary btn-sm location-btn" onclick="getCurrentLocation()" title="Use my current location">
-                                        <i class="bi bi-geo-alt"></i>
-                                    </button>
-                                </div>
-                                <div id="locationStatus" class="text-muted small mt-1">
-                                    <i class="bi bi-info-circle"></i> Click the location button to use your current location
-                                </div>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Preferred Date & Time</label>
-                                <input type="datetime-local" class="form-control" id="bookingDateTime" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Payment Method</label>
-                                <select class="form-select" id="bookingPayment">
-                                    <option value="upi">UPI</option>
-                                    <option value="card">Card</option>
-                                    <option value="wallet">Wallet</option>
-                                    <option value="cash">Cash</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Confirm Booking</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- ===== OTP VERIFICATION MODAL ===== -->
-    <div class="modal fade" id="otpModal" tabindex="-1">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-shield-lock text-success"></i> Verify OTP</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <p class="text-muted">Enter the 4-digit OTP received</p>
-                    <div class="d-flex justify-content-center gap-2 my-3">
-                        <input type="text" class="otp-input" id="otp1" maxlength="1" oninput="otpMove(this, 'otp2')" autofocus>
-                        <input type="text" class="otp-input" id="otp2" maxlength="1" oninput="otpMove(this, 'otp3')">
-                        <input type="text" class="otp-input" id="otp3" maxlength="1" oninput="otpMove(this, 'otp4')">
-                        <input type="text" class="otp-input" id="otp4" maxlength="1" oninput="otpMove(this, null)">
-                    </div>
-                    <div id="otpError" class="text-danger small" style="display:none;">Invalid OTP. Please try again.</div>
-                    <button class="btn btn-success w-100 mt-3" onclick="verifyOTP()">Verify OTP</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // ============================================
-        // USER DASHBOARD - WITH LOCATION & ADDRESS
-        // ============================================
-
-        var currentUser = null;
-        var selectedTechnician = null;
-        var allProfessionals = [];
-
-        // ============================================
-        // GET CURRENT LOCATION
-        // ============================================
-        function getCurrentLocation() {
-            var statusDiv = document.getElementById('locationStatus');
-            var addressField = document.getElementById('bookingAddress');
-            
-            if (!navigator.geolocation) {
-                statusDiv.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle"></i> Geolocation is not supported by your browser.</span>';
-                return;
-            }
-
-            statusDiv.innerHTML = '<span class="text-primary"><span class="location-loading"></span> Getting your location...</span>';
-            
-            navigator.geolocation.getCurrentPosition(
-                function(position) {
-                    var lat = position.coords.latitude;
-                    var lng = position.coords.longitude;
-                    
-                    // Reverse geocoding to get address (using free API)
-                    fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
-                        .then(function(response) { return response.json(); })
-                        .then(function(data) {
-                            if (data && data.display_name) {
-                                addressField.value = data.display_name;
-                                statusDiv.innerHTML = '<span class="text-success"><i class="bi bi-check-circle"></i> Location detected! Address added.</span>';
-                            } else {
-                                addressField.value = 'Latitude: ' + lat + ', Longitude: ' + lng;
-                                statusDiv.innerHTML = '<span class="text-warning"><i class="bi bi-exclamation-triangle"></i> Address not found, using coordinates.</span>';
-                            }
-                        })
-                        .catch(function() {
-                            addressField.value = 'Latitude: ' + lat + ', Longitude: ' + lng;
-                            statusDiv.innerHTML = '<span class="text-warning"><i class="bi bi-exclamation-triangle"></i> Could not fetch address, using coordinates.</span>';
-                        });
-                },
-                function(error) {
-                    var errorMsg = '';
-                    switch(error.code) {
-                        case error.PERMISSION_DENIED:
-                            errorMsg = 'Location permission denied. Please enable location in your browser settings.';
-                            break;
-                        case error.POSITION_UNAVAILABLE:
-                            errorMsg = 'Location information unavailable.';
-                            break;
-                        case error.TIMEOUT:
-                            errorMsg = 'Location request timed out.';
-                            break;
-                        default:
-                            errorMsg = 'An unknown error occurred.';
-                    }
-                    statusDiv.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle"></i> ' + errorMsg + '</span>';
-                },
-                {
-                    enableHighAccuracy: true,
-                    timeout: 15000,
-                    maximumAge: 0
-                }
-            );
-        }
-
-        // ============================================
-        // LOGOUT FUNCTION
-        // ============================================
-        function logoutUser(event) {
-            if (event) { event.preventDefault(); event.stopPropagation(); }
-            localStorage.clear();
-            window.location.href = '/';
-        }
-
-        // ============================================
-        // THEME TOGGLE
-        // ============================================
-        var themeToggle = document.getElementById('themeToggle');
-        if (themeToggle) {
-            themeToggle.addEventListener('click', function() {
-                document.body.classList.toggle('dark-mode');
-                var icon = this.querySelector('i');
-                if (document.body.classList.contains('dark-mode')) {
-                    icon.className = 'bi bi-sun-fill';
-                    localStorage.setItem('darkMode', 'true');
-                } else {
-                    icon.className = 'bi bi-moon-fill';
-                    localStorage.setItem('darkMode', 'false');
-                }
-            });
-        }
-        if (localStorage.getItem('darkMode') === 'true') {
-            document.body.classList.add('dark-mode');
-            var toggle = document.getElementById('themeToggle');
-            if (toggle) { var icon = toggle.querySelector('i'); if (icon) icon.className = 'bi bi-sun-fill'; }
-        }
-
-        // ============================================
-        // SECTION NAVIGATION
-        // ============================================
-        function showSection(section) {
-            var sections = document.querySelectorAll('.page-section');
-            for (var i = 0; i < sections.length; i++) {
-                sections[i].classList.remove('active');
-            }
-            var navLinks = document.querySelectorAll('.nav-link');
-            for (var j = 0; j < navLinks.length; j++) {
-                navLinks[j].classList.remove('active');
-            }
-            if (section === 'services') {
-                document.getElementById('servicesSection').classList.add('active');
-                var link = document.querySelector('.nav-link[onclick*="services"]');
-                if (link) link.classList.add('active');
-            } else if (section === 'bookings') {
-                document.getElementById('bookingsSection').classList.add('active');
-                var link = document.querySelector('.nav-link[onclick*="bookings"]');
-                if (link) link.classList.add('active');
-                renderBookings();
-            } else if (section === 'notifications') {
-                document.getElementById('notificationsSection').classList.add('active');
-                var link = document.querySelector('.nav-link[onclick*="notifications"]');
-                if (link) link.classList.add('active');
-                renderNotifications();
-            }
-        }
-
-        // ============================================
-        // LOAD SERVICES FROM DATABASE
-        // ============================================
-        function loadServices() {
-            console.log('🔄 Loading services from database...');
-            
-            var token = localStorage.getItem('access_token');
-            
-            fetch('/api/auth/professionals/', {
-                headers: {
-                    'Authorization': 'Bearer ' + token
-                }
-            })
-            .then(function(response) {
-                return response.json();
-            })
-            .then(function(data) {
-                console.log('📋 Professionals from database:', data);
-                allProfessionals = data;
-                renderServicesFromProfessionals(data);
-            })
-            .catch(function(error) {
-                console.error('❌ Error loading professionals:', error);
-                document.getElementById('loadingSpinner').style.display = 'none';
-                document.getElementById('servicesGrid').innerHTML = 
-                    '<div class="col-12"><div class="no-services"><i class="bi bi-exclamation-triangle"></i><h5>Error Loading Services</h5><p>Please try again later.</p></div></div>';
-            });
-        }
-
-        // ============================================
-        // RENDER SERVICES FROM PROFESSIONALS DATA
-        // ============================================
-        function renderServicesFromProfessionals(professionals) {
-            var grid = document.getElementById('servicesGrid');
-            document.getElementById('loadingSpinner').style.display = 'none';
-
-            if (!professionals || professionals.length === 0) {
-                grid.innerHTML = 
-                    '<div class="col-12">' +
-                    '<div class="no-services">' +
-                    '<i class="bi bi-tools"></i>' +
-                    '<h5>No Services Available</h5>' +
-                    '<p>No professionals have registered their services yet. Please check back later.</p>' +
-                    '<a href="/register/" class="btn btn-primary mt-3">Become a Professional</a>' +
-                    '</div>' +
-                    '</div>';
-                return;
-            }
-
-            var servicesMap = {};
-            for (var i = 0; i < professionals.length; i++) {
-                var pro = professionals[i];
-                var serviceType = pro.service_type || 'others';
-                if (!servicesMap[serviceType]) {
-                    servicesMap[serviceType] = [];
-                }
-                servicesMap[serviceType].push(pro);
-            }
-
-            var serviceIcons = {
-                'plumber': 'bi-wrench',
-                'electrician': 'bi-lightning-fill',
-                'carpenter': 'bi-hammer',
-                'mechanic': 'bi-gear',
-                'painter': 'bi-palette-fill',
-                'cleaner': 'bi-brush',
-                'hvac': 'bi-snow2',
-                'others': 'bi-tools'
-            };
-
-            var serviceColors = {
-                'plumber': '#2563eb',
-                'electrician': '#f59e0b',
-                'carpenter': '#22c55e',
-                'mechanic': '#ef4444',
-                'painter': '#0ea5e9',
-                'cleaner': '#64748b',
-                'hvac': '#8b5cf6',
-                'others': '#94a3b8'
-            };
-
-            var html = '';
-            for (var serviceType in servicesMap) {
-                var count = servicesMap[serviceType].length;
-                var icon = serviceIcons[serviceType] || 'bi-tools';
-                var color = serviceColors[serviceType] || '#2563eb';
-                var name = serviceType.charAt(0).toUpperCase() + serviceType.slice(1);
-                
-                html += '<div class="col-lg-4 col-md-6">' +
-                    '<div class="service-card" onclick="findTechnicians(\'' + serviceType + '\')">' +
-                    '<div class="service-icon" style="color: ' + color + ';">' +
-                    '<i class="bi ' + icon + '"></i>' +
-                    '</div>' +
-                    '<h5 class="fw-bold">' + name + '</h5>' +
-                    '<p class="text-muted small">' + count + ' professional(s) available</p>' +
-                    '<span class="badge bg-light text-dark">' + count + ' available</span>' +
-                    '<br>' +
-                    '<button class="btn btn-primary btn-sm rounded-pill px-3 mt-2">Find Professionals</button>' +
-                    '</div>' +
-                    '</div>';
-            }
-            grid.innerHTML = html;
-            console.log('✅ Services loaded successfully from database!');
-        }
-
-        // ============================================
-        // FIND TECHNICIANS - FROM DATABASE
-        // ============================================
-        function findTechnicians(serviceType) {
-            console.log('🔍 Finding professionals for:', serviceType);
-            
-            var technicians = [];
-            for (var i = 0; i < allProfessionals.length; i++) {
-                var pro = allProfessionals[i];
-                if (pro.service_type === serviceType) {
-                    var distance = (1 + Math.random() * 4).toFixed(1);
-                    
-                    technicians.push({
-                        id: pro.id,
-                        name: pro.name || 'Professional',
-                        service: pro.service_type,
-                        rating: pro.rating || (4 + Math.random() * 1).toFixed(1),
-                        distance: distance + ' km',
-                        price: parseInt(pro.hourly_rate) || 500,
-                        phone: pro.phone || 'Not provided',
-                        image: (pro.name || 'P').charAt(0).toUpperCase(),
-                        experience: pro.experience || 'N/A',
-                        email: pro.email || 'N/A',
-                        is_available: pro.is_available !== undefined ? pro.is_available : true
-                    });
-                }
-            }
-
-            var container = document.getElementById('techniciansContainer');
-            container.style.display = 'block';
-            
-            var grid = document.getElementById('techniciansGrid');
-            
-            if (technicians.length === 0) {
-                grid.innerHTML = 
-                    '<div class="col-12">' +
-                    '<div class="no-technicians">' +
-                    '<i class="bi bi-person-x"></i>' +
-                    '<h6>No Professionals Available</h6>' +
-                    '<p>No professionals have registered for this service yet.</p>' +
-                    '</div>' +
-                    '</div>';
-                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                return;
-            }
-
-            var html = '';
-            for (var j = 0; j < technicians.length; j++) {
-                var tech = technicians[j];
-                var statusBadge = tech.is_available ? 
-                    '<span class="location-badge active"><i class="bi bi-check-circle"></i> Available</span>' : 
-                    '<span class="location-badge inactive"><i class="bi bi-clock"></i> Offline</span>';
-                
-                html += '<div class="col-md-6 col-lg-4">' +
-                    '<div class="technician-card">' +
-                    '<div class="d-flex align-items-start gap-3">' +
-                    '<div class="profile-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;flex-shrink:0;">' + tech.image + '</div>' +
-                    '<div class="flex-grow-1">' +
-                    '<div class="d-flex justify-content-between align-items-start">' +
-                    '<h6 class="fw-bold mb-0">' + tech.name + '</h6>' +
-                    statusBadge +
-                    '</div>' +
-                    '<div class="d-flex align-items-center gap-2">' +
-                    '<span class="text-warning">⭐ ' + tech.rating + '</span>' +
-                    '<span class="text-muted small"><i class="bi bi-geo-alt"></i> ' + tech.distance + '</span>' +
-                    '</div>' +
-                    '<p class="tech-details mb-0">₹' + tech.price + '/hour • ' + tech.experience + ' exp</p>' +
-                    '<p class="tech-details mb-0"><i class="bi bi-phone"></i> ' + tech.phone + '</p>' +
-                    '</div>' +
-                    '</div>' +
-                    '<button class="btn btn-primary btn-sm btn-book" onclick="openBookingModal(' + tech.id + ', \'' + tech.name + '\', ' + tech.price + ', \'' + tech.phone + '\', \'' + tech.email + '\')">' +
-                    '<i class="bi bi-calendar-check"></i> Book Now' +
-                    '</button>' +
-                    '</div>' +
-                    '</div>';
-            }
-            grid.innerHTML = html;
-            
-            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            console.log('✅ ' + technicians.length + ' real professionals displayed from database');
-        }
-
-        // ============================================
-        // HIDE TECHNICIANS
-        // ============================================
-        function hideTechnicians() {
-            document.getElementById('techniciansContainer').style.display = 'none';
-            document.getElementById('servicesSection').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // ============================================
-        // OPEN BOOKING MODAL
-        // ============================================
-        function openBookingModal(techId, techName, price, phone, email) {
-            selectedTechnician = { id: techId, name: techName, price: price, phone: phone, email: email };
-            document.getElementById('bookingTechnicianInfo').innerHTML = 
-                '<div class="alert alert-info">' +
-                '<div class="d-flex justify-content-between align-items-center">' +
-                '<div>' +
-                '<strong><i class="bi bi-person"></i> ' + techName + '</strong>' +
-                '<span class="ms-3"><i class="bi bi-currency-rupee"></i> ' + price + '/hour</span>' +
-                '<span class="ms-3"><i class="bi bi-phone"></i> ' + phone + '</span>' +
-                '</div>' +
-                '<span class="badge bg-success">Available Now</span>' +
-                '</div>' +
-                '</div>';
-            var now = new Date();
-            now.setHours(now.getHours() + 1);
-            document.getElementById('bookingDateTime').value = now.toISOString().slice(0, 16);
-            
-            // Reset location status
-            document.getElementById('locationStatus').innerHTML = '<i class="bi bi-info-circle"></i> Click the location button to use your current location';
-            document.getElementById('bookingAddress').value = '';
-            
-            new bootstrap.Modal(document.getElementById('bookingModal')).show();
-        }
-
-        // ============================================
-        // BOOKING FORM SUBMIT
-        // ============================================
-        document.getElementById('bookingForm')?.addEventListener('submit', function(e) {
-            e.preventDefault();
-            var address = document.getElementById('bookingAddress').value;
-            var datetime = document.getElementById('bookingDateTime').value;
-            var payment = document.getElementById('bookingPayment').value;
-
-            if (!address) {
-                alert('Please enter your address');
-                return;
-            }
-
-            var booking = {
-                id: Date.now(),
-                technician: selectedTechnician.name,
-                technicianId: selectedTechnician.id,
-                technicianPhone: selectedTechnician.phone,
-                technicianEmail: selectedTechnician.email,
-                price: selectedTechnician.price,
-                address: address,
-                datetime: datetime,
-                payment: payment,
-                status: 'pending',
-                createdAt: new Date().toISOString(),
-                customer_phone: currentUser?.phone || 'N/A',
-                service: selectedTechnician.name,
-                otp: Math.floor(1000 + Math.random() * 9000)
-            };
-
-            var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-            bookings.push(booking);
-            localStorage.setItem('bookings', JSON.stringify(bookings));
-
-            addNotification('Booking Confirmed', 'Your booking with ' + selectedTechnician.name + ' has been confirmed. OTP: ' + booking.otp, 'success');
-
-            bootstrap.Modal.getInstance(document.getElementById('bookingModal'))?.hide();
-            alert('✅ Booking confirmed! OTP: ' + booking.otp);
-            renderBookings();
-            showSection('bookings');
-        });
-
-        // ============================================
-        // RENDER BOOKINGS
-        // ============================================
-        function renderBookings() {
-            var container = document.getElementById('bookingsList');
-            var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-
-            if (bookings.length === 0) {
-                container.innerHTML = 
-                    '<div class="text-center text-muted py-5">' +
-                    '<i class="bi bi-inbox display-1 d-block mb-3"></i>' +
-                    '<h5>No Bookings Yet</h5>' +
-                    '<p>Book a service to get started</p>' +
-                    '</div>';
-                return;
-            }
-
-            var html = '';
-            for (var i = 0; i < bookings.length; i++) {
-                var booking = bookings[i];
-                var isCancellable = booking.status === 'pending' && 
-                    (new Date() - new Date(booking.createdAt)) < 5 * 60 * 1000;
-
-                var cancelHtml = '';
-                if (isCancellable) {
-                    cancelHtml = '<button class="btn btn-danger btn-sm mt-2" onclick="cancelBooking(' + i + ')"><i class="bi bi-x-circle"></i> Cancel</button>';
-                }
-
-                var otpHtml = '';
-                if (booking.status === 'pending') {
-                    otpHtml = '<p class="text-muted small mb-0"><strong>OTP: ' + booking.otp + '</strong></p>';
-                }
-
-                var completedHtml = '';
-                if (booking.status === 'completed') {
-                    completedHtml = '<span class="badge bg-success mt-2">✅ Completed</span>';
-                }
-
-                var timerHtml = '';
-                if (booking.status === 'pending') {
-                    var minutesLeft = Math.max(0, Math.floor((5 * 60 - (new Date() - new Date(booking.createdAt)) / 1000) / 60));
-                    timerHtml = '<div class="mt-2"><small class="text-muted">⏱️ Cancel available for ' + minutesLeft + ' more minutes</small></div>';
-                }
-
-                html += '<div class="card mb-3">' +
-                    '<div class="card-body">' +
-                    '<div class="d-flex justify-content-between align-items-start">' +
-                    '<div>' +
-                    '<h6 class="fw-bold">' + booking.technician + '</h6>' +
-                    '<p class="text-muted small mb-1"><i class="bi bi-geo-alt"></i> ' + booking.address + '</p>' +
-                    '<p class="text-muted small mb-1"><i class="bi bi-calendar"></i> ' + new Date(booking.datetime).toLocaleString() + '</p>' +
-                    '<p class="text-muted small mb-0"><i class="bi bi-currency-rupee"></i> ' + booking.price + '</p>' +
-                    '<p class="text-muted small mb-0"><i class="bi bi-phone"></i> ' + (booking.technicianPhone || 'N/A') + '</p>' +
-                    otpHtml +
-                    '</div>' +
-                    '<div class="text-end">' +
-                    '<span class="status-badge status-' + booking.status + '">' + booking.status + '</span>' +
-                    '<br>' +
-                    cancelHtml +
-                    completedHtml +
-                    '</div>' +
-                    '</div>' +
-                    timerHtml +
-                    '</div>' +
-                    '</div>';
-            }
-            container.innerHTML = html;
-        }
-
-        // ============================================
-        // CANCEL BOOKING
-        // ============================================
-        function cancelBooking(index) {
-            if (confirm('Are you sure you want to cancel this booking?')) {
-                var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-                bookings[index].status = 'cancelled';
-                localStorage.setItem('bookings', JSON.stringify(bookings));
-                addNotification('Booking Cancelled', 'Your booking has been cancelled.', 'warning');
-                renderBookings();
-            }
-        }
-
-        // ============================================
-        // NOTIFICATIONS
-        // ============================================
-        function addNotification(title, message, type) {
-            type = type || 'info';
-            var notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-            notifications.unshift({
-                id: Date.now(),
-                title: title,
-                message: message,
-                type: type,
-                createdAt: new Date().toISOString(),
-                read: false
-            });
-            localStorage.setItem('notifications', JSON.stringify(notifications));
-            updateNotificationBadge();
-        }
-
-        function renderNotifications() {
-            var container = document.getElementById('notificationsList');
-            var notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-
-            if (notifications.length === 0) {
-                container.innerHTML = 
-                    '<div class="text-center text-muted py-5">' +
-                    '<i class="bi bi-bell display-1 d-block mb-3"></i>' +
-                    '<h5>No Notifications</h5>' +
-                    '<p>You\'re all caught up!</p>' +
-                    '</div>';
-                return;
-            }
-
-            var html = '';
-            for (var i = 0; i < notifications.length; i++) {
-                var notif = notifications[i];
-                var newBadge = '';
-                if (!notif.read) {
-                    newBadge = '<span class="badge bg-primary">New</span>';
-                }
-                var cardClass = 'card mb-2';
-                if (!notif.read) {
-                    cardClass += ' border-primary';
-                }
-
-                html += '<div class="' + cardClass + '">' +
-                    '<div class="card-body">' +
-                    '<div class="d-flex justify-content-between align-items-start">' +
-                    '<div>' +
-                    '<h6 class="fw-bold">' + notif.title + '</h6>' +
-                    '<p class="text-muted small mb-0">' + notif.message + '</p>' +
-                    '<small class="text-muted">' + new Date(notif.createdAt).toLocaleString() + '</small>' +
-                    '</div>' +
-                    newBadge +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
-            }
-            container.innerHTML = html;
-        }
-
-        function updateNotificationBadge() {
-            var notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
-            var unread = 0;
-            for (var i = 0; i < notifications.length; i++) {
-                if (!notifications[i].read) {
-                    unread++;
-                }
-            }
-            document.getElementById('notificationCount').textContent = unread;
-        }
-
-        // ============================================
-        // OTP FUNCTIONS
-        // ============================================
-        function otpMove(current, nextId) {
-            if (current.value.length >= 1 && nextId) {
-                document.getElementById(nextId).focus();
-            }
-        }
-
-        function verifyOTP() {
-            var otp = '';
-            for (var i = 1; i <= 4; i++) {
-                otp += document.getElementById('otp' + i).value;
-            }
-            if (otp.length !== 4) {
-                document.getElementById('otpError').style.display = 'block';
-                return;
-            }
-
-            var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-            var booking = null;
-            for (var j = 0; j < bookings.length; j++) {
-                if (bookings[j].otp == otp && bookings[j].status === 'pending') {
-                    booking = bookings[j];
-                    break;
-                }
-            }
-
-            if (booking) {
-                booking.status = 'completed';
-                localStorage.setItem('bookings', JSON.stringify(bookings));
-                document.getElementById('otpError').style.display = 'none';
-                alert('✅ OTP Verified! Work completed successfully.');
-                bootstrap.Modal.getInstance(document.getElementById('otpModal'))?.hide();
-                addNotification('Work Completed', 'Job completed successfully!', 'success');
-                renderBookings();
-                for (var k = 1; k <= 4; k++) {
-                    document.getElementById('otp' + k).value = '';
-                }
-            } else {
-                document.getElementById('otpError').style.display = 'block';
-                alert('❌ Invalid OTP. Please try again.');
-            }
-        }
-
-        // ============================================
-        // PAGE LOAD
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 User Dashboard Loading...');
-            
-            var user = localStorage.getItem('user');
-            if (!user) {
-                window.location.href = '/';
-                return;
-            }
-            currentUser = JSON.parse(user);
-            if (currentUser.role !== 'customer') {
-                window.location.href = '/';
-                return;
-            }
-
-            if (!localStorage.getItem('bookings')) {
-                localStorage.setItem('bookings', JSON.stringify([]));
-            }
-            if (!localStorage.getItem('notifications')) {
-                localStorage.setItem('notifications', JSON.stringify([]));
-            }
-
-            loadServices();
-            renderBookings();
-            renderNotifications();
-            updateNotificationBadge();
-            
-            console.log('✅ User Dashboard Loaded Successfully!');
-        });
-
-        // Expose functions globally
-        window.logoutUser = logoutUser;
-        window.showSection = showSection;
-        window.findTechnicians = findTechnicians;
-        window.hideTechnicians = hideTechnicians;
-        window.openBookingModal = openBookingModal;
-        window.cancelBooking = cancelBooking;
-        window.verifyOTP = verifyOTP;
-        window.otpMove = otpMove;
-        window.getCurrentLocation = getCurrentLocation;
-
-        console.log('🚀 User Dashboard Ready!');
-        console.log('📍 Location detection enabled');
-    </script>
-</body>
-</html> {% endcomment %}
-{% comment %} @" {% endcomment %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -993,6 +107,8 @@
         @keyframes spin { to { transform: rotate(360deg); } }
         .booking-loading { display: none; }
         .booking-loading.show { display: inline-block; }
+        .cancel-loading { display: none; }
+        .cancel-loading.show { display: inline-block; }
     </style>
 </head>
 <body>
@@ -1149,7 +265,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ============================================
-        // USER DASHBOARD - FIXED BOOKING
+        // USER DASHBOARD - FETCHES FROM DATABASE
         // ============================================
 
         var currentUser = null;
@@ -1217,7 +333,7 @@
         }
 
         // ============================================
-        // LOGOUT FUNCTION
+        // LOGOUT FUNCTION - Clears localStorage
         // ============================================
         function logoutUser(event) {
             if (event) { event.preventDefault(); event.stopPropagation(); }
@@ -1500,7 +616,7 @@
         }
 
         // ============================================
-        // BOOKING FORM SUBMIT - FIXED
+        // BOOKING FORM SUBMIT - SAVES TO DATABASE
         // ============================================
         document.getElementById('bookingForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -1574,7 +690,7 @@
                 if (data.booking_id) {
                     bootstrap.Modal.getInstance(document.getElementById('bookingModal'))?.hide();
                     
-                    // Save to localStorage
+                    // Save to localStorage for quick display
                     var booking = {
                         id: data.booking_id,
                         technician: selectedTechnician.name,
@@ -1612,7 +728,101 @@
         });
 
         // ============================================
-        // RENDER BOOKINGS
+        // FETCH BOOKINGS FROM DATABASE - FIXED
+        // ============================================
+        function fetchBookingsFromDatabase() {
+            var token = localStorage.getItem('access_token');
+            
+            if (!token) {
+                console.log('No token found, using localStorage');
+                return;
+            }
+
+            fetch('/api/bookings/customer/', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(function(response) {
+                if (response.status === 401) {
+                    console.log('Unauthorized, using localStorage');
+                    return;
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                if (data && data.length > 0) {
+                    console.log('📋 Bookings from database:', data);
+                    // Update localStorage with database data
+                    var bookings = data.map(function(booking) {
+                        return {
+                            id: booking.id,
+                            technician: booking.technician_name || 'Professional',
+                            technicianId: booking.technician_id,
+                            price: parseInt(booking.total_amount) || 0,
+                            address: booking.address || 'N/A',
+                            datetime: booking.scheduled_time || new Date().toISOString(),
+                            payment: booking.payment_method || 'cash',
+                            status: booking.status || 'pending',
+                            createdAt: booking.created_at || new Date().toISOString(),
+                            customer_phone: booking.technician_phone || 'N/A',
+                            service: booking.service_type || 'Service',
+                            otp: booking.id || Math.floor(1000 + Math.random() * 9000)
+                        };
+                    });
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    renderBookings();
+                }
+            })
+            .catch(function(error) {
+                console.error('Error fetching bookings from database:', error);
+            });
+        }
+
+        // ============================================
+        // CANCEL BOOKING - UPDATES DATABASE
+        // ============================================
+        function cancelBooking(index) {
+            if (!confirm('Are you sure you want to cancel this booking?')) return;
+
+            var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            var booking = bookings[index];
+            
+            if (!booking) return;
+
+            var token = localStorage.getItem('access_token');
+
+            // Update status in database
+            fetch('/api/bookings/' + booking.id + '/update-status/', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ status: 'cancelled' })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.message) {
+                    // Update local storage
+                    bookings[index].status = 'cancelled';
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    
+                    addNotification('Booking Cancelled', 'Your booking has been cancelled.', 'warning');
+                    renderBookings();
+                    alert('✅ Booking cancelled successfully!');
+                } else {
+                    alert('❌ ' + (data.error || 'Failed to cancel booking'));
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+                alert('❌ Failed to cancel booking');
+            });
+        }
+
+        // ============================================
+        // RENDER BOOKINGS - READS FROM LOCAL STORAGE
         // ============================================
         function renderBookings() {
             var container = document.getElementById('bookingsList');
@@ -1678,19 +888,6 @@
                     '</div>';
             }
             container.innerHTML = html;
-        }
-
-        // ============================================
-        // CANCEL BOOKING
-        // ============================================
-        function cancelBooking(index) {
-            if (confirm('Are you sure you want to cancel this booking?')) {
-                var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-                bookings[index].status = 'cancelled';
-                localStorage.setItem('bookings', JSON.stringify(bookings));
-                addNotification('Booking Cancelled', 'Your booking has been cancelled.', 'warning');
-                renderBookings();
-            }
         }
 
         // ============================================
@@ -1795,6 +992,1119 @@
             if (booking) {
                 booking.status = 'completed';
                 localStorage.setItem('bookings', JSON.stringify(bookings));
+                
+                // Update database
+                var token = localStorage.getItem('access_token');
+                fetch('/api/bookings/' + booking.id + '/update-status/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ status: 'completed' })
+                });
+                
+                document.getElementById('otpError').style.display = 'none';
+                alert('✅ OTP Verified! Work completed successfully.');
+                bootstrap.Modal.getInstance(document.getElementById('otpModal'))?.hide();
+                addNotification('Work Completed', 'Job completed successfully!', 'success');
+                renderBookings();
+                for (var k = 1; k <= 4; k++) {
+                    document.getElementById('otp' + k).value = '';
+                }
+            } else {
+                document.getElementById('otpError').style.display = 'block';
+                alert('❌ Invalid OTP. Please try again.');
+            }
+        }
+
+        // ============================================
+        // PAGE LOAD - FETCH FROM DATABASE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 User Dashboard Loading...');
+            
+            var user = localStorage.getItem('user');
+            if (!user) {
+                window.location.href = '/';
+                return;
+            }
+            currentUser = JSON.parse(user);
+            if (currentUser.role !== 'customer') {
+                window.location.href = '/';
+                return;
+            }
+
+            if (!localStorage.getItem('bookings')) {
+                localStorage.setItem('bookings', JSON.stringify([]));
+            }
+            if (!localStorage.getItem('notifications')) {
+                localStorage.setItem('notifications', JSON.stringify([]));
+            }
+
+            // Load services
+            loadServices();
+            
+            // Fetch bookings from database
+            fetchBookingsFromDatabase();
+            
+            // Render from localStorage (will be updated by fetch)
+            renderBookings();
+            renderNotifications();
+            updateNotificationBadge();
+            
+            console.log('✅ User Dashboard Loaded Successfully!');
+        });
+
+        // Expose functions globally
+        window.logoutUser = logoutUser;
+        window.showSection = showSection;
+        window.findTechnicians = findTechnicians;
+        window.hideTechnicians = hideTechnicians;
+        window.openBookingModal = openBookingModal;
+        window.cancelBooking = cancelBooking;
+        window.verifyOTP = verifyOTP;
+        window.otpMove = otpMove;
+        window.getCurrentLocation = getCurrentLocation;
+
+        console.log('🚀 User Dashboard Ready!');
+        console.log('📍 Location detection enabled');
+        console.log('📋 Bookings fetched from DATABASE on page load');
+    </script>
+</body>
+</html> {% endcomment %}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>30 Minutes - User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f0f4ff; transition: all 0.3s ease; min-height: 100vh; }
+        body.dark-mode { background: #0f172a; color: #e2e8f0; }
+        .navbar { background: white !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
+        body.dark-mode .navbar { background: #1e293b !important; }
+        .brand-text { font-weight: 700; font-size: 1.25rem; color: #0f172a; }
+        body.dark-mode .brand-text { color: #e2e8f0; }
+        .nav-link { font-weight: 500; color: #64748b; padding: 8px 16px !important; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
+        body.dark-mode .nav-link { color: #94a3b8; }
+        .nav-link:hover, .nav-link.active { color: #2563eb !important; background: #dbeafe; }
+        body.dark-mode .nav-link:hover, body.dark-mode .nav-link.active { background: rgba(37,99,235,0.15); color: #60a5fa !important; }
+        .dark-mode-toggle { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 20px; padding: 8px; border-radius: 50%; transition: all 0.3s; }
+        body.dark-mode .dark-mode-toggle { color: #94a3b8; }
+        .dark-mode-toggle:hover { background: #f1f5f9; color: #2563eb; }
+        body.dark-mode .dark-mode-toggle:hover { background: #0f172a; color: #60a5fa; }
+        .service-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid transparent; cursor: pointer; }
+        body.dark-mode .service-card { background: #1e293b; }
+        .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: #dbeafe; }
+        .service-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px; background: #dbeafe; color: #2563eb; }
+        body.dark-mode .service-icon { background: #1e3a5f; color: #60a5fa; }
+        .technician-card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid transparent; margin-bottom: 12px; }
+        body.dark-mode .technician-card { background: #1e293b; }
+        .technician-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: #dbeafe; }
+        .btn-primary { background: #2563eb; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
+        .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,0.3); }
+        .btn-success { background: #22c55e; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
+        .btn-success:hover { background: #16a34a; transform: translateY(-2px); }
+        .btn-danger { background: #ef4444; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
+        .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
+        .btn-outline-secondary { border: 2px solid #94a3b8; color: #64748b; border-radius: 12px; font-weight: 600; }
+        .btn-outline-secondary:hover { background: #f1f5f9; }
+        .btn-outline-primary { border: 2px solid #2563eb; color: #2563eb; border-radius: 12px; font-weight: 600; transition: all 0.3s; }
+        .btn-outline-primary:hover { background: #2563eb; color: white; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
+        .status-pending { background: #fef3c7; color: #92400e; }
+        .status-confirmed { background: #dbeafe; color: #1e40af; }
+        .status-in_progress { background: #dbeafe; color: #1e40af; }
+        .status-completed { background: #d1fae5; color: #065f46; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        body.dark-mode .status-pending { background: #78350f; color: #fcd34d; }
+        body.dark-mode .status-confirmed { background: #1e3a5f; color: #60a5fa; }
+        body.dark-mode .status-in_progress { background: #1e3a5f; color: #60a5fa; }
+        body.dark-mode .status-completed { background: #064e3b; color: #34d399; }
+        body.dark-mode .status-cancelled { background: #7f1d1d; color: #f87171; }
+        .loading-spinner { display: flex; justify-content: center; align-items: center; min-height: 400px; flex-direction: column; gap: 20px; }
+        .spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .page-section { display: none; animation: fadeIn 0.3s ease; }
+        .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .logout-btn { cursor: pointer; transition: all 0.3s; }
+        .logout-btn:hover { opacity: 0.8; transform: scale(0.98); }
+        .otp-input { width: 50px; height: 56px; text-align: center; font-size: 22px; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 12px; background: #fafbfc; transition: all 0.3s; margin: 0 5px; }
+        body.dark-mode .otp-input { background: #0f172a; border-color: #334155; color: #e2e8f0; }
+        .otp-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); outline: none; }
+        @media (max-width: 575px) { .otp-input { width: 40px; height: 46px; font-size: 18px; } }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        body.dark-mode ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 3px; }
+        .notification-badge { position: relative; }
+        .notification-badge .badge { position: absolute; top: -5px; right: -5px; font-size: 10px; }
+        .profile-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; color: white; background: linear-gradient(135deg, #667eea, #764ba2); flex-shrink: 0; }
+        .no-services { text-align: center; padding: 60px 20px; }
+        .no-services i { font-size: 64px; color: #94a3b8; }
+        .no-services h5 { margin-top: 16px; font-weight: 600; }
+        .no-services p { color: #64748b; }
+        body.dark-mode .no-services i { color: #64748b; }
+        body.dark-mode .no-services p { color: #94a3b8; }
+        .location-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
+        .location-badge.active { background: #d1fae5; color: #065f46; }
+        body.dark-mode .location-badge.active { background: #064e3b; color: #34d399; }
+        .location-badge.inactive { background: #fee2e2; color: #991b1b; }
+        body.dark-mode .location-badge.inactive { background: #7f1d1d; color: #f87171; }
+        .tech-details { font-size: 13px; color: #64748b; }
+        body.dark-mode .tech-details { color: #94a3b8; }
+        .technician-card .btn-book { margin-top: 10px; width: 100%; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+        .section-header h5 { font-weight: 700; margin: 0; }
+        .no-technicians { text-align: center; padding: 40px 20px; }
+        .no-technicians i { font-size: 48px; color: #94a3b8; }
+        .no-technicians h6 { margin-top: 12px; font-weight: 600; }
+        .no-technicians p { color: #64748b; }
+        body.dark-mode .no-technicians i { color: #64748b; }
+        body.dark-mode .no-technicians p { color: #94a3b8; }
+        .address-input-group { position: relative; }
+        .address-input-group .location-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; }
+        .location-loading { display: inline-block; width: 16px; height: 16px; border: 2px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .booking-loading { display: none; }
+        .booking-loading.show { display: inline-block; }
+        .btn-cancel { background: #ef4444; color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
+        .btn-cancel:hover { background: #dc2626; transform: scale(1.05); }
+        .btn-cancel:disabled { opacity: 0.5; cursor: not-allowed; }
+        .timer-text { color: #64748b; font-size: 12px; }
+        body.dark-mode .timer-text { color: #94a3b8; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg bg-white">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/user-dashboard/">
+                <i class="bi bi-clock-history text-primary"></i>
+                <span class="brand-text">30 Minutes</span>
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item"><a class="nav-link active" onclick="showSection('services')"><i class="bi bi-grid"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link" onclick="showSection('bookings')"><i class="bi bi-calendar-check"></i> My Bookings</a></li>
+                    <li class="nav-item notification-badge">
+                        <a class="nav-link" onclick="showSection('notifications')">
+                            <i class="bi bi-bell"></i>
+                            <span class="badge bg-danger" id="notificationCount">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item"><button class="dark-mode-toggle" id="themeToggle"><i class="bi bi-moon-fill"></i></button></li>
+                    <li class="nav-item ms-2">
+                        <a href="#" class="btn btn-outline-danger btn-sm rounded-pill px-3 logout-btn" onclick="logoutUser(event)">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <div id="loadingSpinner" class="loading-spinner">
+            <div class="spinner"></div>
+            <div class="loading-text">Loading your dashboard...</div>
+        </div>
+
+        <!-- ===== SERVICES SECTION ===== -->
+        <div class="page-section active" id="servicesSection">
+            <h2 class="fw-bold mb-3"><i class="bi bi-grid text-primary"></i> Available Services</h2>
+            <p class="text-muted mb-4">Select a service to find professionals near you</p>
+            <div class="row g-4" id="servicesGrid"></div>
+
+            <!-- Technicians List -->
+            <div id="techniciansContainer" style="display:none;" class="mt-4">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold"><i class="bi bi-geo-alt text-success"></i> Professionals Near You (Within 5km)</h5>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="hideTechnicians()"><i class="bi bi-arrow-left"></i> Back to Services</button>
+                </div>
+                <div class="row g-4" id="techniciansGrid"></div>
+            </div>
+        </div>
+
+        <!-- ===== BOOKINGS SECTION ===== -->
+        <div class="page-section" id="bookingsSection">
+            <h2 class="fw-bold mb-3"><i class="bi bi-calendar-check text-primary"></i> My Bookings</h2>
+            <p class="text-muted mb-4">View and manage your bookings</p>
+            <div id="bookingsList">
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-inbox display-1 d-block mb-3"></i>
+                    <h5>No Bookings Yet</h5>
+                    <p>Book a service to get started</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== NOTIFICATIONS SECTION ===== -->
+        <div class="page-section" id="notificationsSection">
+            <h2 class="fw-bold mb-3"><i class="bi bi-bell text-primary"></i> Notifications</h2>
+            <p class="text-muted mb-4">Your notifications and alerts</p>
+            <div id="notificationsList">
+                <div class="text-center text-muted py-5">
+                    <i class="bi bi-bell display-1 d-block mb-3"></i>
+                    <h5>No Notifications</h5>
+                    <p>You're all caught up!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== BOOKING MODAL ===== -->
+    <div class="modal fade" id="bookingModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-calendar-check text-primary"></i> Book Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="bookingTechnicianInfo" class="mb-3"></div>
+                    <form id="bookingForm">
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label class="form-label">Service Address <span class="text-danger">*</span></label>
+                                <div class="address-input-group">
+                                    <textarea class="form-control" id="bookingAddress" rows="2" placeholder="Enter your full address" required></textarea>
+                                    <button type="button" class="btn btn-outline-primary btn-sm location-btn" onclick="getCurrentLocation()" title="Use my current location">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </button>
+                                </div>
+                                <div id="locationStatus" class="text-muted small mt-1">
+                                    <i class="bi bi-info-circle"></i> Click the location button to use your current location
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Preferred Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="bookingDateTime" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Payment Method</label>
+                                <select class="form-select" id="bookingPayment">
+                                    <option value="upi">UPI</option>
+                                    <option value="card">Card</option>
+                                    <option value="wallet">Wallet</option>
+                                    <option value="cash">Cash</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100" id="bookingSubmitBtn">
+                            <span class="booking-text">Confirm Booking</span>
+                            <span class="booking-loading spinner-border spinner-border-sm" role="status"></span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== OTP VERIFICATION MODAL ===== -->
+    <div class="modal fade" id="otpModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="bi bi-shield-lock text-success"></i> Verify OTP</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="text-muted">Enter the 4-digit OTP received</p>
+                    <div class="d-flex justify-content-center gap-2 my-3">
+                        <input type="text" class="otp-input" id="otp1" maxlength="1" oninput="otpMove(this, 'otp2')" autofocus>
+                        <input type="text" class="otp-input" id="otp2" maxlength="1" oninput="otpMove(this, 'otp3')">
+                        <input type="text" class="otp-input" id="otp3" maxlength="1" oninput="otpMove(this, 'otp4')">
+                        <input type="text" class="otp-input" id="otp4" maxlength="1" oninput="otpMove(this, null)">
+                    </div>
+                    <div id="otpError" class="text-danger small" style="display:none;">Invalid OTP. Please try again.</div>
+                    <button class="btn btn-success w-100 mt-3" onclick="verifyOTP()">Verify OTP</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ============================================
+        // USER DASHBOARD - WITH 3 MINUTE CANCEL TIMER
+        // ============================================
+
+        var currentUser = null;
+        var selectedTechnician = null;
+        var allProfessionals = [];
+
+        // ============================================
+        // GET CURRENT LOCATION
+        // ============================================
+        function getCurrentLocation() {
+            var statusDiv = document.getElementById('locationStatus');
+            var addressField = document.getElementById('bookingAddress');
+            
+            if (!navigator.geolocation) {
+                statusDiv.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle"></i> Geolocation is not supported by your browser.</span>';
+                return;
+            }
+
+            statusDiv.innerHTML = '<span class="text-primary"><span class="location-loading"></span> Getting your location...</span>';
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    var lat = position.coords.latitude;
+                    var lng = position.coords.longitude;
+                    
+                    fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
+                        .then(function(response) { return response.json(); })
+                        .then(function(data) {
+                            if (data && data.display_name) {
+                                addressField.value = data.display_name;
+                                statusDiv.innerHTML = '<span class="text-success"><i class="bi bi-check-circle"></i> Location detected! Address added.</span>';
+                            } else {
+                                addressField.value = 'Latitude: ' + lat + ', Longitude: ' + lng;
+                                statusDiv.innerHTML = '<span class="text-warning"><i class="bi bi-exclamation-triangle"></i> Address not found, using coordinates.</span>';
+                            }
+                        })
+                        .catch(function() {
+                            addressField.value = 'Latitude: ' + lat + ', Longitude: ' + lng;
+                            statusDiv.innerHTML = '<span class="text-warning"><i class="bi bi-exclamation-triangle"></i> Could not fetch address, using coordinates.</span>';
+                        });
+                },
+                function(error) {
+                    var errorMsg = '';
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            errorMsg = 'Location permission denied. Please enable location in your browser settings.';
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            errorMsg = 'Location information unavailable.';
+                            break;
+                        case error.TIMEOUT:
+                            errorMsg = 'Location request timed out.';
+                            break;
+                        default:
+                            errorMsg = 'An unknown error occurred.';
+                    }
+                    statusDiv.innerHTML = '<span class="text-danger"><i class="bi bi-exclamation-circle"></i> ' + errorMsg + '</span>';
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 15000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        // ============================================
+        // LOGOUT FUNCTION
+        // ============================================
+        function logoutUser(event) {
+            if (event) { event.preventDefault(); event.stopPropagation(); }
+            localStorage.clear();
+            window.location.href = '/';
+        }
+
+        // ============================================
+        // THEME TOGGLE
+        // ============================================
+        var themeToggle = document.getElementById('themeToggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', function() {
+                document.body.classList.toggle('dark-mode');
+                var icon = this.querySelector('i');
+                if (document.body.classList.contains('dark-mode')) {
+                    icon.className = 'bi bi-sun-fill';
+                    localStorage.setItem('darkMode', 'true');
+                } else {
+                    icon.className = 'bi bi-moon-fill';
+                    localStorage.setItem('darkMode', 'false');
+                }
+            });
+        }
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            var toggle = document.getElementById('themeToggle');
+            if (toggle) { var icon = toggle.querySelector('i'); if (icon) icon.className = 'bi bi-sun-fill'; }
+        }
+
+        // ============================================
+        // SECTION NAVIGATION
+        // ============================================
+        function showSection(section) {
+            var sections = document.querySelectorAll('.page-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            var navLinks = document.querySelectorAll('.nav-link');
+            for (var j = 0; j < navLinks.length; j++) {
+                navLinks[j].classList.remove('active');
+            }
+            if (section === 'services') {
+                document.getElementById('servicesSection').classList.add('active');
+                var link = document.querySelector('.nav-link[onclick*="services"]');
+                if (link) link.classList.add('active');
+            } else if (section === 'bookings') {
+                document.getElementById('bookingsSection').classList.add('active');
+                var link = document.querySelector('.nav-link[onclick*="bookings"]');
+                if (link) link.classList.add('active');
+                renderBookings();
+            } else if (section === 'notifications') {
+                document.getElementById('notificationsSection').classList.add('active');
+                var link = document.querySelector('.nav-link[onclick*="notifications"]');
+                if (link) link.classList.add('active');
+                renderNotifications();
+            }
+        }
+
+        // ============================================
+        // LOAD SERVICES
+        // ============================================
+        function loadServices() {
+            console.log('🔄 Loading services...');
+            
+            var token = localStorage.getItem('access_token');
+            
+            fetch('/api/auth/professionals/', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                console.log('📋 Professionals from database:', data);
+                allProfessionals = data;
+                renderServicesFromProfessionals(data);
+            })
+            .catch(function(error) {
+                console.error('❌ Error loading professionals:', error);
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('servicesGrid').innerHTML = 
+                    '<div class="col-12"><div class="no-services"><i class="bi bi-exclamation-triangle"></i><h5>Error Loading Services</h5><p>Please try again later.</p></div></div>';
+            });
+        }
+
+        // ============================================
+        // RENDER SERVICES
+        // ============================================
+        function renderServicesFromProfessionals(professionals) {
+            var grid = document.getElementById('servicesGrid');
+            document.getElementById('loadingSpinner').style.display = 'none';
+
+            if (!professionals || professionals.length === 0) {
+                grid.innerHTML = 
+                    '<div class="col-12">' +
+                    '<div class="no-services">' +
+                    '<i class="bi bi-tools"></i>' +
+                    '<h5>No Services Available</h5>' +
+                    '<p>No professionals have registered their services yet. Please check back later.</p>' +
+                    '<a href="/register/" class="btn btn-primary mt-3">Become a Professional</a>' +
+                    '</div>' +
+                    '</div>';
+                return;
+            }
+
+            var servicesMap = {};
+            for (var i = 0; i < professionals.length; i++) {
+                var pro = professionals[i];
+                var serviceType = pro.service_type || 'others';
+                if (!servicesMap[serviceType]) {
+                    servicesMap[serviceType] = [];
+                }
+                servicesMap[serviceType].push(pro);
+            }
+
+            var serviceIcons = {
+                'plumber': 'bi-wrench',
+                'electrician': 'bi-lightning-fill',
+                'carpenter': 'bi-hammer',
+                'mechanic': 'bi-gear',
+                'painter': 'bi-palette-fill',
+                'cleaner': 'bi-brush',
+                'hvac': 'bi-snow2',
+                'others': 'bi-tools'
+            };
+
+            var serviceColors = {
+                'plumber': '#2563eb',
+                'electrician': '#f59e0b',
+                'carpenter': '#22c55e',
+                'mechanic': '#ef4444',
+                'painter': '#0ea5e9',
+                'cleaner': '#64748b',
+                'hvac': '#8b5cf6',
+                'others': '#94a3b8'
+            };
+
+            var html = '';
+            for (var serviceType in servicesMap) {
+                var count = servicesMap[serviceType].length;
+                var icon = serviceIcons[serviceType] || 'bi-tools';
+                var color = serviceColors[serviceType] || '#2563eb';
+                var name = serviceType.charAt(0).toUpperCase() + serviceType.slice(1);
+                
+                html += '<div class="col-lg-4 col-md-6">' +
+                    '<div class="service-card" onclick="findTechnicians(\'' + serviceType + '\')">' +
+                    '<div class="service-icon" style="color: ' + color + ';">' +
+                    '<i class="bi ' + icon + '"></i>' +
+                    '</div>' +
+                    '<h5 class="fw-bold">' + name + '</h5>' +
+                    '<p class="text-muted small">' + count + ' professional(s) available</p>' +
+                    '<span class="badge bg-light text-dark">' + count + ' available</span>' +
+                    '<br>' +
+                    '<button class="btn btn-primary btn-sm rounded-pill px-3 mt-2">Find Professionals</button>' +
+                    '</div>' +
+                    '</div>';
+            }
+            grid.innerHTML = html;
+            console.log('✅ Services loaded successfully!');
+        }
+
+        // ============================================
+        // FIND TECHNICIANS
+        // ============================================
+        function findTechnicians(serviceType) {
+            console.log('🔍 Finding professionals for:', serviceType);
+            
+            var technicians = [];
+            for (var i = 0; i < allProfessionals.length; i++) {
+                var pro = allProfessionals[i];
+                if (pro.service_type === serviceType) {
+                    var distance = (1 + Math.random() * 4).toFixed(1);
+                    
+                    technicians.push({
+                        id: pro.id,
+                        user_id: pro.user_id || pro.id,
+                        name: pro.name || 'Professional',
+                        service: pro.service_type,
+                        rating: pro.rating || (4 + Math.random() * 1).toFixed(1),
+                        distance: distance + ' km',
+                        price: parseInt(pro.hourly_rate) || 500,
+                        phone: pro.phone || 'Not provided',
+                        image: (pro.name || 'P').charAt(0).toUpperCase(),
+                        experience: pro.experience || 'N/A',
+                        email: pro.email || 'N/A',
+                        is_available: pro.is_available !== undefined ? pro.is_available : true
+                    });
+                }
+            }
+
+            var container = document.getElementById('techniciansContainer');
+            container.style.display = 'block';
+            
+            var grid = document.getElementById('techniciansGrid');
+            
+            if (technicians.length === 0) {
+                grid.innerHTML = 
+                    '<div class="col-12">' +
+                    '<div class="no-technicians">' +
+                    '<i class="bi bi-person-x"></i>' +
+                    '<h6>No Professionals Available</h6>' +
+                    '<p>No professionals have registered for this service yet.</p>' +
+                    '</div>' +
+                    '</div>';
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+
+            var html = '';
+            for (var j = 0; j < technicians.length; j++) {
+                var tech = technicians[j];
+                var statusBadge = tech.is_available ? 
+                    '<span class="location-badge active"><i class="bi bi-check-circle"></i> Available</span>' : 
+                    '<span class="location-badge inactive"><i class="bi bi-clock"></i> Offline</span>';
+                
+                html += '<div class="col-md-6 col-lg-4">' +
+                    '<div class="technician-card">' +
+                    '<div class="d-flex align-items-start gap-3">' +
+                    '<div class="profile-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;flex-shrink:0;">' + tech.image + '</div>' +
+                    '<div class="flex-grow-1">' +
+                    '<div class="d-flex justify-content-between align-items-start">' +
+                    '<h6 class="fw-bold mb-0">' + tech.name + '</h6>' +
+                    statusBadge +
+                    '</div>' +
+                    '<div class="d-flex align-items-center gap-2">' +
+                    '<span class="text-warning">⭐ ' + tech.rating + '</span>' +
+                    '<span class="text-muted small"><i class="bi bi-geo-alt"></i> ' + tech.distance + '</span>' +
+                    '</div>' +
+                    '<p class="tech-details mb-0">₹' + tech.price + '/hour • ' + tech.experience + ' exp</p>' +
+                    '<p class="tech-details mb-0"><i class="bi bi-phone"></i> ' + tech.phone + '</p>' +
+                    '</div>' +
+                    '</div>' +
+                    '<button class="btn btn-primary btn-sm btn-book" onclick="openBookingModal(' + tech.id + ', \'' + tech.name + '\', ' + tech.price + ', \'' + tech.phone + '\', \'' + tech.email + '\', ' + tech.user_id + ')">' +
+                    '<i class="bi bi-calendar-check"></i> Book Now' +
+                    '</button>' +
+                    '</div>' +
+                    '</div>';
+            }
+            grid.innerHTML = html;
+            
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            console.log('✅ ' + technicians.length + ' professionals displayed');
+        }
+
+        // ============================================
+        // HIDE TECHNICIANS
+        // ============================================
+        function hideTechnicians() {
+            document.getElementById('techniciansContainer').style.display = 'none';
+            document.getElementById('servicesSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ============================================
+        // OPEN BOOKING MODAL
+        // ============================================
+        function openBookingModal(techId, techName, price, phone, email, userId) {
+            selectedTechnician = { id: techId, user_id: userId, name: techName, price: price, phone: phone, email: email };
+            document.getElementById('bookingTechnicianInfo').innerHTML = 
+                '<div class="alert alert-info">' +
+                '<div class="d-flex justify-content-between align-items-center">' +
+                '<div>' +
+                '<strong><i class="bi bi-person"></i> ' + techName + '</strong>' +
+                '<span class="ms-3"><i class="bi bi-currency-rupee"></i> ' + price + '/hour</span>' +
+                '<span class="ms-3"><i class="bi bi-phone"></i> ' + phone + '</span>' +
+                '</div>' +
+                '<span class="badge bg-success">Available Now</span>' +
+                '</div>' +
+                '</div>';
+            var now = new Date();
+            now.setHours(now.getHours() + 1);
+            document.getElementById('bookingDateTime').value = now.toISOString().slice(0, 16);
+            
+            document.getElementById('locationStatus').innerHTML = '<i class="bi bi-info-circle"></i> Click the location button to use your current location';
+            document.getElementById('bookingAddress').value = '';
+            
+            new bootstrap.Modal(document.getElementById('bookingModal')).show();
+        }
+
+        // ============================================
+        // BOOKING FORM SUBMIT
+        // ============================================
+        document.getElementById('bookingForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var address = document.getElementById('bookingAddress').value;
+            var datetime = document.getElementById('bookingDateTime').value;
+            var payment = document.getElementById('bookingPayment').value;
+
+            if (!address) {
+                alert('Please enter your address');
+                return;
+            }
+
+            if (!selectedTechnician) {
+                alert('Please select a technician first');
+                return;
+            }
+
+            var submitBtn = document.getElementById('bookingSubmitBtn');
+            var submitText = submitBtn.querySelector('.booking-text');
+            var submitLoading = submitBtn.querySelector('.booking-loading');
+            
+            submitText.textContent = 'Booking...';
+            submitLoading.classList.add('show');
+            submitBtn.disabled = true;
+
+            var token = localStorage.getItem('access_token');
+
+            fetch('/api/auth/create-booking/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    technician_id: selectedTechnician.user_id,
+                    service_type: selectedTechnician.name,
+                    address: address,
+                    datetime: datetime,
+                    price: selectedTechnician.price,
+                    payment_method: payment,
+                    description: 'Service booking for ' + selectedTechnician.name,
+                    latitude: 0,
+                    longitude: 0
+                })
+            })
+            .then(function(response) {
+                return response.json().then(function(data) {
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Booking failed');
+                    }
+                    return data;
+                });
+            })
+            .then(function(data) {
+                submitText.textContent = 'Confirm Booking';
+                submitLoading.classList.remove('show');
+                submitBtn.disabled = false;
+                
+                if (data.booking_id) {
+                    bootstrap.Modal.getInstance(document.getElementById('bookingModal'))?.hide();
+                    
+                    var booking = {
+                        id: data.booking_id,
+                        technician: selectedTechnician.name,
+                        technicianId: selectedTechnician.id,
+                        price: selectedTechnician.price,
+                        address: address,
+                        datetime: datetime,
+                        payment: payment,
+                        status: 'pending',
+                        createdAt: new Date().toISOString(),
+                        customer_phone: currentUser?.phone || 'N/A',
+                        service: selectedTechnician.name,
+                        otp: data.otp || Math.floor(1000 + Math.random() * 9000),
+                        cancelTimer: 180 // 3 minutes in seconds
+                    };
+                    
+                    var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+                    bookings.push(booking);
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    
+                    addNotification('Booking Confirmed', 'Your booking with ' + selectedTechnician.name + ' has been confirmed. OTP: ' + booking.otp, 'success');
+                    alert('✅ Booking confirmed! OTP: ' + booking.otp);
+                    renderBookings();
+                    showSection('bookings');
+                } else {
+                    alert('❌ ' + (data.error || 'Booking failed'));
+                }
+            })
+            .catch(function(error) {
+                submitText.textContent = 'Confirm Booking';
+                submitLoading.classList.remove('show');
+                submitBtn.disabled = false;
+                console.error('❌ Error:', error);
+                alert('❌ Booking failed: ' + error.message);
+            });
+        });
+
+        // ============================================
+        // FETCH BOOKINGS FROM DATABASE
+        // ============================================
+        function fetchBookingsFromDatabase() {
+            var token = localStorage.getItem('access_token');
+            
+            if (!token) {
+                console.log('No token found, using localStorage');
+                return;
+            }
+
+            fetch('/api/bookings/customer/', {
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(function(response) {
+                if (response.status === 401) {
+                    console.log('Unauthorized, using localStorage');
+                    return;
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                if (data && data.length > 0) {
+                    console.log('📋 Bookings from database:', data);
+                    var bookings = data.map(function(booking) {
+                        return {
+                            id: booking.id,
+                            technician: booking.technician_name || 'Professional',
+                            technicianId: booking.technician_id,
+                            price: parseInt(booking.total_amount) || 0,
+                            address: booking.address || 'N/A',
+                            datetime: booking.scheduled_time || new Date().toISOString(),
+                            payment: booking.payment_method || 'cash',
+                            status: booking.status || 'pending',
+                            createdAt: booking.created_at || new Date().toISOString(),
+                            customer_phone: booking.technician_phone || 'N/A',
+                            service: booking.service_type || 'Service',
+                            otp: booking.id || Math.floor(1000 + Math.random() * 9000),
+                            cancelTimer: 180
+                        };
+                    });
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    renderBookings();
+                }
+            })
+            .catch(function(error) {
+                console.error('Error fetching bookings from database:', error);
+            });
+        }
+
+        // ============================================
+        // CANCEL BOOKING - USER CANCELLATION
+        // ============================================
+        function cancelBooking(index) {
+            var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            var booking = bookings[index];
+            
+            if (!booking) return;
+            
+            // Check if booking can be cancelled (only pending and within 3 minutes)
+            if (booking.status !== 'pending') {
+                alert('❌ This booking cannot be cancelled.');
+                return;
+            }
+            
+            // Check 3 minute timer
+            var elapsedSeconds = Math.floor((new Date() - new Date(booking.createdAt)) / 1000);
+            var remainingSeconds = 180 - elapsedSeconds; // 3 minutes = 180 seconds
+            
+            if (remainingSeconds <= 0) {
+                alert('❌ Cancellation time expired (3 minutes). The booking is now confirmed.');
+                return;
+            }
+            
+            if (!confirm('Are you sure you want to cancel this booking? You have ' + Math.ceil(remainingSeconds) + ' seconds left.')) return;
+
+            var token = localStorage.getItem('access_token');
+
+            // Update status in database
+            fetch('/api/bookings/' + booking.id + '/update-status/', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ status: 'cancelled' })
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.message) {
+                    // Update local storage
+                    bookings[index].status = 'cancelled';
+                    localStorage.setItem('bookings', JSON.stringify(bookings));
+                    
+                    addNotification('Booking Cancelled', 'Your booking has been cancelled.', 'warning');
+                    renderBookings();
+                    alert('✅ Booking cancelled successfully!');
+                } else {
+                    alert('❌ ' + (data.error || 'Failed to cancel booking'));
+                }
+            })
+            .catch(function(error) {
+                console.error('Error:', error);
+                alert('❌ Failed to cancel booking');
+            });
+        }
+
+        // ============================================
+        // RENDER BOOKINGS - WITH 3 MINUTE TIMER
+        // ============================================
+        function renderBookings() {
+            var container = document.getElementById('bookingsList');
+            var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+
+            if (bookings.length === 0) {
+                container.innerHTML = 
+                    '<div class="text-center text-muted py-5">' +
+                    '<i class="bi bi-inbox display-1 d-block mb-3"></i>' +
+                    '<h5>No Bookings Yet</h5>' +
+                    '<p>Book a service to get started</p>' +
+                    '</div>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < bookings.length; i++) {
+                var booking = bookings[i];
+                var isPending = booking.status === 'pending';
+                
+                // Calculate time elapsed
+                var elapsedSeconds = Math.floor((new Date() - new Date(booking.createdAt)) / 1000);
+                var remainingSeconds = 180 - elapsedSeconds; // 3 minutes
+                var canCancel = isPending && remainingSeconds > 0;
+                
+                var cancelHtml = '';
+                var timerHtml = '';
+                
+                if (canCancel) {
+                    // Show cancel button with timer
+                    var mins = Math.floor(remainingSeconds / 60);
+                    var secs = Math.floor(remainingSeconds % 60);
+                    timerHtml = '<div class="timer-text"><i class="bi bi-clock"></i> ' + mins + 'm ' + secs + 's left to cancel</div>';
+                    cancelHtml = '<button class="btn-cancel mt-2" onclick="cancelBooking(' + i + ')"><i class="bi bi-x-circle"></i> Cancel Booking</button>';
+                } else if (isPending && remainingSeconds <= 0) {
+                    timerHtml = '<div class="timer-text text-danger"><i class="bi bi-clock"></i> Cancellation expired</div>';
+                }
+
+                var otpHtml = '';
+                if (isPending) {
+                    otpHtml = '<p class="text-muted small mb-0"><strong>OTP: ' + booking.otp + '</strong></p>';
+                }
+
+                var completedHtml = '';
+                if (booking.status === 'completed') {
+                    completedHtml = '<span class="badge bg-success mt-2">✅ Completed</span>';
+                }
+                
+                var rejectedHtml = '';
+                if (booking.status === 'rejected') {
+                    rejectedHtml = '<span class="badge bg-danger mt-2">❌ Rejected</span>';
+                }
+                
+                var cancelledHtml = '';
+                if (booking.status === 'cancelled') {
+                    cancelledHtml = '<span class="badge bg-danger mt-2">❌ Cancelled</span>';
+                }
+
+                var statusColor = booking.status === 'pending' ? 'status-pending' : 
+                                 booking.status === 'accepted' ? 'status-confirmed' :
+                                 booking.status === 'in_progress' ? 'status-in_progress' :
+                                 booking.status === 'completed' ? 'status-completed' :
+                                 booking.status === 'cancelled' ? 'status-cancelled' : '';
+
+                html += '<div class="card mb-3">' +
+                    '<div class="card-body">' +
+                    '<div class="d-flex justify-content-between align-items-start">' +
+                    '<div>' +
+                    '<h6 class="fw-bold">' + booking.technician + '</h6>' +
+                    '<p class="text-muted small mb-1"><i class="bi bi-geo-alt"></i> ' + booking.address + '</p>' +
+                    '<p class="text-muted small mb-1"><i class="bi bi-calendar"></i> ' + new Date(booking.datetime).toLocaleString() + '</p>' +
+                    '<p class="text-muted small mb-0"><i class="bi bi-currency-rupee"></i> ₹' + booking.price + '</p>' +
+                    '<p class="text-muted small mb-0"><i class="bi bi-phone"></i> ' + (booking.technicianPhone || 'N/A') + '</p>' +
+                    otpHtml +
+                    timerHtml +
+                    '</div>' +
+                    '<div class="text-end">' +
+                    '<span class="status-badge ' + statusColor + '">' + booking.status + '</span>' +
+                    '<br>' +
+                    cancelHtml +
+                    completedHtml +
+                    rejectedHtml +
+                    cancelledHtml +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        // ============================================
+        // NOTIFICATIONS
+        // ============================================
+        function addNotification(title, message, type) {
+            type = type || 'info';
+            var notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+            notifications.unshift({
+                id: Date.now(),
+                title: title,
+                message: message,
+                type: type,
+                createdAt: new Date().toISOString(),
+                read: false
+            });
+            localStorage.setItem('notifications', JSON.stringify(notifications));
+            updateNotificationBadge();
+        }
+
+        function renderNotifications() {
+            var container = document.getElementById('notificationsList');
+            var notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+
+            if (notifications.length === 0) {
+                container.innerHTML = 
+                    '<div class="text-center text-muted py-5">' +
+                    '<i class="bi bi-bell display-1 d-block mb-3"></i>' +
+                    '<h5>No Notifications</h5>' +
+                    '<p>You\'re all caught up!</p>' +
+                    '</div>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < notifications.length; i++) {
+                var notif = notifications[i];
+                var newBadge = '';
+                if (!notif.read) {
+                    newBadge = '<span class="badge bg-primary">New</span>';
+                }
+                var cardClass = 'card mb-2';
+                if (!notif.read) {
+                    cardClass += ' border-primary';
+                }
+
+                html += '<div class="' + cardClass + '">' +
+                    '<div class="card-body">' +
+                    '<div class="d-flex justify-content-between align-items-start">' +
+                    '<div>' +
+                    '<h6 class="fw-bold">' + notif.title + '</h6>' +
+                    '<p class="text-muted small mb-0">' + notif.message + '</p>' +
+                    '<small class="text-muted">' + new Date(notif.createdAt).toLocaleString() + '</small>' +
+                    '</div>' +
+                    newBadge +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        function updateNotificationBadge() {
+            var notifications = JSON.parse(localStorage.getItem('notifications') || '[]');
+            var unread = 0;
+            for (var i = 0; i < notifications.length; i++) {
+                if (!notifications[i].read) {
+                    unread++;
+                }
+            }
+            document.getElementById('notificationCount').textContent = unread;
+        }
+
+        // ============================================
+        // OTP FUNCTIONS
+        // ============================================
+        function otpMove(current, nextId) {
+            if (current.value.length >= 1 && nextId) {
+                document.getElementById(nextId).focus();
+            }
+        }
+
+        function verifyOTP() {
+            var otp = '';
+            for (var i = 1; i <= 4; i++) {
+                otp += document.getElementById('otp' + i).value;
+            }
+            if (otp.length !== 4) {
+                document.getElementById('otpError').style.display = 'block';
+                return;
+            }
+
+            var bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+            var booking = null;
+            for (var j = 0; j < bookings.length; j++) {
+                if (bookings[j].otp == otp && bookings[j].status === 'pending') {
+                    booking = bookings[j];
+                    break;
+                }
+            }
+
+            if (booking) {
+                booking.status = 'completed';
+                localStorage.setItem('bookings', JSON.stringify(bookings));
+                
+                var token = localStorage.getItem('access_token');
+                fetch('/api/bookings/' + booking.id + '/update-status/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ status: 'completed' })
+                });
+                
                 document.getElementById('otpError').style.display = 'none';
                 alert('✅ OTP Verified! Work completed successfully.');
                 bootstrap.Modal.getInstance(document.getElementById('otpModal'))?.hide();
@@ -1834,9 +2144,15 @@
             }
 
             loadServices();
+            fetchBookingsFromDatabase();
             renderBookings();
             renderNotifications();
             updateNotificationBadge();
+            
+            // Update timers every second
+            setInterval(function() {
+                renderBookings();
+            }, 1000);
             
             console.log('✅ User Dashboard Loaded Successfully!');
         });
@@ -1853,9 +2169,7 @@
         window.getCurrentLocation = getCurrentLocation;
 
         console.log('🚀 User Dashboard Ready!');
-        console.log('📍 Location detection enabled');
-        console.log('📋 Bookings will be saved to DATABASE');
+        console.log('ℹ️ Users can cancel bookings within 3 minutes');
     </script>
 </body>
 </html>
-{% comment %} "@ | Out-File -FilePath "user-dashboard.html" -Encoding UTF8 {% endcomment %}
