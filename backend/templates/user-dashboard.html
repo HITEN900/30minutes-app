@@ -126,6 +126,8 @@
         body.dark-mode .location-badge.active { background: #0c3536; color: #5fd6d3; }
         .location-badge.inactive { background: #fde2e2; color: #991b1b; }
         body.dark-mode .location-badge.inactive { background: #3f1414; color: #f87171; }
+        .location-badge.out-of-range { background: #fef3c7; color: #92400e; }
+        body.dark-mode .location-badge.out-of-range { background: #3a2a0f; color: #fcd34d; }
 
         .tech-details { font-size: 13px; color: var(--muted); }
         body.dark-mode .tech-details { color: #94a3b8; }
@@ -261,9 +263,36 @@
         .location-status-text .dot.off {
             background: #e74c3c;
         }
+        .location-status-text .dot.range {
+            background: #f5a623;
+        }
         @keyframes pulse-dot {
             0%, 100% { opacity: 1; transform: scale(1); }
             50% { opacity: 0.5; transform: scale(0.7); }
+        }
+
+        /* ===== RANGE BADGE ===== */
+        .range-badge {
+            font-size: 0.6rem;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 50px;
+        }
+        .range-badge.in-range {
+            background: #d4edda;
+            color: #155724;
+        }
+        body.dark-mode .range-badge.in-range {
+            background: rgba(46,204,113,0.2);
+            color: #2ecc71;
+        }
+        .range-badge.out-range {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        body.dark-mode .range-badge.out-range {
+            background: rgba(245,166,35,0.2);
+            color: #fcd34d;
         }
 
         @media (max-width: 575px) {
@@ -328,7 +357,7 @@
                     <span class="icon"><i class="bi bi-geo-alt-fill"></i></span>
                     <div class="info">
                         <h6 id="locationStatusTitle">📍 Location Services</h6>
-                        <p id="locationStatusDesc">Turn on location to find professionals near you</p>
+                        <p id="locationStatusDesc">Turn on location to find professionals within 5km</p>
                         <span class="location-status-text" id="locationStatusText">
                             <span class="dot off" id="locationDot"></span>
                             <span id="locationStatusLabel">Off</span>
@@ -342,13 +371,13 @@
             </div>
 
             <h2 class="fw-bold mb-3"><i class="bi bi-grid" style="color:var(--amber-dark);"></i> Available Services</h2>
-            <p class="text-muted mb-4">Select a service to find professionals near you</p>
+            <p class="text-muted mb-4" id="servicesSubtitle">Select a service to find professionals within 5km of you</p>
             <div class="row g-4" id="servicesGrid"></div>
 
             <!-- Technicians List -->
             <div id="techniciansContainer" style="display:none;" class="mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold"><i class="bi bi-geo-alt" style="color:var(--teal);"></i> Professionals Near You (Within 5km)</h5>
+                    <h5 class="fw-bold"><i class="bi bi-geo-alt" style="color:var(--teal);"></i> Professionals Within 5km</h5>
                     <button class="btn btn-outline-secondary btn-sm" onclick="hideTechnicians()"><i class="bi bi-arrow-left"></i> Back to Services</button>
                 </div>
                 <div class="row g-4" id="techniciansGrid"></div>
@@ -456,13 +485,59 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ============================================
-        // USER DASHBOARD - WITH LOCATION TOGGLE
+        // USER DASHBOARD - WITH 5KM RANGE FILTER
         // ============================================
 
         var currentUser = null;
         var selectedTechnician = null;
         var allProfessionals = [];
         var isLocationOn = false;
+        var userLat = null;
+        var userLng = null;
+        var MAX_DISTANCE_KM = 5;
+
+        // ============================================
+        // CALCULATE DISTANCE (Haversine Formula)
+        // ============================================
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            var R = 6371; // Earth's radius in km
+            var dLat = (lat2 - lat1) * Math.PI / 180;
+            var dLon = (lon2 - lon1) * Math.PI / 180;
+            var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                    Math.sin(dLon/2) * Math.sin(dLon/2);
+            var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
+
+        // ============================================
+        // GET USER LOCATION
+        // ============================================
+        function getUserLocation() {
+            return new Promise(function(resolve, reject) {
+                if (!navigator.geolocation) {
+                    reject('Geolocation not supported');
+                    return;
+                }
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        resolve({
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        });
+                    },
+                    function(error) {
+                        reject(error.message);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    }
+                );
+            });
+        }
 
         // ============================================
         // TOGGLE LOCATION
@@ -484,58 +559,40 @@
                 btnText.textContent = 'Getting location...';
                 btn.disabled = true;
 
-                navigator.geolocation.getCurrentPosition(
-                    function(position) {
-                        var lat = position.coords.latitude;
-                        var lng = position.coords.longitude;
+                getUserLocation()
+                    .then(function(location) {
+                        userLat = location.lat;
+                        userLng = location.lng;
                         
-                        console.log('📍 Location obtained:', lat, lng);
+                        console.log('📍 User location:', userLat, userLng);
                         
                         isLocationOn = true;
-                        localStorage.setItem('location_lat', lat);
-                        localStorage.setItem('location_lng', lng);
+                        localStorage.setItem('location_lat', userLat);
+                        localStorage.setItem('location_lng', userLng);
                         
                         btn.className = 'btn-location location-on';
                         btnText.textContent = '✅ Location On';
-                        statusLabel.textContent = 'On';
+                        statusLabel.textContent = 'On (5km range)';
                         statusDot.className = 'dot on';
                         statusTitle.textContent = '📍 Location Active';
-                        statusDesc.textContent = 'Finding professionals near you';
+                        statusDesc.textContent = 'Showing professionals within 5km of you';
                         btn.disabled = false;
                         
-                        // Refresh services with location
+                        // Refresh services with location filter
                         loadServices();
                         
-                        showNotification('✅ Location turned on! Finding professionals near you.', 'success');
-                    },
-                    function(error) {
-                        var errorMsg = '';
-                        switch(error.code) {
-                            case error.PERMISSION_DENIED:
-                                errorMsg = 'Location permission denied. Please enable location in your browser settings.';
-                                break;
-                            case error.POSITION_UNAVAILABLE:
-                                errorMsg = 'Location information unavailable.';
-                                break;
-                            case error.TIMEOUT:
-                                errorMsg = 'Location request timed out.';
-                                break;
-                            default:
-                                errorMsg = 'An unknown error occurred.';
-                        }
-                        alert('❌ ' + errorMsg);
+                        showNotification('✅ Location turned on! Showing professionals within 5km.', 'success');
+                    })
+                    .catch(function(error) {
+                        alert('❌ ' + error);
                         btnText.textContent = 'Turn On Location';
                         btn.disabled = false;
-                    },
-                    {
-                        enableHighAccuracy: true,
-                        timeout: 15000,
-                        maximumAge: 0
-                    }
-                );
+                    });
             } else {
                 // Turn off location
                 isLocationOn = false;
+                userLat = null;
+                userLng = null;
                 localStorage.removeItem('location_lat');
                 localStorage.removeItem('location_lng');
                 
@@ -544,7 +601,7 @@
                 statusLabel.textContent = 'Off';
                 statusDot.className = 'dot off';
                 statusTitle.textContent = '📍 Location Services';
-                statusDesc.textContent = 'Turn on location to find professionals near you';
+                statusDesc.textContent = 'Turn on location to find professionals within 5km';
                 
                 showNotification('📍 Location turned off. Use manual address for bookings.', 'info');
                 loadServices();
@@ -560,6 +617,9 @@
             
             if (lat && lng) {
                 isLocationOn = true;
+                userLat = parseFloat(lat);
+                userLng = parseFloat(lng);
+                
                 var btn = document.getElementById('locationToggleBtn');
                 var btnText = document.getElementById('locationBtnText');
                 var statusLabel = document.getElementById('locationStatusLabel');
@@ -569,10 +629,10 @@
                 
                 btn.className = 'btn-location location-on';
                 btnText.textContent = '✅ Location On';
-                statusLabel.textContent = 'On';
+                statusLabel.textContent = 'On (5km range)';
                 statusDot.className = 'dot on';
                 statusTitle.textContent = '📍 Location Active';
-                statusDesc.textContent = 'Finding professionals near you';
+                statusDesc.textContent = 'Showing professionals within 5km of you';
             }
         }
 
@@ -595,9 +655,10 @@
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
                     
-                    // Store location
                     localStorage.setItem('location_lat', lat);
                     localStorage.setItem('location_lng', lng);
+                    userLat = lat;
+                    userLng = lng;
                     
                     fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lng)
                         .then(function(response) { return response.json(); })
@@ -646,7 +707,10 @@
         function showNotification(message, type) {
             type = type || 'info';
             var alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-' + type + ' alert-dismissible fade show';
+            var bgClass = type === 'success' ? 'alert-success' : 
+                         type === 'danger' ? 'alert-danger' : 
+                         type === 'warning' ? 'alert-warning' : 'alert-info';
+            alertDiv.className = 'alert ' + bgClass + ' alert-dismissible fade show';
             alertDiv.role = 'alert';
             alertDiv.style.position = 'fixed';
             alertDiv.style.top = '80px';
@@ -724,10 +788,10 @@
         }
 
         // ============================================
-        // LOAD SERVICES
+        // LOAD SERVICES WITH RANGE FILTER
         // ============================================
         function loadServices() {
-            console.log('🔄 Loading services...');
+            console.log('🔄 Loading services with 5km range filter...');
             
             var token = localStorage.getItem('access_token');
             
@@ -740,9 +804,29 @@
                 return response.json();
             })
             .then(function(data) {
-                console.log('📋 Professionals from database:', data);
+                console.log('📋 All professionals:', data);
                 allProfessionals = data;
-                renderServicesFromProfessionals(data);
+                
+                // Filter by distance if location is on
+                if (isLocationOn && userLat && userLng) {
+                    var filtered = allProfessionals.filter(function(pro) {
+                        if (!pro.latitude || !pro.longitude) return false;
+                        var distance = calculateDistance(
+                            userLat, userLng,
+                            parseFloat(pro.latitude), parseFloat(pro.longitude)
+                        );
+                        pro._distance = distance;
+                        return distance <= MAX_DISTANCE_KM;
+                    });
+                    console.log('📍 Filtered professionals within 5km:', filtered.length);
+                    renderServicesFromProfessionals(filtered, true);
+                } else {
+                    // Show all professionals but with distance info if available
+                    allProfessionals.forEach(function(pro) {
+                        pro._distance = null;
+                    });
+                    renderServicesFromProfessionals(allProfessionals, false);
+                }
             })
             .catch(function(error) {
                 console.error('❌ Error loading professionals:', error);
@@ -755,21 +839,34 @@
         // ============================================
         // RENDER SERVICES
         // ============================================
-        function renderServicesFromProfessionals(professionals) {
+        function renderServicesFromProfessionals(professionals, isFiltered) {
             var grid = document.getElementById('servicesGrid');
+            var subtitle = document.getElementById('servicesSubtitle');
             document.getElementById('loadingSpinner').style.display = 'none';
 
             if (!professionals || professionals.length === 0) {
+                var message = isFiltered ? 
+                    'No professionals found within 5km of your location. Try turning off location filter or check back later.' :
+                    'No professionals have registered their services yet.';
                 grid.innerHTML = 
                     '<div class="col-12">' +
                     '<div class="no-services">' +
                     '<i class="bi bi-tools"></i>' +
-                    '<h5>No Services Available</h5>' +
-                    '<p>No professionals have registered their services yet. Please check back later.</p>' +
-                    '<a href="/register/" class="btn btn-primary mt-3">Become a Professional</a>' +
+                    '<h5>' + (isFiltered ? 'No Professionals Nearby' : 'No Services Available') + '</h5>' +
+                    '<p>' + message + '</p>' +
+                    (isFiltered ? 
+                        '<button class="btn btn-outline-primary mt-3" onclick="toggleLocation()"><i class="bi bi-geo-alt"></i> Turn Off Location Filter</button>' :
+                        '<a href="/register/" class="btn btn-primary mt-3">Become a Professional</a>'
+                    ) +
                     '</div>' +
                     '</div>';
                 return;
+            }
+
+            if (isFiltered) {
+                subtitle.textContent = 'Showing ' + professionals.length + ' professionals within ' + MAX_DISTANCE_KM + 'km of you';
+            } else {
+                subtitle.textContent = 'Select a service to find professionals near you (Turn on location for 5km filter)';
             }
 
             var servicesMap = {};
@@ -817,7 +914,9 @@
                     '<i class="bi ' + icon + '"></i>' +
                     '</div>' +
                     '<h5 class="fw-bold">' + name + '</h5>' +
-                    '<p class="text-muted small">' + count + ' professional(s) available</p>' +
+                    '<p class="text-muted small">' + count + ' professional(s) available' +
+                    (isFiltered ? ' within 5km' : '') +
+                    '</p>' +
                     '<span class="badge bg-light text-dark">' + count + ' available</span>' +
                     '<br>' +
                     '<button class="btn btn-primary btn-sm rounded-pill px-3 mt-2">Find Professionals</button>' +
@@ -829,7 +928,7 @@
         }
 
         // ============================================
-        // FIND TECHNICIANS
+        // FIND TECHNICIANS WITH DISTANCE
         // ============================================
         function findTechnicians(serviceType) {
             console.log('🔍 Finding professionals for:', serviceType);
@@ -838,7 +937,20 @@
             for (var i = 0; i < allProfessionals.length; i++) {
                 var pro = allProfessionals[i];
                 if (pro.service_type === serviceType) {
-                    var distance = (1 + Math.random() * 4).toFixed(1);
+                    var distance = null;
+                    var inRange = true;
+                    
+                    // Calculate distance if location is on and professional has location
+                    if (isLocationOn && userLat && userLng && pro.latitude && pro.longitude) {
+                        distance = calculateDistance(
+                            userLat, userLng,
+                            parseFloat(pro.latitude), parseFloat(pro.longitude)
+                        );
+                        inRange = distance <= MAX_DISTANCE_KM;
+                    }
+                    
+                    // Only add if in range (when location is on)
+                    if (isLocationOn && !inRange) continue;
                     
                     technicians.push({
                         id: pro.id,
@@ -846,13 +958,15 @@
                         name: pro.name || 'Professional',
                         service: pro.service_type,
                         rating: pro.rating || (4 + Math.random() * 1).toFixed(1),
-                        distance: distance + ' km',
+                        distance: distance !== null ? distance.toFixed(1) + ' km' : 'N/A',
+                        distanceValue: distance,
                         price: parseInt(pro.hourly_rate) || 500,
                         phone: pro.phone || 'Not provided',
                         image: (pro.name || 'P').charAt(0).toUpperCase(),
                         experience: pro.experience || 'N/A',
                         email: pro.email || 'N/A',
-                        is_available: pro.is_available !== undefined ? pro.is_available : true
+                        is_available: pro.is_available !== undefined ? pro.is_available : true,
+                        inRange: inRange
                     });
                 }
             }
@@ -868,7 +982,16 @@
                     '<div class="no-technicians">' +
                     '<i class="bi bi-person-x"></i>' +
                     '<h6>No Professionals Available</h6>' +
-                    '<p>No professionals have registered for this service yet.</p>' +
+                    '<p>' + 
+                    (isLocationOn ? 
+                        'No professionals found for this service within ' + MAX_DISTANCE_KM + 'km of your location.' :
+                        'No professionals have registered for this service yet. Turn on location to find nearby professionals.'
+                    ) +
+                    '</p>' +
+                    (isLocationOn ? 
+                        '<button class="btn btn-outline-primary mt-2" onclick="toggleLocation()"><i class="bi bi-geo-alt"></i> Turn Off Location Filter</button>' : 
+                        '<button class="btn btn-primary mt-2" onclick="toggleLocation()"><i class="bi bi-geo-alt"></i> Turn On Location</button>'
+                    ) +
                     '</div>' +
                     '</div>';
                 container.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -882,6 +1005,17 @@
                     '<span class="location-badge active"><i class="bi bi-check-circle"></i> Available</span>' : 
                     '<span class="location-badge inactive"><i class="bi bi-clock"></i> Offline</span>';
                 
+                // Show range badge
+                var rangeBadge = '';
+                if (isLocationOn && tech.distanceValue !== null) {
+                    var isInRange = tech.distanceValue <= MAX_DISTANCE_KM;
+                    rangeBadge = '<span class="range-badge ' + (isInRange ? 'in-range' : 'out-range') + '">' +
+                        (isInRange ? '✅ Within 5km' : '⚠️ ' + tech.distanceValue.toFixed(1) + ' km away') +
+                        '</span>';
+                } else {
+                    rangeBadge = '<span class="range-badge out-range">📍 Turn on location</span>';
+                }
+                
                 html += '<div class="col-md-6 col-lg-4">' +
                     '<div class="technician-card">' +
                     '<div class="d-flex align-items-start gap-3">' +
@@ -891,10 +1025,11 @@
                     '<h6 class="fw-bold mb-0">' + tech.name + '</h6>' +
                     statusBadge +
                     '</div>' +
-                    '<div class="d-flex align-items-center gap-2">' +
+                    '<div class="d-flex align-items-center gap-2 flex-wrap">' +
                     '<span style="color:var(--amber-dark);">⭐ ' + tech.rating + '</span>' +
                     '<span class="text-muted small"><i class="bi bi-geo-alt"></i> ' + tech.distance + '</span>' +
                     '</div>' +
+                    '<div class="mt-1">' + rangeBadge + '</div>' +
                     '<p class="tech-details mb-0">₹' + tech.price + '/hour • ' + tech.experience + ' exp</p>' +
                     '<p class="tech-details mb-0"><i class="bi bi-phone"></i> ' + tech.phone + '</p>' +
                     '</div>' +
@@ -989,8 +1124,8 @@
                     price: selectedTechnician.price,
                     payment_method: payment,
                     description: 'Service booking for ' + selectedTechnician.name,
-                    latitude: 0,
-                    longitude: 0
+                    latitude: userLat || 0,
+                    longitude: userLng || 0
                 })
             })
             .then(function(response) {
@@ -1402,6 +1537,7 @@
             }, 1000);
             
             console.log('✅ User Dashboard Loaded Successfully!');
+            console.log('📍 Range filter: ' + MAX_DISTANCE_KM + 'km');
         });
 
         // Expose functions globally
@@ -1417,8 +1553,7 @@
         window.toggleLocation = toggleLocation;
 
         console.log('🚀 User Dashboard Ready!');
-        console.log('ℹ️ OTP is shown to customer after booking');
-        console.log('📍 Click "Turn On Location" to find nearby professionals');
+        console.log('📍 Turn on location to see professionals within 5km');
     </script>
 </body>
 </html>

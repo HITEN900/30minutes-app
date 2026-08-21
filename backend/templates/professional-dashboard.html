@@ -101,12 +101,87 @@
         body.dark-mode .status-completed { background: #0c3536; color: #5fd6d3; }
         body.dark-mode .status-cancelled, body.dark-mode .status-rejected { background: #3a1414; color: #f0908a; }
 
-        /* ===== LOCATION STATUS (unused in current markup, kept for parity) ===== */
-        .location-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
-        .location-status.active { background: #e2f3f2; color: var(--teal); }
-        body.dark-mode .location-status.active { background: #0c3536; color: #5fd6d3; }
-        .location-status.inactive { background: #fbe4e4; color: #b0342a; }
-        body.dark-mode .location-status.inactive { background: #3a1414; color: #f0908a; }
+        /* ===== LOCATION BANNER - PROFESSIONAL ===== */
+        .location-banner {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            box-shadow: 0 2px 10px rgba(16,24,40,0.04);
+            transition: all 0.3s;
+            margin-bottom: 20px;
+        }
+        body.dark-mode .location-banner {
+            background: #101a2e;
+            border-color: #1e293b;
+        }
+        .location-banner .left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .location-banner .icon {
+            font-size: 1.5rem;
+            color: var(--amber);
+        }
+        .location-banner .info h6 {
+            font-weight: 700;
+            margin: 0;
+            font-size: 1rem;
+            color: var(--navy);
+        }
+        body.dark-mode .location-banner .info h6 {
+            color: #e2e8f0;
+        }
+        .location-banner .info p {
+            margin: 0;
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+        body.dark-mode .location-banner .info p {
+            color: #94a3b8;
+        }
+        .location-status-text {
+            font-size: 0.75rem;
+            opacity: 0.7;
+        }
+        .location-status-text .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .location-status-text .dot.on {
+            background: #2ecc71;
+            animation: pulse-dot 1.5s infinite;
+        }
+        .location-status-text .dot.off {
+            background: #e74c3c;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.7); }
+        }
+        .location-banner .btn-location-toggle {
+            border-radius: 50px;
+            font-weight: 600;
+            padding: 8px 20px;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .location-banner .btn-location-toggle:hover {
+            transform: scale(1.05);
+        }
+        .location-banner .btn-location-toggle.location-on {
+            background: var(--teal);
+            border-color: var(--teal);
+            color: white;
+        }
+        .location-banner .btn-location-toggle.location-on:hover {
+            background: #0b5c5e;
+            border-color: #0b5c5e;
+        }
 
         /* ===== TABLE CONTAINER ===== */
         .table-container { background: var(--card); border-radius: var(--radius); padding: 20px; border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(16,24,40,0.04); overflow-x: auto; }
@@ -171,6 +246,8 @@
             .profile-avatar { margin: 0 auto; }
             .table-container { padding: 12px; }
             .table td, .table th { font-size: 12px; padding: 8px 4px; }
+            .location-banner .left { flex-direction: column; text-align: center; }
+            .location-banner .d-flex { justify-content: center !important; }
         }
         @media (max-width: 575px) { .table td, .table th { font-size: 11px; padding: 6px 3px; } .status-badge { font-size: 10px; padding: 2px 8px; } .stat-number { font-size: 18px; } }
 
@@ -266,6 +343,27 @@
                         </div>
                     </div>
 
+                    <!-- ===== LOCATION BANNER - PROFESSIONAL ===== -->
+                    <div class="location-banner" id="professionalLocationBanner">
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                            <div class="left">
+                                <span class="icon"><i class="bi bi-geo-alt-fill"></i></span>
+                                <div class="info">
+                                    <h6 id="proLocationTitle">📍 Your Location</h6>
+                                    <p id="proLocationDesc">Turn on location so customers can find you within 5km</p>
+                                    <span class="location-status-text" id="proLocationStatus">
+                                        <span class="dot off" id="proLocationDot"></span>
+                                        <span id="proLocationLabel">Off</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-sm rounded-pill px-4 btn-location-toggle" id="proLocationToggleBtn" onclick="toggleProfessionalLocation()">
+                                <i class="bi bi-satellite"></i>
+                                <span id="proLocationBtnText">Turn On Location</span>
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Profile Card -->
                     <div class="profile-card mb-4">
                         <div class="row align-items-center">
@@ -285,7 +383,7 @@
                         </div>
                     </div>
 
-                    <!-- Statistics - Total Earnings REMOVED -->
+                    <!-- Statistics -->
                     <div class="row g-4 mb-4" id="statistics">
                         <div class="col-xl-4 col-md-6">
                             <div class="stat-card">
@@ -359,7 +457,7 @@
                         </div>
                     </div>
 
-                    <!-- PENDING BOOKINGS - WITH ACCEPT/REJECT BUTTONS -->
+                    <!-- PENDING BOOKINGS -->
                     <div class="table-container mb-4">
                         <div class="section-header">
                             <h5><i class="bi bi-clock-history text-warning"></i> Pending Bookings</h5>
@@ -462,10 +560,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ============================================
-        // PROFESSIONAL DASHBOARD - WITH ACCEPT/REJECT
+        // PROFESSIONAL DASHBOARD WITH LOCATION
         // ============================================
 
         let currentBookingId = null;
+        let professionalLocationOn = false;
 
         // ============================================
         // LOGOUT FUNCTION
@@ -520,6 +619,177 @@
         });
 
         // ============================================
+        // TOGGLE PROFESSIONAL LOCATION
+        // ============================================
+        function toggleProfessionalLocation() {
+            if (!navigator.geolocation) {
+                alert('❌ Geolocation is not supported by your browser.');
+                return;
+            }
+
+            const btn = document.getElementById('proLocationToggleBtn');
+            const btnText = document.getElementById('proLocationBtnText');
+            const statusLabel = document.getElementById('proLocationLabel');
+            const statusDot = document.getElementById('proLocationDot');
+            const title = document.getElementById('proLocationTitle');
+            const desc = document.getElementById('proLocationDesc');
+
+            if (!professionalLocationOn) {
+                btnText.textContent = 'Getting location...';
+                btn.disabled = true;
+
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+                        
+                        console.log('📍 Professional location:', lat, lng);
+                        
+                        // Save location to API
+                        saveProfessionalLocation(lat, lng);
+                        
+                        professionalLocationOn = true;
+                        localStorage.setItem('professional_lat', lat);
+                        localStorage.setItem('professional_lng', lng);
+                        
+                        btn.className = 'btn btn-success btn-sm rounded-pill px-4 btn-location-toggle location-on';
+                        btnText.textContent = '✅ Location On';
+                        statusLabel.textContent = 'On';
+                        statusDot.className = 'dot on';
+                        title.textContent = '📍 Location Active';
+                        desc.textContent = 'Customers can now find you within 5km';
+                        btn.disabled = false;
+                        
+                        showNotification('✅ Location turned on! Customers can now find you.', 'success');
+                    },
+                    function(error) {
+                        let errorMsg = '';
+                        switch(error.code) {
+                            case error.PERMISSION_DENIED:
+                                errorMsg = 'Location permission denied. Please enable location.';
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                errorMsg = 'Location information unavailable.';
+                                break;
+                            case error.TIMEOUT:
+                                errorMsg = 'Location request timed out.';
+                                break;
+                            default:
+                                errorMsg = 'An unknown error occurred.';
+                        }
+                        alert('❌ ' + errorMsg);
+                        btnText.textContent = 'Turn On Location';
+                        btn.disabled = false;
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                // Turn off location
+                professionalLocationOn = false;
+                localStorage.removeItem('professional_lat');
+                localStorage.removeItem('professional_lng');
+                
+                // Remove location from API
+                saveProfessionalLocation(null, null);
+                
+                btn.className = 'btn btn-primary btn-sm rounded-pill px-4 btn-location-toggle';
+                btnText.textContent = 'Turn On Location';
+                statusLabel.textContent = 'Off';
+                statusDot.className = 'dot off';
+                title.textContent = '📍 Your Location';
+                desc.textContent = 'Turn on location so customers can find you within 5km';
+                
+                showNotification('📍 Location turned off. Customers won\'t see you.', 'info');
+            }
+        }
+
+        // ============================================
+        // SAVE PROFESSIONAL LOCATION TO API
+        // ============================================
+        function saveProfessionalLocation(lat, lng) {
+            const token = localStorage.getItem('access_token');
+            
+            if (!token) {
+                console.error('No token found');
+                return;
+            }
+
+            fetch('/api/professional/update-location/', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    latitude: lat,
+                    longitude: lng
+                })
+            })
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Failed to save location');
+                }
+                return response.json();
+            })
+            .then(function(data) {
+                console.log('✅ Location saved to API:', data);
+            })
+            .catch(function(error) {
+                console.error('❌ Error saving location:', error);
+            });
+        }
+
+        // ============================================
+        // CHECK PROFESSIONAL LOCATION ON LOAD
+        // ============================================
+        function checkProfessionalLocation() {
+            const lat = localStorage.getItem('professional_lat');
+            const lng = localStorage.getItem('professional_lng');
+            
+            if (lat && lng) {
+                professionalLocationOn = true;
+                
+                const btn = document.getElementById('proLocationToggleBtn');
+                const btnText = document.getElementById('proLocationBtnText');
+                const statusLabel = document.getElementById('proLocationLabel');
+                const statusDot = document.getElementById('proLocationDot');
+                const title = document.getElementById('proLocationTitle');
+                const desc = document.getElementById('proLocationDesc');
+                
+                btn.className = 'btn btn-success btn-sm rounded-pill px-4 btn-location-toggle location-on';
+                btnText.textContent = '✅ Location On';
+                statusLabel.textContent = 'On';
+                statusDot.className = 'dot on';
+                title.textContent = '📍 Location Active';
+                desc.textContent = 'Customers can now find you within 5km';
+            }
+        }
+
+        // ============================================
+        // SHOW NOTIFICATION
+        // ============================================
+        function showNotification(message, type) {
+            type = type || 'info';
+            const alertDiv = document.createElement('div');
+            const bgClass = type === 'success' ? 'alert-success' : 
+                           type === 'danger' ? 'alert-danger' : 
+                           type === 'warning' ? 'alert-warning' : 'alert-info';
+            alertDiv.className = 'alert ' + bgClass + ' alert-dismissible fade show notification-alert';
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                <strong><i class="bi ${type === 'success' ? 'bi-check-circle-fill' : type === 'danger' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'}"></i></strong>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => { alertDiv.remove(); }, 8000);
+        }
+
+        // ============================================
         // OTP MOVE FUNCTION
         // ============================================
         function otpMove(current, nextId) {
@@ -529,7 +799,7 @@
         }
 
         // ============================================
-        // ACCEPT BOOKING - FIXED
+        // ACCEPT BOOKING
         // ============================================
         function acceptBooking(bookingId) {
             if (!confirm('Accept this booking?')) return;
@@ -560,7 +830,7 @@
         }
 
         // ============================================
-        // REJECT BOOKING - FIXED
+        // REJECT BOOKING
         // ============================================
         function rejectBooking(bookingId) {
             if (!confirm('Reject this booking?')) return;
@@ -591,7 +861,7 @@
         }
 
         // ============================================
-        // START WORK - FIXED
+        // START WORK
         // ============================================
         function startWork(bookingId) {
             if (!confirm('Start work on this booking?')) return;
@@ -622,7 +892,7 @@
         }
 
         // ============================================
-        // FINISH WORK - Show OTP Modal
+        // FINISH WORK
         // ============================================
         function finishWork(bookingId) {
             currentBookingId = bookingId;
@@ -634,7 +904,7 @@
         }
 
         // ============================================
-        // VERIFY OTP - FIXED
+        // VERIFY OTP
         // ============================================
         function verifyOTP() {
             let otp = '';
@@ -646,13 +916,10 @@
                 return;
             }
 
-            // For demo, accept any 4-digit OTP
-            // In production, verify against database
             document.getElementById('otpError').style.display = 'none';
             alert('✅ OTP Verified! Work completed successfully.');
             bootstrap.Modal.getInstance(document.getElementById('otpModal'))?.hide();
 
-            // Update booking status to completed
             const token = localStorage.getItem('access_token');
 
             fetch('/api/bookings/' + currentBookingId + '/update-status/', {
@@ -676,7 +943,7 @@
         }
 
         // ============================================
-        // LOAD DASHBOARD DATA - FIXED
+        // LOAD DASHBOARD DATA
         // ============================================
         async function loadDashboard() {
             const token = localStorage.getItem('access_token');
@@ -687,7 +954,6 @@
             }
 
             try {
-                // Get dashboard data from API
                 const response = await fetch('/api/auth/dashboard/', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -703,7 +969,6 @@
                 document.getElementById('loadingSpinner').style.display = 'none';
                 document.getElementById('dashboardContent').style.display = 'block';
 
-                // Update user profile
                 const user = JSON.parse(localStorage.getItem('user') || '{}');
                 document.getElementById('userName').textContent = `${user.first_name || 'Professional'} ${user.last_name || ''}`;
                 document.getElementById('userEmail').textContent = user.email || 'N/A';
@@ -722,7 +987,6 @@
                     document.getElementById('pendingBookings').textContent = data.statistics.pending || 0;
                 }
 
-                // Remove total earnings update - REMOVED
                 if (data.earnings) {
                     document.getElementById('hourlyRate').textContent = `₹${data.earnings.hourly_rate || 0}`;
                     document.getElementById('ratingDisplay').textContent = `⭐ ${data.earnings.rating || 0}`;
@@ -741,7 +1005,7 @@
                     statusBadge.textContent = '🔴 Unavailable';
                 }
 
-                // ===== LOAD PENDING BOOKINGS FROM API =====
+                // Load bookings
                 const bookingsResponse = await fetch('/api/bookings/technician/', {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
@@ -751,11 +1015,10 @@
                     bookings = await bookingsResponse.json();
                     console.log('📋 Bookings from API:', bookings);
                 } else {
-                    // Fallback to localStorage
                     bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
                 }
 
-                // ===== UPDATE PENDING BOOKINGS TABLE =====
+                // Update pending bookings
                 const pendingBookings = bookings.filter(b => b.status === 'pending' || b.status === 'accepted' || b.status === 'in_progress');
                 const pendingTable = document.getElementById('pendingBookingsTable');
                 document.getElementById('pendingCount').textContent = `${pendingBookings.length} pending`;
@@ -806,7 +1069,7 @@
                     `;
                 }
 
-                // ===== UPDATE RECENT BOOKINGS =====
+                // Update recent bookings
                 const allBookings = bookings.slice(0, 10);
                 const recentTable = document.getElementById('recentBookingsTable');
                 document.getElementById('bookingCount').textContent = `${bookings.length} bookings`;
@@ -838,10 +1101,9 @@
                     `;
                 }
 
-                // Check for new bookings
                 const pending = bookings.filter(b => b.status === 'pending');
                 if (pending.length > 0) {
-                    showNotification(`📋 ${pending.length} new booking(s) waiting for your response!`);
+                    showNotification(`📋 ${pending.length} new booking(s) waiting for your response!`, 'warning');
                 }
 
             } catch (error) {
@@ -854,22 +1116,6 @@
                     </div>
                 `;
             }
-        }
-
-        // ============================================
-        // SHOW NOTIFICATION
-        // ============================================
-        function showNotification(message) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-info alert-dismissible fade show notification-alert';
-            alertDiv.role = 'alert';
-            alertDiv.innerHTML = `
-                <strong><i class="bi bi-bell"></i> New Booking!</strong><br>
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            document.body.appendChild(alertDiv);
-            setTimeout(() => { alertDiv.remove(); }, 10000);
         }
 
         // ============================================
@@ -897,9 +1143,10 @@
             if (!user) { window.location.href = '/'; return; }
             const userData = JSON.parse(user);
             if (userData.role !== 'technician') { window.location.href = '/'; return; }
+            
+            checkProfessionalLocation();
             loadDashboard();
 
-            // Refresh every 30 seconds
             setInterval(function() { loadDashboard(); }, 30000);
         });
 
@@ -912,9 +1159,10 @@
         window.verifyOTP = verifyOTP;
         window.otpMove = otpMove;
         window.loadDashboard = loadDashboard;
+        window.toggleProfessionalLocation = toggleProfessionalLocation;
 
         console.log('🚀 Professional Dashboard Ready!');
-        console.log('ℹ️ Use Accept/Reject buttons to manage bookings');
+        console.log('📍 Turn on location to let customers find you within 5km');
     </script>
 </body>
 </html>
