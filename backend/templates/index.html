@@ -6,37 +6,40 @@
     <title>30 Minutes - Premium Service Booking</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
         /* ============================================
-           PREMIUM PROFESSIONAL STYLES
+           PREMIUM PROFESSIONAL STYLES - FULLY RESPONSIVE
            ============================================ */
         :root {
-            --primary: #2563eb;
-            --primary-dark: #1d4ed8;
-            --primary-light: #dbeafe;
+            --primary: #14213d;
+            --primary-dark: #1c2c52;
+            --primary-light: #eef1f6;
+            --amber: #f2a71b;
+            --amber-dark: #d88f0a;
+            --teal: #0f7173;
             --secondary: #64748b;
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --dark: #0f172a;
-            --light: #f8fafc;
-            --gray-50: #f8fafc;
-            --gray-100: #f1f5f9;
-            --gray-200: #e2e8f0;
+            --success: #0f7173;
+            --warning: #f2a71b;
+            --danger: #b0342a;
+            --dark: #0b1220;
+            --light: #f5f6f8;
+            --gray-50: #f5f6f8;
+            --gray-100: #eef1f6;
+            --gray-200: #e3e6ec;
             --gray-300: #cbd5e1;
             --gray-400: #94a3b8;
             --gray-500: #64748b;
             --gray-600: #475569;
             --gray-700: #334155;
-            --gray-800: #1e293b;
-            --gray-900: #0f172a;
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow: 0 4px 20px rgba(0,0,0,0.08);
-            --shadow-lg: 0 10px 50px rgba(0,0,0,0.12);
-            --shadow-xl: 0 20px 60px rgba(0,0,0,0.15);
-            --radius: 20px;
-            --radius-sm: 12px;
+            --gray-800: #101a2e;
+            --gray-900: #0b1220;
+            --shadow-sm: 0 1px 2px rgba(16,24,40,0.05);
+            --shadow: 0 4px 20px rgba(16,24,40,0.08);
+            --shadow-lg: 0 10px 50px rgba(16,24,40,0.12);
+            --shadow-xl: 0 20px 60px rgba(16,24,40,0.15);
+            --radius: 16px;
+            --radius-sm: 10px;
             --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -45,6 +48,15 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-text, .hero-title {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        .section-eyebrow, .service-count, .step-number {
+            font-family: 'IBM Plex Mono', ui-monospace, monospace;
         }
 
         body {
@@ -58,35 +70,34 @@
         }
 
         /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--gray-100); }
         body.dark-mode ::-webkit-scrollbar-track { background: var(--gray-800); }
         ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-dark); }
 
-        /* ===== NAVBAR ===== */
+        /* ===== NAVBAR - RESPONSIVE ===== */
         .navbar {
             background: rgba(255,255,255,0.95) !important;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-            padding: 14px 0;
+            box-shadow: 0 1px 0 var(--gray-200);
+            padding: 12px 0;
             transition: var(--transition);
         }
 
         body.dark-mode .navbar {
-            background: rgba(30,41,59,0.95) !important;
+            background: rgba(16,26,46,0.95) !important;
         }
 
         .navbar.scrolled {
-            box-shadow: 0 4px 30px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 30px rgba(16,24,40,0.08);
         }
 
         .brand-text {
-            font-weight: 800;
-            font-size: 1.35rem;
+            font-weight: 700;
+            font-size: clamp(1.1rem, 2.5vw, 1.3rem);
             color: var(--gray-900);
-            letter-spacing: -0.5px;
         }
 
         body.dark-mode .brand-text {
@@ -94,14 +105,15 @@
         }
 
         .brand-text i {
-            color: var(--primary);
+            color: var(--amber-dark);
             margin-right: 6px;
         }
 
         .nav-link {
             font-weight: 500;
+            font-size: 0.9rem;
             color: var(--gray-600);
-            padding: 8px 18px !important;
+            padding: 8px 14px !important;
             border-radius: var(--radius-sm);
             transition: var(--transition);
             position: relative;
@@ -119,20 +131,30 @@
 
         body.dark-mode .nav-link:hover,
         body.dark-mode .nav-link.active {
-            background: rgba(37,99,235,0.15);
-            color: #60a5fa !important;
+            background: rgba(242,167,27,0.1);
+            color: var(--amber) !important;
         }
 
-        /* ===== BUTTONS ===== */
+        .navbar-toggler {
+            border: none;
+            padding: 8px 10px;
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        /* ===== BUTTONS - RESPONSIVE ===== */
         .btn-primary {
             background: var(--primary);
-            border: none;
+            border: 1px solid var(--primary);
             border-radius: var(--radius-sm);
             font-weight: 600;
-            padding: 10px 28px;
+            padding: 10px 24px;
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
         }
 
         .btn-primary::after {
@@ -142,7 +164,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.08), transparent);
             transform: rotate(45deg) translateX(-100%);
             transition: 0.6s;
         }
@@ -153,42 +175,57 @@
 
         .btn-primary:hover {
             background: var(--primary-dark);
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(37,99,235,0.35);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(20,33,61,0.3);
         }
 
         .btn-outline-primary {
-            border: 2px solid var(--primary);
+            border: 1.5px solid var(--primary);
             color: var(--primary);
             font-weight: 600;
             border-radius: var(--radius-sm);
             transition: var(--transition);
             background: transparent;
+            font-size: clamp(0.85rem, 1.2vw, 1rem);
         }
 
         .btn-outline-primary:hover {
             background: var(--primary);
             color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(37,99,235,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(20,33,61,0.2);
         }
 
         .btn-lg {
-            padding: 14px 40px;
-            font-size: 1.05rem;
+            padding: 12px 28px;
+            font-size: clamp(0.95rem, 1.3vw, 1.05rem);
             border-radius: var(--radius-sm);
         }
 
-        /* ===== HERO SECTION ===== */
+        .btn-sm {
+            padding: 6px 16px;
+            font-size: 0.8rem;
+        }
+
+        /* ===== HERO SECTION - FULLY RESPONSIVE ===== */
         .hero-section {
-            padding: 80px 0 60px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            padding: clamp(40px, 8vh, 80px) 0 clamp(30px, 5vh, 60px);
+            background: linear-gradient(135deg, #eef1f6 0%, #ffffff 100%);
             position: relative;
             overflow: hidden;
+            background-image:
+                radial-gradient(circle, #d8dce4 1px, transparent 1px),
+                linear-gradient(135deg, #eef1f6 0%, #ffffff 100%);
+            background-size: 26px 26px, cover;
         }
 
         body.dark-mode .hero-section {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            background: linear-gradient(135deg, #0b1220 0%, #101a2e 100%);
+            background-image:
+                radial-gradient(circle, #1c2740 1px, transparent 1px),
+                linear-gradient(135deg, #0b1220 0%, #101a2e 100%);
+            background-size: 26px 26px, cover;
         }
 
         .hero-section::before {
@@ -196,9 +233,9 @@
             position: absolute;
             top: -50%;
             right: -20%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+            width: clamp(300px, 40vw, 600px);
+            height: clamp(300px, 40vw, 600px);
+            background: radial-gradient(circle, rgba(242,167,27,0.08) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
         }
@@ -208,18 +245,18 @@
             position: absolute;
             bottom: -30%;
             left: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(118,75,162,0.05) 0%, transparent 70%);
+            width: clamp(250px, 30vw, 500px);
+            height: clamp(250px, 30vw, 500px);
+            background: radial-gradient(circle, rgba(15,113,115,0.06) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
         }
 
         .hero-title {
-            font-size: 3.5rem;
-            font-weight: 900;
+            font-size: clamp(2rem, 5.5vw, 3.4rem);
+            font-weight: 700;
             line-height: 1.1;
-            letter-spacing: -1.5px;
+            letter-spacing: -0.02em;
             color: var(--gray-900);
         }
 
@@ -228,16 +265,17 @@
         }
 
         .hero-title .highlight {
-            background: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--amber-dark);
+        }
+
+        body.dark-mode .hero-title .highlight {
+            color: var(--amber);
         }
 
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: clamp(0.95rem, 1.4vw, 1.15rem);
             color: var(--gray-500);
-            line-height: 1.8;
+            line-height: 1.7;
             max-width: 500px;
         }
 
@@ -254,6 +292,9 @@
             border-radius: var(--radius);
             box-shadow: var(--shadow-xl);
             transition: var(--transition);
+            border: 1px solid var(--gray-200);
+            width: 100%;
+            height: auto;
         }
 
         .hero-image img:hover {
@@ -263,28 +304,31 @@
         .floating-badge {
             position: absolute;
             background: white;
-            padding: 12px 20px;
+            padding: clamp(8px, 1.2vw, 12px) clamp(12px, 1.8vw, 20px);
             border-radius: var(--radius-sm);
             box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             animation: float 3s ease-in-out infinite;
+            font-size: clamp(0.7rem, 1vw, 0.85rem);
         }
 
         body.dark-mode .floating-badge {
             background: var(--gray-800);
+            border-color: #1e293b;
         }
 
         .floating-badge:nth-child(2) {
-            bottom: 20px;
-            left: -20px;
+            bottom: 10%;
+            left: -5%;
             animation-delay: 1s;
         }
 
         .floating-badge:nth-child(3) {
-            top: 20px;
-            right: -20px;
+            top: 10%;
+            right: -5%;
             animation-delay: 2s;
         }
 
@@ -293,9 +337,37 @@
             50% { transform: translateY(-10px); }
         }
 
-        /* ===== FEATURES ===== */
+        /* ===== RESPONSIVE FLOATING BADGES ===== */
+        @media (max-width: 991px) {
+            .floating-badge {
+                display: none !important;
+            }
+        }
+
+        /* ===== SECTION TITLES - RESPONSIVE ===== */
+        .section-eyebrow {
+            font-size: clamp(0.65rem, 1vw, 0.72rem);
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--amber-dark);
+            display: block;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: clamp(1.6rem, 4vw, 2.5rem);
+        }
+
+        body.dark-mode .section-title {
+            color: #eef1f6;
+        }
+
+        /* ===== FEATURES - RESPONSIVE ===== */
         .features-section {
-            padding: 80px 0;
+            padding: clamp(40px, 8vh, 80px) 0;
             background: var(--gray-50);
         }
 
@@ -306,18 +378,19 @@
         .feature-card {
             background: white;
             border-radius: var(--radius);
-            padding: 30px;
+            padding: clamp(20px, 3vw, 30px);
             text-align: center;
             transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.04);
+            border: 1px solid var(--gray-200);
             box-shadow: var(--shadow-sm);
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         body.dark-mode .feature-card {
             background: var(--gray-800);
-            border-color: rgba(255,255,255,0.05);
+            border-color: #1e293b;
         }
 
         .feature-card::before {
@@ -327,7 +400,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary), #7c3aed);
+            background: linear-gradient(90deg, var(--primary), var(--amber));
             transform: scaleX(0);
             transition: var(--transition);
         }
@@ -337,53 +410,68 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
+            border-color: var(--amber);
         }
 
         .feature-icon {
-            width: 72px;
-            height: 72px;
+            width: clamp(54px, 8vw, 68px);
+            height: clamp(54px, 8vw, 68px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            margin: 0 auto 16px;
-            background: var(--primary-light);
-            color: var(--primary);
+            font-size: clamp(20px, 3vw, 26px);
+            margin: 0 auto 14px;
+            background: var(--primary);
+            color: var(--amber);
             transition: var(--transition);
         }
 
         body.dark-mode .feature-icon {
-            background: rgba(37,99,235,0.15);
-            color: #60a5fa;
+            background: #1c2c52;
         }
 
         .feature-card:hover .feature-icon {
             transform: scale(1.1) rotate(-5deg);
         }
 
-        /* ===== SERVICES ===== */
+        .feature-card h6 {
+            color: var(--primary);
+            font-size: clamp(0.9rem, 1.3vw, 1.1rem);
+        }
+
+        body.dark-mode .feature-card h6 {
+            color: #e2e8f0;
+        }
+
+        .feature-card small {
+            font-size: clamp(0.7rem, 1vw, 0.85rem);
+            color: var(--gray-500);
+        }
+
+        /* ===== SERVICES - RESPONSIVE ===== */
         .services-section {
-            padding: 80px 0;
+            padding: clamp(40px, 8vh, 80px) 0;
         }
 
         .service-card {
             background: white;
             border-radius: var(--radius);
-            padding: 30px;
+            padding: clamp(20px, 3vw, 30px);
             text-align: center;
             transition: var(--transition);
             border: 1px solid var(--gray-200);
             cursor: pointer;
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         body.dark-mode .service-card {
             background: var(--gray-800);
-            border-color: var(--gray-700);
+            border-color: #1e293b;
         }
 
         .service-card::after {
@@ -393,7 +481,7 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, var(--primary), #7c3aed);
+            background: linear-gradient(90deg, var(--primary), var(--amber));
             transform: scaleX(0);
             transition: var(--transition);
         }
@@ -403,48 +491,57 @@
         }
 
         .service-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
             border-color: var(--primary);
         }
 
         .service-icon {
-            width: 80px;
-            height: 80px;
+            width: clamp(60px, 8vw, 76px);
+            height: clamp(60px, 8vw, 76px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
-            margin: 0 auto 16px;
-            background: var(--primary-light);
-            color: var(--primary);
+            font-size: clamp(22px, 3vw, 28px);
+            margin: 0 auto 14px;
+            background: var(--primary);
+            color: var(--amber);
             transition: var(--transition);
         }
 
         body.dark-mode .service-icon {
-            background: rgba(37,99,235,0.15);
-            color: #60a5fa;
+            background: #1c2c52;
         }
 
         .service-card:hover .service-icon {
             transform: scale(1.1) rotate(-5deg);
         }
 
+        .service-card h5 {
+            color: var(--primary);
+            font-size: clamp(1rem, 1.4vw, 1.2rem);
+        }
+
+        body.dark-mode .service-card h5 {
+            color: #e2e8f0;
+        }
+
         .service-count {
-            font-size: 13px;
+            font-size: clamp(0.65rem, 0.9vw, 0.75rem);
             color: var(--gray-500);
             font-weight: 500;
+            letter-spacing: 0.02em;
         }
 
         body.dark-mode .service-count {
             color: #94a3b8;
         }
 
-        /* ===== STEPS ===== */
+        /* ===== STEPS - RESPONSIVE ===== */
         .steps-section {
             background: var(--gray-50);
-            padding: 80px 0;
+            padding: clamp(40px, 8vh, 80px) 0;
         }
 
         body.dark-mode .steps-section {
@@ -454,22 +551,40 @@
         .step-card {
             background: white;
             border-radius: var(--radius);
-            padding: 40px 30px;
+            padding: clamp(30px, 4vw, 40px) clamp(20px, 3vw, 30px);
             text-align: center;
             transition: var(--transition);
-            border: 1px solid rgba(0,0,0,0.04);
+            border: 1px solid var(--gray-200);
             position: relative;
+            height: 100%;
         }
 
         body.dark-mode .step-card {
             background: var(--gray-800);
-            border-color: rgba(255,255,255,0.05);
+            border-color: #1e293b;
         }
 
         .step-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             box-shadow: var(--shadow-lg);
         }
+
+        .step-card h5 {
+            color: var(--primary);
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
+        }
+
+        body.dark-mode .step-card h5 {
+            color: #e2e8f0;
+        }
+
+        .step-card .display-4 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+        }
+
+        .step-card i.text-primary { color: var(--primary) !important; }
+        .step-card i.text-success { color: var(--teal) !important; }
+        .step-card i.text-warning { color: var(--amber-dark) !important; }
 
         .step-number {
             position: absolute;
@@ -477,30 +592,36 @@
             left: 50%;
             transform: translateX(-50%);
             background: var(--primary);
-            color: white;
-            width: 36px;
-            height: 36px;
+            color: var(--amber);
+            width: clamp(32px, 4vw, 36px);
+            height: clamp(32px, 4vw, 36px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(37,99,235,0.3);
+            font-weight: 600;
+            font-size: clamp(13px, 1.6vw, 15px);
+            box-shadow: 0 4px 15px rgba(20,33,61,0.3);
+            border: 2px solid white;
         }
 
-        /* ===== TESTIMONIALS ===== */
+        body.dark-mode .step-number {
+            border-color: var(--gray-800);
+        }
+
+        /* ===== TESTIMONIALS - RESPONSIVE ===== */
         .testimonial-card {
             background: white;
             border-radius: var(--radius);
-            padding: 30px;
+            padding: clamp(20px, 2.5vw, 30px);
             transition: var(--transition);
             border: 1px solid var(--gray-200);
+            height: 100%;
         }
 
         body.dark-mode .testimonial-card {
             background: var(--gray-800);
-            border-color: var(--gray-700);
+            border-color: #1e293b;
         }
 
         .testimonial-card:hover {
@@ -508,55 +629,85 @@
             box-shadow: var(--shadow);
         }
 
+        .testimonial-card h6 {
+            color: var(--primary);
+            font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+        }
+
+        body.dark-mode .testimonial-card h6 {
+            color: #e2e8f0;
+        }
+
         .testimonial-avatar {
-            width: 56px;
-            height: 56px;
+            width: clamp(44px, 6vw, 54px);
+            height: clamp(44px, 6vw, 54px);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 20px;
+            font-size: clamp(16px, 2vw, 19px);
             color: white;
             flex-shrink: 0;
+            font-family: 'Space Grotesk', sans-serif;
         }
 
-        /* ===== FOOTER ===== */
+        .testimonial-avatar.bg-primary { background: var(--primary) !important; }
+        .testimonial-avatar.bg-success { background: var(--teal) !important; }
+        .testimonial-avatar.bg-warning { background: var(--amber-dark) !important; }
+
+        .testimonial-card p {
+            font-size: clamp(0.85rem, 1.1vw, 0.95rem);
+        }
+
+        /* ===== FOOTER - RESPONSIVE ===== */
         .footer {
-            background: var(--gray-900);
+            background: var(--primary);
             color: #e2e8f0;
-            padding: 60px 0 30px;
+            padding: clamp(40px, 6vh, 60px) 0 clamp(20px, 3vh, 30px);
+        }
+
+        .footer h5, .footer h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: clamp(1rem, 1.3vw, 1.15rem);
         }
 
         .footer a {
-            color: #94a3b8;
+            color: #a7b2c9;
             text-decoration: none;
             transition: var(--transition);
+            font-size: clamp(0.85rem, 1vw, 0.95rem);
         }
 
         .footer a:hover {
-            color: #60a5fa;
+            color: var(--amber);
         }
 
         .footer .social-icon {
-            width: 40px;
-            height: 40px;
+            width: clamp(36px, 4vw, 40px);
+            height: clamp(36px, 4vw, 40px);
             border-radius: 50%;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255,255,255,0.06);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             transition: var(--transition);
-            color: #94a3b8;
+            color: #a7b2c9;
+            font-size: clamp(0.9rem, 1.2vw, 1rem);
         }
 
         .footer .social-icon:hover {
-            background: var(--primary);
-            color: white;
+            background: var(--amber);
+            color: var(--primary);
             transform: translateY(-3px);
         }
 
-        /* ===== MODAL ===== */
+        .footer .list-unstyled li {
+            margin-bottom: 6px;
+        }
+
+        /* ===== MODAL - RESPONSIVE ===== */
         .modal-content {
             border-radius: var(--radius);
             border: none;
@@ -569,43 +720,181 @@
 
         .modal-header {
             border-bottom: 1px solid var(--gray-200);
-            padding: 20px 28px;
+            padding: clamp(16px, 2vw, 20px) clamp(20px, 3vw, 28px);
         }
 
         body.dark-mode .modal-header {
-            border-bottom-color: var(--gray-700);
+            border-bottom-color: #1e293b;
+        }
+
+        .modal-title {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: clamp(1rem, 1.4vw, 1.2rem);
+        }
+
+        body.dark-mode .modal-title {
+            color: #e2e8f0;
         }
 
         .modal-body {
-            padding: 28px;
+            padding: clamp(20px, 3vw, 28px);
         }
 
-        /* ===== RESPONSIVE ===== */
+        .form-label {
+            color: var(--primary);
+            font-size: clamp(0.85rem, 1vw, 0.95rem);
+        }
+
+        body.dark-mode .form-label {
+            color: #cbd5e1;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            border: 1px solid var(--gray-200);
+            font-size: clamp(0.85rem, 1vw, 0.95rem);
+            padding: clamp(8px, 1vw, 10px) 12px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(20,33,61,0.1);
+        }
+
+        body.dark-mode .form-control, body.dark-mode .form-select {
+            background: var(--dark);
+            border-color: #263252;
+            color: #e2e8f0;
+        }
+
+        body.dark-mode .form-control:focus, body.dark-mode .form-select:focus {
+            background: var(--dark);
+            border-color: var(--amber);
+            color: #e2e8f0;
+            box-shadow: 0 0 0 3px rgba(242,167,27,0.18);
+        }
+
+        /* ===== DARK MODE TOGGLE ===== */
+        .dark-mode-toggle {
+            background: transparent;
+            border: 1px solid var(--gray-200);
+            color: var(--gray-600);
+            cursor: pointer;
+            font-size: clamp(14px, 1.2vw, 16px);
+            width: clamp(32px, 3.5vw, 36px);
+            height: clamp(32px, 3.5vw, 36px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .dark-mode-toggle {
+            color: #94a3b8;
+            border-color: #263252;
+        }
+
+        .dark-mode-toggle:hover {
+            background: var(--primary);
+            color: var(--amber);
+            border-color: var(--primary);
+        }
+
+        /* ===== RESPONSIVE GRID ADJUSTMENTS ===== */
         @media (max-width: 991px) {
-            .hero-title {
-                font-size: 2.8rem;
-            }
             .hero-section {
-                padding: 60px 0 40px;
+                text-align: center;
+            }
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .hero-title .highlight {
+                display: inline-block;
+            }
+            .features-section .col-6 {
+                padding: 0 8px;
+            }
+            .features-section .row.g-4 {
+                --bs-gutter-y: 1rem;
+                --bs-gutter-x: 0.5rem;
             }
         }
 
         @media (max-width: 767px) {
-            .hero-title {
-                font-size: 2.2rem;
+            .hero-section {
+                padding: 30px 0 40px;
             }
-            .hero-subtitle {
-                font-size: 1rem;
+            .hero-title .highlight {
+                display: block;
             }
-            .floating-badge {
-                display: none;
+            .d-flex.gap-3 {
+                justify-content: center;
+                flex-wrap: wrap;
             }
-            .feature-card, .service-card, .step-card {
-                padding: 20px;
+            .d-flex.align-items-center.gap-4 {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .features-section .col-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            .features-section .row.g-4 {
+                --bs-gutter-y: 0.8rem;
+                --bs-gutter-x: 0.5rem;
+            }
+            .feature-card {
+                padding: 16px 12px;
+            }
+            .feature-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            .service-card {
+                padding: 16px;
+            }
+            .service-icon {
+                width: 54px;
+                height: 54px;
+                font-size: 20px;
+                margin-bottom: 10px;
+            }
+            .step-card {
+                padding: 30px 16px 20px;
+            }
+            .step-card .display-4 {
+                font-size: 2rem;
+            }
+            .testimonial-card {
+                padding: 16px;
             }
             .btn-lg {
-                padding: 12px 28px;
-                font-size: 0.95rem;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+            .navbar {
+                padding: 8px 0;
+            }
+            .nav-link {
+                padding: 6px 12px !important;
+                font-size: 0.85rem;
+            }
+            .modal-dialog {
+                margin: 10px;
+            }
+            .modal-body {
+                padding: 16px;
+            }
+            .floating-badge {
+                display: none !important;
+            }
+            .footer .row.g-4 {
+                --bs-gutter-y: 1.5rem;
             }
         }
 
@@ -614,19 +903,98 @@
                 font-size: 1.8rem;
             }
             .section-title {
-                font-size: 1.6rem;
+                font-size: 1.4rem;
+            }
+            .features-section .col-6 {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            .feature-card h6 {
+                font-size: 0.8rem;
+            }
+            .feature-card small {
+                font-size: 0.65rem;
+            }
+            .feature-icon {
+                width: 42px;
+                height: 42px;
+                font-size: 16px;
+            }
+            .service-card h5 {
+                font-size: 0.95rem;
+            }
+            .service-count {
+                font-size: 0.6rem;
+            }
+            .service-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+            }
+            .step-number {
+                width: 28px;
+                height: 28px;
+                font-size: 11px;
+                top: -14px;
+            }
+            .step-card h5 {
+                font-size: 0.95rem;
+            }
+            .step-card p {
+                font-size: 0.85rem;
+            }
+            .testimonial-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 14px;
+            }
+            .testimonial-card p {
+                font-size: 0.8rem;
+            }
+            .btn-primary, .btn-outline-primary {
+                font-size: 0.8rem;
+                padding: 8px 16px;
+            }
+            .btn-lg {
+                padding: 8px 18px;
+                font-size: 0.85rem;
+            }
+            .dark-mode-toggle {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+            }
+            .brand-text {
+                font-size: 1rem;
+            }
+            .brand-text i {
+                font-size: 1rem;
+            }
+            .navbar-toggler {
+                padding: 4px 8px;
+            }
+            .footer h5, .footer h6 {
+                font-size: 0.95rem;
+            }
+            .footer .list-unstyled li {
+                font-size: 0.8rem;
+            }
+            .footer .social-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
             }
         }
 
         /* ===== ANIMATIONS ===== */
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(24px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-on-scroll {
             opacity: 0;
-            animation: fadeInUp 0.6s ease forwards;
+            animation: fadeInUp 0.55s ease forwards;
         }
 
         .delay-1 { animation-delay: 0.1s; }
@@ -634,30 +1002,9 @@
         .delay-3 { animation-delay: 0.3s; }
         .delay-4 { animation-delay: 0.4s; }
 
-        /* ===== DARK MODE TOGGLE ===== */
-        .dark-mode-toggle {
-            background: transparent;
-            border: none;
-            color: var(--gray-600);
-            cursor: pointer;
-            font-size: 20px;
-            padding: 8px;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        body.dark-mode .dark-mode-toggle {
-            color: #94a3b8;
-        }
-
-        .dark-mode-toggle:hover {
-            background: var(--gray-100);
-            color: var(--primary);
-        }
-
-        body.dark-mode .dark-mode-toggle:hover {
-            background: rgba(255,255,255,0.05);
-            color: #60a5fa;
+        @media (prefers-reduced-motion: reduce) {
+            .animate-on-scroll { animation: none; opacity: 1; }
+            .floating-badge { animation: none; }
         }
 
         /* ===== LOGIN LOADING ===== */
@@ -667,6 +1014,40 @@
         .login-loading.show {
             display: inline-block;
         }
+
+        /* ===== MISC ===== */
+        .badge.bg-primary { background: var(--primary) !important; }
+
+        /* ===== RESPONSIVE TEXT UTILITIES ===== */
+        .text-muted {
+            font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+        }
+
+        .mb-5 {
+            margin-bottom: clamp(1.5rem, 4vw, 3rem) !important;
+        }
+
+        .py-5 {
+            padding-top: clamp(2rem, 5vw, 3rem) !important;
+            padding-bottom: clamp(2rem, 5vw, 3rem) !important;
+        }
+
+        .gap-3 {
+            gap: clamp(0.5rem, 1.2vw, 1rem) !important;
+        }
+
+        .gap-4 {
+            gap: clamp(1rem, 2vw, 1.5rem) !important;
+        }
+
+        /* ===== RATING STARS RESPONSIVE ===== */
+        .rating-stars {
+            font-size: clamp(0.8rem, 1.2vw, 1rem);
+        }
+
+        .rating-stars i {
+            margin-right: 1px;
+        }
     </style>
 </head>
 <body>
@@ -674,25 +1055,25 @@
     <nav class="navbar navbar-expand-lg sticky-top" id="mainNav">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/">
-                <i class="bi bi-clock-history text-primary"></i>
+                <i class="bi bi-clock-history"></i>
                 <span class="brand-text">30 Minutes</span>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item"><a class="nav-link active" href="/"><i class="bi bi-house"></i> Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services"><i class="bi bi-grid"></i> Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#how-it-works"><i class="bi bi-info-circle"></i> How It Works</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/"><i class="bi bi-house"></i> <span class="d-lg-inline d-none">Home</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#services"><i class="bi bi-grid"></i> <span class="d-lg-inline d-none">Services</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#how-it-works"><i class="bi bi-info-circle"></i> <span class="d-lg-inline d-none">How It Works</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="bi bi-box-arrow-in-right"></i> <span class="d-lg-inline d-none">Login</span></a></li>
                     <li class="nav-item">
-                        <a href="/register/" class="btn btn-primary btn-sm rounded-pill px-4">
-                            <i class="bi bi-person-plus"></i> Register
+                        <a href="/register/" class="btn btn-primary btn-sm rounded-pill px-3 px-lg-4">
+                            <i class="bi bi-person-plus"></i> <span class="d-none d-sm-inline">Register</span>
                         </a>
                     </li>
-                    <li class="nav-item ms-2">
-                        <button class="dark-mode-toggle" id="themeToggle">
+                    <li class="nav-item ms-1 ms-lg-2">
+                        <button class="dark-mode-toggle" id="themeToggle" aria-label="Toggle dark mode">
                             <i class="bi bi-moon-fill"></i>
                         </button>
                     </li>
@@ -726,13 +1107,13 @@
                                 <i class="bi bi-search"></i> Find a Service
                             </a>
                         </div>
-                        <div class="mt-4 d-flex align-items-center gap-4">
-                            <div>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
-                                <i class="bi bi-star-fill text-warning"></i>
+                        <div class="mt-4 d-flex align-items-center gap-4 flex-wrap">
+                            <div class="rating-stars">
+                                <i class="bi bi-star-fill" style="color: var(--amber-dark);"></i>
+                                <i class="bi bi-star-fill" style="color: var(--amber-dark);"></i>
+                                <i class="bi bi-star-fill" style="color: var(--amber-dark);"></i>
+                                <i class="bi bi-star-fill" style="color: var(--amber-dark);"></i>
+                                <i class="bi bi-star-fill" style="color: var(--amber-dark);"></i>
                                 <span class="ms-2 text-muted">4.8/5 (2.5k reviews)</span>
                             </div>
                         </div>
@@ -740,16 +1121,16 @@
                 </div>
                 <div class="col-lg-6 d-none d-lg-block">
                     <div class="hero-image">
-                        <img src="https://via.placeholder.com/600x450/2563eb/ffffff?text=30+Minutes+App" alt="30 Minutes App" class="img-fluid">
+                        <img src="https://via.placeholder.com/600x450/14213d/f2a71b?text=30+Minutes+App" alt="30 Minutes App" class="img-fluid">
                         <div class="floating-badge" style="bottom: 30px; left: -30px;">
-                            <i class="bi bi-check-circle-fill text-success fs-4"></i>
+                            <i class="bi bi-check-circle-fill fs-4" style="color: var(--teal);"></i>
                             <div>
                                 <div class="fw-bold">25+ Services</div>
                                 <small class="text-muted">Available now</small>
                             </div>
                         </div>
                         <div class="floating-badge" style="top: 30px; right: -30px;">
-                            <i class="bi bi-people-fill text-primary fs-4"></i>
+                            <i class="bi bi-people-fill fs-4" style="color: var(--primary);"></i>
                             <div>
                                 <div class="fw-bold">100+ Technicians</div>
                                 <small class="text-muted">Verified professionals</small>
@@ -764,35 +1145,40 @@
     <!-- ===== FEATURES SECTION ===== -->
     <section class="features-section">
         <div class="container">
+            <span class="section-eyebrow">Trust &amp; Speed</span>
             <h2 class="text-center section-title fw-bold mb-3">Why Choose 30 Minutes</h2>
-            <p class="text-center text-muted mb-5">We make it easy to find trusted professionals</p>
-            <div class="row g-4">
-                <div class="col-md-3 col-6">
+            <p class="text-center text-muted mb-4 mb-lg-5">We make it easy to find trusted professionals</p>
+            <div class="row g-2 g-sm-3 g-md-4">
+                <div class="col-6 col-md-3">
                     <div class="feature-card animate-on-scroll delay-1">
                         <div class="feature-icon"><i class="bi bi-shield-check"></i></div>
                         <h6 class="fw-bold">Verified Pros</h6>
-                        <small class="text-muted">Aadhaar & Voter ID</small>
+                        <small class="text-muted d-none d-sm-block">Aadhaar & Voter ID</small>
+                        <small class="text-muted d-block d-sm-none">Verified</small>
                     </div>
                 </div>
-                <div class="col-md-3 col-6">
+                <div class="col-6 col-md-3">
                     <div class="feature-card animate-on-scroll delay-2">
                         <div class="feature-icon"><i class="bi bi-geo-alt"></i></div>
                         <h6 class="fw-bold">Live Tracking</h6>
-                        <small class="text-muted">Real-time location</small>
+                        <small class="text-muted d-none d-sm-block">Real-time location</small>
+                        <small class="text-muted d-block d-sm-none">Tracking</small>
                     </div>
                 </div>
-                <div class="col-md-3 col-6">
+                <div class="col-6 col-md-3">
                     <div class="feature-card animate-on-scroll delay-3">
                         <div class="feature-icon"><i class="bi bi-credit-card"></i></div>
                         <h6 class="fw-bold">Easy Payments</h6>
-                        <small class="text-muted">UPI, Card, Wallet</small>
+                        <small class="text-muted d-none d-sm-block">UPI, Card, Wallet</small>
+                        <small class="text-muted d-block d-sm-none">Pay Easy</small>
                     </div>
                 </div>
-                <div class="col-md-3 col-6">
+                <div class="col-6 col-md-3">
                     <div class="feature-card animate-on-scroll delay-4">
                         <div class="feature-icon"><i class="bi bi-clock"></i></div>
                         <h6 class="fw-bold">30 Min Guarantee</h6>
-                        <small class="text-muted">Quick service</small>
+                        <small class="text-muted d-none d-sm-block">Quick service</small>
+                        <small class="text-muted d-block d-sm-none">30 Mins</small>
                     </div>
                 </div>
             </div>
@@ -802,9 +1188,10 @@
     <!-- ===== SERVICES SECTION ===== -->
     <section id="services" class="services-section">
         <div class="container">
+            <span class="section-eyebrow">Book in Seconds</span>
             <h2 class="text-center section-title fw-bold mb-3">Popular Services</h2>
-            <p class="text-center text-muted mb-5">Choose from a wide range of professional services</p>
-            <div class="row g-4" id="servicesGrid">
+            <p class="text-center text-muted mb-4 mb-lg-5">Choose from a wide range of professional services</p>
+            <div class="row g-3 g-md-4" id="servicesGrid">
                 <!-- Loaded by JavaScript -->
             </div>
         </div>
@@ -813,31 +1200,32 @@
     <!-- ===== HOW IT WORKS ===== -->
     <section id="how-it-works" class="steps-section">
         <div class="container">
+            <span class="section-eyebrow">The Process</span>
             <h2 class="text-center section-title fw-bold mb-3">How It Works</h2>
-            <p class="text-center text-muted mb-5">Get started in three simple steps</p>
-            <div class="row g-4">
+            <p class="text-center text-muted mb-4 mb-lg-5">Get started in three simple steps</p>
+            <div class="row g-3 g-md-4">
                 <div class="col-md-4">
                     <div class="step-card animate-on-scroll delay-1">
                         <div class="step-number">1</div>
                         <i class="bi bi-search display-4 text-primary"></i>
                         <h5 class="mt-3 fw-bold">Find a Service</h5>
-                        <p class="text-muted">Search and select a verified technician</p>
+                        <p class="text-muted mb-0">Search and select a verified technician</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="step-card animate-on-scroll delay-2">
                         <div class="step-number">2</div>
                         <i class="bi bi-calendar-check display-4 text-success"></i>
-                        <h5 class="mt-3 fw-bold">Book & Track</h5>
-                        <p class="text-muted">Book and track in real-time</p>
+                        <h5 class="mt-3 fw-bold">Book &amp; Track</h5>
+                        <p class="text-muted mb-0">Book and track in real-time</p>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="step-card animate-on-scroll delay-3">
                         <div class="step-number">3</div>
                         <i class="bi bi-star display-4 text-warning"></i>
-                        <h5 class="mt-3 fw-bold">Rate & Review</h5>
-                        <p class="text-muted">Pay securely and rate your experience</p>
+                        <h5 class="mt-3 fw-bold">Rate &amp; Review</h5>
+                        <p class="text-muted mb-0">Pay securely and rate your experience</p>
                     </div>
                 </div>
             </div>
@@ -847,9 +1235,10 @@
     <!-- ===== TESTIMONIALS ===== -->
     <section class="py-5">
         <div class="container">
+            <span class="section-eyebrow">Customer Stories</span>
             <h2 class="text-center section-title fw-bold mb-3">What Our Customers Say</h2>
-            <p class="text-center text-muted mb-5">Real reviews from real customers</p>
-            <div class="row g-4">
+            <p class="text-center text-muted mb-4 mb-lg-5">Real reviews from real customers</p>
+            <div class="row g-3 g-md-4">
                 <div class="col-md-4">
                     <div class="testimonial-card animate-on-scroll delay-1">
                         <div class="d-flex align-items-center mb-3">
@@ -860,7 +1249,7 @@
                             </div>
                         </div>
                         <p class="mb-0">"Excellent service! The plumber arrived within 20 minutes and fixed everything perfectly."</p>
-                        <div class="text-warning mt-2">
+                        <div class="mt-2 rating-stars" style="color: var(--amber-dark);">
                             <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
@@ -877,7 +1266,7 @@
                             </div>
                         </div>
                         <p class="mb-0">"Very professional electrician. Completed the work efficiently and at a fair price."</p>
-                        <div class="text-warning mt-2">
+                        <div class="mt-2 rating-stars" style="color: var(--amber-dark);">
                             <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
@@ -894,7 +1283,7 @@
                             </div>
                         </div>
                         <p class="mb-0">"Best carpentry service I've ever used. The quality of work was outstanding."</p>
-                        <div class="text-warning mt-2">
+                        <div class="mt-2 rating-stars" style="color: var(--amber-dark);">
                             <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             <i class="bi bi-star-fill"></i>
@@ -910,16 +1299,16 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-md-4">
-                    <h5 class="fw-bold"><i class="bi bi-clock-history text-primary"></i> 30 Minutes</h5>
-                    <p class="text-muted">Professional services at your doorstep within 30 minutes. Verified technicians, guaranteed quality.</p>
-                    <div class="d-flex gap-2 mt-3">
+                    <h5 class="fw-bold"><i class="bi bi-clock-history" style="color: var(--amber);"></i> 30 Minutes</h5>
+                    <p class="text-muted" style="font-size: clamp(0.85rem, 1vw, 0.95rem);">Professional services at your doorstep within 30 minutes. Verified technicians, guaranteed quality.</p>
+                    <div class="d-flex gap-2 mt-3 flex-wrap">
                         <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
                         <a href="#" class="social-icon"><i class="bi bi-twitter"></i></a>
                         <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
                         <a href="#" class="social-icon"><i class="bi bi-linkedin"></i></a>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-6 col-md-4">
                     <h6 class="fw-bold">Quick Links</h6>
                     <ul class="list-unstyled">
                         <li><a href="#">About Us</a></li>
@@ -928,7 +1317,7 @@
                         <li><a href="#">Contact Us</a></li>
                     </ul>
                 </div>
-                <div class="col-md-4">
+                <div class="col-6 col-md-4">
                     <h6 class="fw-bold">Contact</h6>
                     <ul class="list-unstyled">
                         <li><i class="bi bi-envelope"></i> support@30minutes.com</li>
@@ -938,16 +1327,16 @@
                 </div>
             </div>
             <hr class="border-secondary mt-4">
-            <div class="text-center text-muted small">© 2026 30 Minutes. All rights reserved.</div>
+            <div class="text-center text-muted small" style="font-size: clamp(0.7rem, 0.9vw, 0.8rem);">© 2026 30 Minutes. All rights reserved.</div>
         </div>
     </footer>
 
     <!-- ===== LOGIN MODAL ===== -->
     <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-box-arrow-in-right text-primary"></i> Welcome Back</h5>
+                    <h5 class="modal-title"><i class="bi bi-box-arrow-in-right"></i> Welcome Back</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -968,7 +1357,7 @@
                     </form>
                     <hr>
                     <div class="text-center">
-                        <p class="text-muted small">Don't have an account? <a href="/register/" class="text-primary fw-semibold">Register</a></p>
+                        <p class="text-muted small mb-0">Don't have an account? <a href="/register/" class="fw-semibold" style="color: var(--primary);">Register</a></p>
                     </div>
                 </div>
             </div>
@@ -977,16 +1366,16 @@
 
     <!-- ===== BOOKING MODAL ===== -->
     <div class="modal fade" id="bookingModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-calendar-check text-primary"></i> Book a Service</h5>
+                    <h5 class="modal-title"><i class="bi bi-calendar-check"></i> Book a Service</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="bookingForm">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
                                 <label class="form-label fw-semibold">Service Type</label>
                                 <select class="form-select" required>
                                     <option value="">Select service</option>
@@ -998,15 +1387,15 @@
                                     <option value="cleaner">Cleaner</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label fw-semibold">Preferred Date & Time</label>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Preferred Date &amp; Time</label>
                                 <input type="datetime-local" class="form-control" required>
                             </div>
-                            <div class="col-12 mb-3">
+                            <div class="col-12">
                                 <label class="form-label fw-semibold">Address</label>
                                 <textarea class="form-control" rows="2" placeholder="Enter your full address" required></textarea>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-6">
                                 <label class="form-label fw-semibold">Payment Method</label>
                                 <select class="form-select">
                                     <option value="upi">UPI</option>
@@ -1016,7 +1405,7 @@
                                 </select>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary w-100">Book Now</button>
+                        <button type="submit" class="btn btn-primary w-100 mt-3">Book Now</button>
                     </form>
                 </div>
             </div>
@@ -1026,7 +1415,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ============================================
-        // PREMIUM HOME PAGE - COMPLETE
+        // PREMIUM HOME PAGE - FULLY RESPONSIVE
         // ============================================
 
         // ============================================
@@ -1084,16 +1473,16 @@
             var grid = document.getElementById('servicesGrid');
             if (grid) {
                 grid.innerHTML = services.map(function(service) {
-                    return '<div class="col-lg-4 col-md-6">' +
+                    return '<div class="col-md-6 col-lg-4">' +
                         '<div class="service-card animate-on-scroll">' +
-                        '<div class="service-icon" style="color: var(--' + service.color + ');">' +
+                        '<div class="service-icon">' +
                         '<i class="bi ' + service.icon + '"></i>' +
                         '</div>' +
                         '<h5 class="fw-bold">' + service.name + '</h5>' +
-                        '<p class="text-muted small">' + service.desc + '</p>' +
+                        '<p class="text-muted small mb-1">' + service.desc + '</p>' +
                         '<span class="service-count">' + service.count + ' technicians available</span>' +
                         '<br>' +
-                        '<button class="btn btn-primary btn-sm rounded-pill px-4 mt-3" onclick="showBookingModal(\'' + service.name + '\')">' +
+                        '<button class="btn btn-primary btn-sm rounded-pill px-3 px-md-4 mt-2 mt-md-3" onclick="showBookingModal(\'' + service.name + '\')">' +
                         'Book Now' +
                         '</button>' +
                         '</div>' +

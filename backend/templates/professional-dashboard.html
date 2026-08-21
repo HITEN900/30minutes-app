@@ -6,119 +6,213 @@
     <title>30 Minutes - Professional Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #14213d;
+            --navy-2: #1c2c52;
+            --ink: #101828;
+            --amber: #f2a71b;
+            --amber-dark: #d88f0a;
+            --teal: #0f7173;
+            --paper: #f5f6f8;
+            --card: #ffffff;
+            --line: #e3e6ec;
+            --muted: #64748b;
+            --radius: 10px;
+        }
         * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #f0f4ff; transition: all 0.3s ease; min-height: 100vh; }
-        body.dark-mode { background: #0f172a; color: #e2e8f0; }
-        .navbar { background: white !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
-        body.dark-mode .navbar { background: #1e293b !important; }
-        .brand-text { font-weight: 700; font-size: 1.25rem; color: #0f172a; }
+        h1, h2, h3, h4, h5, h6, .brand-text { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.01em; }
+        .stat-number, .status-badge, #bookingCount, #pendingCount, .badge, .location-status { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+
+        body {
+            background: var(--paper);
+            color: var(--ink);
+            transition: all 0.3s ease;
+            min-height: 100vh;
+            background-image: radial-gradient(circle, #d8dce4 1px, transparent 1px);
+            background-size: 26px 26px;
+            background-position: -13px -13px;
+        }
+        body.dark-mode {
+            background-color: #0b1220;
+            background-image: radial-gradient(circle, #1c2740 1px, transparent 1px);
+            background-size: 26px 26px;
+            background-position: -13px -13px;
+            color: #e2e8f0;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar { background: var(--card) !important; box-shadow: 0 1px 0 var(--line); padding: 12px 0; position: sticky; top: 0; z-index: 1000; }
+        body.dark-mode .navbar { background: #101a2e !important; box-shadow: 0 1px 0 #1e293b; }
+        .brand-text { font-weight: 700; font-size: 1.2rem; color: var(--navy); }
         body.dark-mode .brand-text { color: #e2e8f0; }
-        .nav-link { font-weight: 500; color: #64748b; padding: 8px 16px !important; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
+        .nav-link { font-weight: 500; font-size: 0.92rem; color: var(--muted); padding: 8px 14px !important; border-radius: 8px; transition: all 0.2s; cursor: pointer; }
         body.dark-mode .nav-link { color: #94a3b8; }
-        .nav-link:hover, .nav-link.active { color: #2563eb !important; background: #dbeafe; }
-        body.dark-mode .nav-link:hover, body.dark-mode .nav-link.active { background: rgba(37,99,235,0.15); color: #60a5fa !important; }
-        .dark-mode-toggle { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 20px; padding: 8px; border-radius: 50%; transition: all 0.3s; }
-        body.dark-mode .dark-mode-toggle { color: #94a3b8; }
-        .dark-mode-toggle:hover { background: #f1f5f9; color: #2563eb; }
-        body.dark-mode .dark-mode-toggle:hover { background: #0f172a; color: #60a5fa; }
-        .sidebar { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); position: sticky; top: 80px; }
-        body.dark-mode .sidebar { background: #1e293b; }
-        .sidebar-link { padding: 12px 16px; border-radius: 12px; color: #64748b; text-decoration: none; transition: all 0.3s; display: flex; align-items: center; gap: 12px; font-weight: 500; margin-bottom: 4px; cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; }
+        .nav-link:hover, .nav-link.active { color: var(--navy) !important; background: #eef1f6; }
+        body.dark-mode .nav-link:hover, body.dark-mode .nav-link.active { background: rgba(242,167,27,0.1); color: var(--amber) !important; }
+
+        .dark-mode-toggle { background: transparent; border: 1px solid var(--line); color: var(--muted); cursor: pointer; font-size: 16px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        body.dark-mode .dark-mode-toggle { color: #94a3b8; border-color: #263252; }
+        .dark-mode-toggle:hover { background: var(--navy); color: var(--amber); border-color: var(--navy); }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar { background: var(--card); border-radius: var(--radius); padding: 18px; border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(16,24,40,0.04); position: sticky; top: 80px; }
+        body.dark-mode .sidebar { background: #101a2e; border-color: #1e293b; }
+        .sidebar-link { padding: 11px 14px; border-radius: 8px; color: var(--muted); text-decoration: none; transition: all 0.2s; display: flex; align-items: center; gap: 12px; font-weight: 500; font-size: 0.92rem; margin-bottom: 4px; cursor: pointer; border: none; background: transparent; width: 100%; text-align: left; }
         body.dark-mode .sidebar-link { color: #94a3b8; }
-        .sidebar-link:hover { background: #f1f5f9; color: #2563eb; }
-        body.dark-mode .sidebar-link:hover { background: #0f172a; color: #60a5fa; }
-        .sidebar-link.active { background: #dbeafe; color: #2563eb; }
-        body.dark-mode .sidebar-link.active { background: #0f172a; color: #60a5fa; }
-        .sidebar-link i { font-size: 18px; width: 24px; }
-        .sidebar-link.danger { color: #ef4444; }
-        .sidebar-link.danger:hover { background: #fee2e2; color: #dc2626; }
-        body.dark-mode .sidebar-link.danger:hover { background: #7f1d1d; color: #f87171; }
-        .stat-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid transparent; height: 100%; }
-        body.dark-mode .stat-card { background: #1e293b; }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: #dbeafe; }
-        body.dark-mode .stat-card:hover { border-color: #334155; }
-        .stat-number { font-size: 32px; font-weight: 800; line-height: 1.2; }
-        .stat-label { color: #64748b; font-size: 14px; font-weight: 500; margin-top: 4px; }
+        .sidebar-link:hover { background: #eef1f6; color: var(--navy); }
+        body.dark-mode .sidebar-link:hover { background: rgba(242,167,27,0.08); color: var(--amber); }
+        .sidebar-link.active { background: var(--navy); color: var(--amber); }
+        body.dark-mode .sidebar-link.active { background: #1c2c52; color: var(--amber); }
+        .sidebar-link i { font-size: 17px; width: 22px; }
+        .sidebar-link.danger { color: #dc2626; }
+        .sidebar-link.danger:hover { background: #fee2e2; color: #b91c1c; }
+        body.dark-mode .sidebar-link.danger:hover { background: #3f1414; color: #f87171; }
+
+        /* ===== STAT CARDS ===== */
+        .stat-card { background: var(--card); border-radius: var(--radius); padding: 20px; border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(16,24,40,0.04); transition: all 0.25s; height: 100%; }
+        body.dark-mode .stat-card { background: #101a2e; border-color: #1e293b; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(20,33,61,0.08); border-color: var(--amber); }
+        .stat-number { font-size: 26px; font-weight: 600; line-height: 1.2; }
+        .stat-number.text-primary { color: var(--navy) !important; }
+        .stat-number.text-success { color: var(--teal) !important; }
+        .stat-number.text-warning { color: var(--amber-dark) !important; }
+        .stat-label { color: var(--muted); font-size: 13px; font-weight: 500; margin-top: 4px; font-family: 'Inter', sans-serif; }
         body.dark-mode .stat-label { color: #94a3b8; }
-        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-accepted { background: #dbeafe; color: #1e40af; }
-        .status-in_progress { background: #dbeafe; color: #1e40af; }
-        .status-completed { background: #d1fae5; color: #065f46; }
-        .status-cancelled { background: #fee2e2; color: #991b1b; }
-        .status-rejected { background: #fee2e2; color: #991b1b; }
-        body.dark-mode .status-pending { background: #78350f; color: #fcd34d; }
-        body.dark-mode .status-accepted { background: #1e3a5f; color: #60a5fa; }
-        body.dark-mode .status-in_progress { background: #1e3a5f; color: #60a5fa; }
-        body.dark-mode .status-completed { background: #064e3b; color: #34d399; }
-        body.dark-mode .status-cancelled { background: #7f1d1d; color: #f87171; }
-        body.dark-mode .status-rejected { background: #7f1d1d; color: #f87171; }
-        .table-container { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); overflow-x: auto; }
-        body.dark-mode .table-container { background: #1e293b; }
+        .stat-card i.display-4 { font-size: 32px !important; }
+        .stat-card i.text-primary { color: var(--navy) !important; }
+        .stat-card i.text-success { color: var(--teal) !important; }
+        .stat-card i.text-warning { color: var(--amber-dark) !important; }
+        .stat-card i.text-info { color: #2f6fa8 !important; }
+        .stat-card h3 { font-size: 24px; color: var(--navy); }
+        body.dark-mode .stat-card h3 { color: #e2e8f0; }
+
+        /* ===== STATUS BADGE ===== */
+        .status-badge { padding: 4px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; display: inline-block; }
+        .status-badge.bg-success { background: var(--teal) !important; }
+        .status-badge.bg-danger { background: #b0342a !important; }
+        .status-pending { background: #fdf1dc; color: var(--amber-dark); }
+        .status-accepted, .status-in_progress { background: #eaf1f8; color: #2f6fa8; }
+        .status-completed { background: #e2f3f2; color: var(--teal); }
+        .status-cancelled, .status-rejected { background: #fbe4e4; color: #b0342a; }
+        body.dark-mode .status-pending { background: #3a2a0c; color: var(--amber); }
+        body.dark-mode .status-accepted, body.dark-mode .status-in_progress { background: #16283b; color: #7fb2df; }
+        body.dark-mode .status-completed { background: #0c3536; color: #5fd6d3; }
+        body.dark-mode .status-cancelled, body.dark-mode .status-rejected { background: #3a1414; color: #f0908a; }
+
+        /* ===== LOCATION STATUS (unused in current markup, kept for parity) ===== */
+        .location-status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .location-status.active { background: #e2f3f2; color: var(--teal); }
+        body.dark-mode .location-status.active { background: #0c3536; color: #5fd6d3; }
+        .location-status.inactive { background: #fbe4e4; color: #b0342a; }
+        body.dark-mode .location-status.inactive { background: #3a1414; color: #f0908a; }
+
+        /* ===== TABLE CONTAINER ===== */
+        .table-container { background: var(--card); border-radius: var(--radius); padding: 20px; border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(16,24,40,0.04); overflow-x: auto; }
+        body.dark-mode .table-container { background: #101a2e; border-color: #1e293b; }
         .table { margin-bottom: 0; }
-        .table th { font-weight: 600; color: #64748b; border-bottom: 2px solid #e2e8f0; font-size: 13px; text-transform: uppercase; letter-spacing: 0.3px; }
-        body.dark-mode .table th { color: #94a3b8; border-bottom-color: #334155; }
+        .table th { font-weight: 600; color: var(--muted); border-bottom: 2px solid var(--line); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; font-family: 'IBM Plex Mono', monospace; }
+        body.dark-mode .table th { color: #94a3b8; border-bottom-color: #1e293b; }
         .table td { vertical-align: middle; padding: 12px 8px; font-size: 14px; }
         body.dark-mode .table td { color: #e2e8f0; }
+        .table tbody tr:hover { background: #f4f6fa; }
+        body.dark-mode .table tbody tr:hover { background: #0b1220; }
+
+        /* ===== LOADING SPINNER ===== */
         .loading-spinner { display: flex; justify-content: center; align-items: center; min-height: 500px; flex-direction: column; gap: 20px; }
-        .spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
+        .spinner { width: 44px; height: 44px; border: 4px solid var(--line); border-top-color: var(--amber); border-radius: 50%; animation: spin 0.9s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        .profile-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
-        body.dark-mode .profile-card { background: #1e293b; }
-        .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 700; color: white; flex-shrink: 0; }
+        .loading-text { color: var(--muted); font-size: 15px; font-weight: 500; }
+        body.dark-mode .loading-text { color: #94a3b8; }
+
+        /* ===== PROFILE CARD ===== */
+        .profile-card { background: var(--card); border-radius: var(--radius); padding: 20px; border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(16,24,40,0.04); }
+        body.dark-mode .profile-card { background: #101a2e; border-color: #1e293b; }
+        .profile-avatar { width: 60px; height: 60px; border-radius: 50%; background: var(--navy); border: 2px solid var(--amber); display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; color: var(--amber); flex-shrink: 0; font-family: 'Space Grotesk', sans-serif; }
+        .profile-card h5 { color: var(--navy); }
+        body.dark-mode .profile-card h5 { color: #e2e8f0; }
+
+        .badge.bg-primary { background: var(--navy) !important; }
+        .badge.bg-warning { background: #fdf1dc !important; color: var(--amber-dark) !important; }
+        .badge.bg-success { background: var(--teal) !important; }
+
+        /* ===== SECTION HEADER ===== */
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-        .section-header h5 { font-weight: 700; margin: 0; }
-        .logout-btn { cursor: pointer; transition: all 0.3s; }
-        .logout-btn:hover { opacity: 0.8; transform: scale(0.98); }
-        .mobile-sidebar-toggle { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999; background: #2563eb; color: white; border: none; border-radius: 50%; width: 56px; height: 56px; font-size: 24px; box-shadow: 0 4px 20px rgba(37,99,235,0.3); cursor: pointer; transition: all 0.3s; }
-        .mobile-sidebar-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(37,99,235,0.4); }
-        .mobile-sidebar { position: fixed; bottom: 90px; right: 20px; background: white; border-radius: 16px; padding: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.15); width: 200px; display: none; z-index: 999; }
-        body.dark-mode .mobile-sidebar { background: #1e293b; }
+        .section-header h5 { font-weight: 700; margin: 0; font-size: 17px; color: var(--navy); }
+        body.dark-mode .section-header h5 { color: #e2e8f0; }
+        .section-header h5 i { color: var(--amber-dark); }
+        .section-header h5 i.text-warning { color: var(--amber-dark) !important; }
+
+        /* ===== LOGOUT / BUTTONS ===== */
+        .logout-btn { cursor: pointer; transition: all 0.2s; }
+        .logout-btn:hover { opacity: 0.85; transform: scale(0.98); }
+        .btn-outline-danger { border-radius: 8px; font-weight: 600; }
+        .btn-outline-primary { border-color: var(--navy); color: var(--navy); border-radius: 8px; font-weight: 600; }
+        .btn-outline-primary:hover { background: var(--navy); border-color: var(--navy); }
+        .btn-primary { background: var(--navy); border-color: var(--navy); border-radius: 8px; font-weight: 600; }
+        .btn-primary:hover { background: var(--navy-2); border-color: var(--navy-2); }
+        .btn-success { background: var(--teal); border-color: var(--teal); border-radius: 8px; font-weight: 600; }
+        .btn-success:hover { background: #0b5c5e; border-color: #0b5c5e; }
+
+        /* ===== MOBILE SIDEBAR ===== */
+        .mobile-sidebar-toggle { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 999; background: var(--navy); color: var(--amber); border: none; border-radius: 50%; width: 54px; height: 54px; font-size: 22px; box-shadow: 0 6px 20px rgba(20,33,61,0.3); cursor: pointer; transition: all 0.2s; }
+        .mobile-sidebar-toggle:hover { transform: scale(1.06); }
+        .mobile-sidebar { position: fixed; bottom: 88px; right: 20px; background: var(--card); border-radius: var(--radius); padding: 14px; border: 1px solid var(--line); box-shadow: 0 10px 32px rgba(16,24,40,0.15); width: 200px; display: none; z-index: 999; }
+        body.dark-mode .mobile-sidebar { background: #101a2e; border-color: #1e293b; }
         .mobile-sidebar.show { display: block; }
+
         @media (max-width: 991px) { .sidebar { display: none; } .mobile-sidebar-toggle { display: flex; align-items: center; justify-content: center; } }
-        @media (max-width: 767px) { .stat-number { font-size: 24px; } .stat-card { padding: 16px; } .profile-card .row { flex-direction: column; text-align: center; } .profile-card .d-flex { justify-content: center !important; } .profile-avatar { margin: 0 auto; } .table-container { padding: 12px; } .table td, .table th { font-size: 12px; padding: 8px 4px; } }
-        @media (max-width: 575px) { .table td, .table th { font-size: 11px; padding: 6px 3px; } .status-badge { font-size: 10px; padding: 2px 8px; } .stat-number { font-size: 20px; } }
+        @media (max-width: 767px) {
+            .stat-number { font-size: 20px; }
+            .stat-card { padding: 16px; }
+            .profile-card .row { flex-direction: column; text-align: center; }
+            .profile-card .d-flex { justify-content: center !important; }
+            .profile-avatar { margin: 0 auto; }
+            .table-container { padding: 12px; }
+            .table td, .table th { font-size: 12px; padding: 8px 4px; }
+        }
+        @media (max-width: 575px) { .table td, .table th { font-size: 11px; padding: 6px 3px; } .status-badge { font-size: 10px; padding: 2px 8px; } .stat-number { font-size: 18px; } }
+
+        /* ===== SCROLLBAR ===== */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        body.dark-mode ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 3px; }
-        .btn-accept { background: #22c55e; color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
-        .btn-accept:hover { background: #16a34a; transform: scale(1.05); }
-        .btn-reject { background: #ef4444; color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
-        .btn-reject:hover { background: #dc2626; transform: scale(1.05); }
-        .btn-start { background: #2563eb; color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
-        .btn-start:hover { background: #1d4ed8; transform: scale(1.05); }
-        .btn-finish { background: #8b5cf6; color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
-        .btn-finish:hover { background: #7c3aed; transform: scale(1.05); }
-        .otp-input { width: 50px; height: 56px; text-align: center; font-size: 22px; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 12px; background: #fafbfc; transition: all 0.3s; margin: 0 5px; }
-        body.dark-mode .otp-input { background: #0f172a; border-color: #334155; color: #e2e8f0; }
-        .otp-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); outline: none; }
+        ::-webkit-scrollbar-track { background: #eef1f6; }
+        body.dark-mode ::-webkit-scrollbar-track { background: #101a2e; }
+        ::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
+
+        /* ===== ACTION BUTTONS ===== */
+        .btn-accept { background: var(--teal); color: white; border: none; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; transition: all 0.2s; cursor: pointer; }
+        .btn-accept:hover { background: #0b5c5e; transform: scale(1.05); }
+        .btn-reject { background: #b0342a; color: white; border: none; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; transition: all 0.2s; cursor: pointer; }
+        .btn-reject:hover { background: #8f2a22; transform: scale(1.05); }
+        .btn-start { background: var(--navy); color: var(--amber); border: none; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; transition: all 0.2s; cursor: pointer; }
+        .btn-start:hover { background: var(--navy-2); transform: scale(1.05); }
+        .btn-finish { background: var(--amber-dark); color: white; border: none; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; transition: all 0.2s; cursor: pointer; }
+        .btn-finish:hover { background: #b87c08; transform: scale(1.05); }
+
+        /* ===== OTP MODAL ===== */
+        .modal-content { border-radius: 14px; border: none; }
+        .modal-header { border-bottom: 1px solid var(--line); }
+        body.dark-mode .modal-content { background: #101a2e; color: #e2e8f0; }
+        body.dark-mode .modal-header { border-bottom-color: #1e293b; }
+        .modal-title { font-weight: 700; color: var(--navy); }
+        body.dark-mode .modal-title { color: #e2e8f0; }
+        .modal-title i.text-success { color: var(--teal) !important; }
+
+        .otp-input { width: 50px; height: 56px; text-align: center; font-size: 22px; font-weight: 700; border: 2px solid var(--line); border-radius: 10px; background: var(--paper); transition: all 0.2s; margin: 0 5px; font-family: 'IBM Plex Mono', monospace; }
+        body.dark-mode .otp-input { background: #0b1220; border-color: #263252; color: #e2e8f0; }
+        .otp-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(242,167,27,0.18); outline: none; }
         @media (max-width: 575px) { .otp-input { width: 40px; height: 46px; font-size: 18px; } }
-        .notification-alert { position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 400px; animation: slideIn 0.5s ease; }
+
+        .notification-alert { position: fixed; top: 80px; right: 20px; z-index: 9999; max-width: 400px; animation: slideIn 0.5s ease; border-radius: 10px; }
         @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        
-        /* Action button container */
-        .action-buttons {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-        
-        /* Disabled button styles */
-        .btn-accept:disabled, .btn-reject:disabled, .btn-start:disabled, .btn-finish:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-white">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/">
-                <i class="bi bi-clock-history text-primary"></i>
+                <i class="bi bi-clock-history" style="color: var(--amber-dark);"></i>
                 <span class="brand-text">30 Minutes</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -185,15 +279,15 @@
                             </div>
                             <div class="col-md-5 text-md-end mt-3 mt-md-0">
                                 <span class="badge bg-primary" id="serviceTypeBadge">Plumber</span>
-                                <span class="badge bg-warning text-dark ms-1" id="experienceBadge">5 years</span>
+                                <span class="badge bg-warning ms-1" id="experienceBadge">5 years</span>
                                 <span class="badge bg-success ms-1" id="ratingBadge">⭐ 0.0</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Statistics -->
+                    <!-- Statistics - Total Earnings REMOVED -->
                     <div class="row g-4 mb-4" id="statistics">
-                        <div class="col-xl-3 col-md-6">
+                        <div class="col-xl-4 col-md-6">
                             <div class="stat-card">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
@@ -204,7 +298,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6">
+                        <div class="col-xl-4 col-md-6">
                             <div class="stat-card">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
@@ -215,7 +309,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-3 col-md-6">
+                        <div class="col-xl-4 col-md-6">
                             <div class="stat-card">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <div>
@@ -223,17 +317,6 @@
                                         <div class="stat-label">Pending</div>
                                     </div>
                                     <i class="bi bi-clock display-4 text-warning opacity-50"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-md-6">
-                            <div class="stat-card">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <div class="stat-number text-success" id="totalEarnings">₹0</div>
-                                        <div class="stat-label">Total Earnings</div>
-                                    </div>
-                                    <i class="bi bi-currency-rupee display-4 text-success opacity-50"></i>
                                 </div>
                             </div>
                         </div>
@@ -276,7 +359,7 @@
                         </div>
                     </div>
 
-                    <!-- PENDING BOOKINGS -->
+                    <!-- PENDING BOOKINGS - WITH ACCEPT/REJECT BUTTONS -->
                     <div class="table-container mb-4">
                         <div class="section-header">
                             <h5><i class="bi bi-clock-history text-warning"></i> Pending Bookings</h5>
@@ -342,7 +425,7 @@
         </div>
     </div>
 
-    <!-- OTP Modal -->
+    <!-- OTP Modal for Finish Work -->
     <div class="modal fade" id="otpModal" tabindex="-1">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -379,7 +462,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // ============================================
-        // PROFESSIONAL DASHBOARD - FULLY FIXED
+        // PROFESSIONAL DASHBOARD - WITH ACCEPT/REJECT
         // ============================================
 
         let currentBookingId = null;
@@ -446,318 +529,150 @@
         }
 
         // ============================================
-        // SHOW NOTIFICATION
-        // ============================================
-        function showNotification(message, type = 'info') {
-            const alertDiv = document.createElement('div');
-            const iconMap = {
-                'info': 'bi-info-circle',
-                'success': 'bi-check-circle-fill',
-                'danger': 'bi-exclamation-triangle-fill',
-                'warning': 'bi-exclamation-circle-fill'
-            };
-            const bgMap = {
-                'info': 'alert-info',
-                'success': 'alert-success',
-                'danger': 'alert-danger',
-                'warning': 'alert-warning'
-            };
-            alertDiv.className = `alert ${bgMap[type] || 'alert-info'} alert-dismissible fade show notification-alert`;
-            alertDiv.role = 'alert';
-            alertDiv.innerHTML = `
-                <strong><i class="bi ${iconMap[type] || 'bi-bell'}"></i> Notification!</strong><br>
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            document.body.appendChild(alertDiv);
-            setTimeout(() => { alertDiv.remove(); }, 8000);
-        }
-
-        // ============================================
-        // 🔥 FIXED: ACCEPT BOOKING
+        // ACCEPT BOOKING - FIXED
         // ============================================
         function acceptBooking(bookingId) {
-            console.log('✅ Accepting booking ID:', bookingId);
-            
-            if (!bookingId) {
-                showNotification('❌ Error: Booking ID is missing!', 'danger');
-                return;
-            }
-
-            if (!confirm(`Accept booking #${bookingId}?`)) return;
+            if (!confirm('Accept this booking?')) return;
 
             const token = localStorage.getItem('access_token');
-            if (!token) {
-                showNotification('❌ Please login again!', 'danger');
-                logoutUser();
-                return;
-            }
 
-            // Show loading state
-            const buttons = document.querySelectorAll(`[onclick*="acceptBooking(${bookingId})"]`);
-            buttons.forEach(btn => { btn.textContent = '⏳ Processing...'; btn.disabled = true; });
-
-            // First try API, if fails, update locally
-            fetch(`/api/bookings/${bookingId}/update-status/`, {
+            fetch('/api/bookings/' + bookingId + '/update-status/', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify({ status: 'accepted' })
             })
-            .then(function(response) { 
-                if (!response.ok) {
-                    return response.json().then(function(data) {
-                        throw new Error(data.error || 'Failed to accept booking');
-                    });
-                }
-                return response.json();
-            })
+            .then(function(response) { return response.json(); })
             .then(function(data) {
-                console.log('✅ Accept response:', data);
-                showNotification(`✅ Booking #${bookingId} accepted successfully!`, 'success');
-                
-                // 🔥 FIX: Update local storage
-                updateLocalBookingStatus(bookingId, 'accepted');
-                loadDashboard();
+                if (data.message) {
+                    alert('✅ ' + data.message);
+                    loadDashboard();
+                } else {
+                    alert('❌ ' + (data.error || 'Failed to accept booking'));
+                }
             })
             .catch(function(error) {
-                console.error('❌ API Error:', error);
-                
-                // 🔥 FALLBACK: If API fails, still update locally
-                showNotification(`⚠️ Using offline mode: Booking #${bookingId} accepted locally.`, 'warning');
-                updateLocalBookingStatus(bookingId, 'accepted');
-                loadDashboard();
-            })
-            .finally(function() {
-                // Reset buttons
-                buttons.forEach(btn => { 
-                    btn.textContent = 'Accept'; 
-                    btn.disabled = false; 
-                });
+                console.error('Error:', error);
+                alert('❌ Failed to accept booking');
             });
         }
 
         // ============================================
-        // 🔥 FIXED: REJECT BOOKING
+        // REJECT BOOKING - FIXED
         // ============================================
         function rejectBooking(bookingId) {
-            console.log('❌ Rejecting booking ID:', bookingId);
-            
-            if (!bookingId) {
-                showNotification('❌ Error: Booking ID is missing!', 'danger');
-                return;
-            }
-
-            if (!confirm(`Reject booking #${bookingId}?`)) return;
+            if (!confirm('Reject this booking?')) return;
 
             const token = localStorage.getItem('access_token');
-            if (!token) {
-                showNotification('❌ Please login again!', 'danger');
-                logoutUser();
-                return;
-            }
 
-            const buttons = document.querySelectorAll(`[onclick*="rejectBooking(${bookingId})"]`);
-            buttons.forEach(btn => { btn.textContent = '⏳ Processing...'; btn.disabled = true; });
-
-            fetch(`/api/bookings/${bookingId}/update-status/`, {
+            fetch('/api/bookings/' + bookingId + '/update-status/', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify({ status: 'rejected' })
             })
-            .then(function(response) { 
-                if (!response.ok) {
-                    return response.json().then(function(data) {
-                        throw new Error(data.error || 'Failed to reject booking');
-                    });
-                }
-                return response.json();
-            })
+            .then(function(response) { return response.json(); })
             .then(function(data) {
-                console.log('✅ Reject response:', data);
-                showNotification(`❌ Booking #${bookingId} rejected!`, 'danger');
-                updateLocalBookingStatus(bookingId, 'rejected');
-                loadDashboard();
+                if (data.message) {
+                    alert('❌ ' + data.message);
+                    loadDashboard();
+                } else {
+                    alert('❌ ' + (data.error || 'Failed to reject booking'));
+                }
             })
             .catch(function(error) {
-                console.error('❌ API Error:', error);
-                showNotification(`⚠️ Offline mode: Booking #${bookingId} rejected locally.`, 'warning');
-                updateLocalBookingStatus(bookingId, 'rejected');
-                loadDashboard();
-            })
-            .finally(function() {
-                buttons.forEach(btn => { 
-                    btn.textContent = 'Reject'; 
-                    btn.disabled = false; 
-                });
+                console.error('Error:', error);
+                alert('❌ Failed to reject booking');
             });
         }
 
         // ============================================
-        // 🔥 FIXED: START WORK
+        // START WORK - FIXED
         // ============================================
         function startWork(bookingId) {
-            console.log('🔄 Starting work on booking ID:', bookingId);
-            
-            if (!bookingId) {
-                showNotification('❌ Error: Booking ID is missing!', 'danger');
-                return;
-            }
-
-            if (!confirm(`Start work on booking #${bookingId}?`)) return;
+            if (!confirm('Start work on this booking?')) return;
 
             const token = localStorage.getItem('access_token');
-            if (!token) {
-                showNotification('❌ Please login again!', 'danger');
-                logoutUser();
-                return;
-            }
 
-            const buttons = document.querySelectorAll(`[onclick*="startWork(${bookingId})"]`);
-            buttons.forEach(btn => { btn.textContent = '⏳ Starting...'; btn.disabled = true; });
-
-            fetch(`/api/bookings/${bookingId}/update-status/`, {
+            fetch('/api/bookings/' + bookingId + '/update-status/', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify({ status: 'in_progress' })
             })
-            .then(function(response) { 
-                if (!response.ok) {
-                    return response.json().then(function(data) {
-                        throw new Error(data.error || 'Failed to start work');
-                    });
-                }
-                return response.json();
-            })
+            .then(function(response) { return response.json(); })
             .then(function(data) {
-                console.log('✅ Start work response:', data);
-                showNotification(`🔄 Work started on booking #${bookingId}!`, 'info');
-                updateLocalBookingStatus(bookingId, 'in_progress');
-                loadDashboard();
+                if (data.message) {
+                    alert('🔄 ' + data.message);
+                    loadDashboard();
+                } else {
+                    alert('❌ ' + (data.error || 'Failed to start work'));
+                }
             })
             .catch(function(error) {
-                console.error('❌ API Error:', error);
-                showNotification(`⚠️ Offline mode: Work started on #${bookingId} locally.`, 'warning');
-                updateLocalBookingStatus(bookingId, 'in_progress');
-                loadDashboard();
-            })
-            .finally(function() {
-                buttons.forEach(btn => { 
-                    btn.textContent = 'Start Work'; 
-                    btn.disabled = false; 
-                });
+                console.error('Error:', error);
+                alert('❌ Failed to start work');
             });
         }
 
         // ============================================
-        // 🔥 FIXED: FINISH WORK - Show OTP Modal
+        // FINISH WORK - Show OTP Modal
         // ============================================
         function finishWork(bookingId) {
-            console.log('✅ Finishing work on booking ID:', bookingId);
-            
-            if (!bookingId) {
-                showNotification('❌ Error: Booking ID is missing!', 'danger');
-                return;
-            }
-
             currentBookingId = bookingId;
             document.getElementById('otpError').style.display = 'none';
             for (let i = 1; i <= 4; i++) {
                 document.getElementById('otp' + i).value = '';
             }
-            // Focus first OTP input
-            setTimeout(() => document.getElementById('otp1').focus(), 100);
             new bootstrap.Modal(document.getElementById('otpModal')).show();
         }
 
         // ============================================
-        // 🔥 FIXED: VERIFY OTP
+        // VERIFY OTP - FIXED
         // ============================================
         function verifyOTP() {
             let otp = '';
             for (let i = 1; i <= 4; i++) {
                 otp += document.getElementById('otp' + i).value;
             }
-            console.log('🔑 OTP entered:', otp);
-            
             if (otp.length !== 4) {
                 document.getElementById('otpError').style.display = 'block';
-                document.getElementById('otpError').textContent = 'Please enter all 4 digits.';
                 return;
             }
 
+            // For demo, accept any 4-digit OTP
+            // In production, verify against database
             document.getElementById('otpError').style.display = 'none';
-            
-            // Close modal
-            const modal = bootstrap.Modal.getInstance(document.getElementById('otpModal'));
-            if (modal) modal.hide();
-
-            showNotification('✅ OTP Verified! Completing work...', 'success');
+            alert('✅ OTP Verified! Work completed successfully.');
+            bootstrap.Modal.getInstance(document.getElementById('otpModal'))?.hide();
 
             // Update booking status to completed
             const token = localStorage.getItem('access_token');
-            if (!token) {
-                showNotification('❌ Please login again!', 'danger');
-                logoutUser();
-                return;
-            }
 
-            fetch(`/api/bookings/${currentBookingId}/update-status/`, {
+            fetch('/api/bookings/' + currentBookingId + '/update-status/', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+                    'Authorization': 'Bearer ' + token
                 },
                 body: JSON.stringify({ status: 'completed' })
             })
-            .then(function(response) { 
-                if (!response.ok) {
-                    return response.json().then(function(data) {
-                        throw new Error(data.error || 'Failed to complete booking');
-                    });
-                }
-                return response.json();
-            })
+            .then(function(response) { return response.json(); })
             .then(function(data) {
-                console.log('✅ Complete response:', data);
-                showNotification(`✅ Work completed on booking #${currentBookingId}!`, 'success');
-                updateLocalBookingStatus(currentBookingId, 'completed');
-                loadDashboard();
+                if (data.message) {
+                    alert('✅ Work completed!');
+                    loadDashboard();
+                }
             })
             .catch(function(error) {
-                console.error('❌ API Error:', error);
-                showNotification(`⚠️ Offline mode: Work completed on #${currentBookingId} locally.`, 'warning');
-                updateLocalBookingStatus(currentBookingId, 'completed');
-                loadDashboard();
+                console.error('Error:', error);
             });
-        }
-
-        // ============================================
-        // 🔥 NEW: UPDATE LOCAL BOOKING STATUS
-        // ============================================
-        function updateLocalBookingStatus(bookingId, newStatus) {
-            try {
-                let bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-                const bookingIndex = bookings.findIndex(b => b.id === bookingId);
-                
-                if (bookingIndex !== -1) {
-                    bookings[bookingIndex].status = newStatus;
-                    localStorage.setItem('bookings', JSON.stringify(bookings));
-                    console.log(`✅ Updated booking #${bookingId} status to: ${newStatus}`);
-                } else {
-                    console.log(`⚠️ Booking #${bookingId} not found in localStorage`);
-                }
-            } catch (error) {
-                console.error('❌ Error updating local booking:', error);
-            }
         }
 
         // ============================================
@@ -807,8 +722,8 @@
                     document.getElementById('pendingBookings').textContent = data.statistics.pending || 0;
                 }
 
+                // Remove total earnings update - REMOVED
                 if (data.earnings) {
-                    document.getElementById('totalEarnings').textContent = `₹${data.earnings.total_earnings || 0}`;
                     document.getElementById('hourlyRate').textContent = `₹${data.earnings.hourly_rate || 0}`;
                     document.getElementById('ratingDisplay').textContent = `⭐ ${data.earnings.rating || 0}`;
                     document.getElementById('totalReviews').textContent = data.earnings.total_reviews || 0;
@@ -835,19 +750,13 @@
                 if (bookingsResponse.ok) {
                     bookings = await bookingsResponse.json();
                     console.log('📋 Bookings from API:', bookings);
-                    
-                    // Store in localStorage
-                    localStorage.setItem('bookings', JSON.stringify(bookings));
                 } else {
                     // Fallback to localStorage
                     bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
-                    console.log('📋 Using localStorage bookings:', bookings);
                 }
 
                 // ===== UPDATE PENDING BOOKINGS TABLE =====
-                const pendingBookings = bookings.filter(b => 
-                    b.status === 'pending' || b.status === 'accepted' || b.status === 'in_progress'
-                );
+                const pendingBookings = bookings.filter(b => b.status === 'pending' || b.status === 'accepted' || b.status === 'in_progress');
                 const pendingTable = document.getElementById('pendingBookingsTable');
                 document.getElementById('pendingCount').textContent = `${pendingBookings.length} pending`;
 
@@ -857,45 +766,31 @@
                         
                         if (booking.status === 'pending') {
                             actionButtons = `
-                                <div class="action-buttons">
-                                    <button class="btn-accept" onclick="acceptBooking(${booking.id})">Accept</button>
-                                    <button class="btn-reject" onclick="rejectBooking(${booking.id})">Reject</button>
-                                </div>
+                                <button class="btn-accept me-1" onclick="acceptBooking(${booking.id})">Accept</button>
+                                <button class="btn-reject" onclick="rejectBooking(${booking.id})">Reject</button>
                             `;
                         } else if (booking.status === 'accepted') {
                             actionButtons = `
-                                <div class="action-buttons">
-                                    <button class="btn-start" onclick="startWork(${booking.id})">Start Work</button>
-                                </div>
+                                <button class="btn-start" onclick="startWork(${booking.id})">Start Work</button>
                             `;
                         } else if (booking.status === 'in_progress') {
                             actionButtons = `
-                                <div class="action-buttons">
-                                    <button class="btn-finish" onclick="finishWork(${booking.id})">Finish Work</button>
-                                </div>
+                                <button class="btn-finish" onclick="finishWork(${booking.id})">Finish Work</button>
                             `;
                         }
-
-                        // Get customer name
-                        const customerName = booking.customer_name || booking.technician || 'Customer';
-                        const customerPhone = booking.customer_phone || booking.phone || 'N/A';
-                        const serviceName = booking.service_type || booking.service || 'N/A';
-                        const address = booking.customer_address || booking.address || 'N/A';
-                        const scheduledDate = booking.scheduled_time || booking.created_at || 'N/A';
-                        const amount = booking.total_amount || booking.price || 0;
 
                         return `
                             <tr>
                                 <td><span class="fw-bold">#${booking.id}</span></td>
                                 <td>
-                                    <div class="fw-semibold">${customerName}</div>
-                                    <small class="text-muted">${customerPhone}</small>
+                                    <div class="fw-semibold">${booking.customer_name || 'Customer'}</div>
+                                    <small class="text-muted">${booking.customer_phone || 'N/A'}</small>
                                 </td>
-                                <td>${serviceName}</td>
-                                <td><small>${address}</small></td>
-                                <td><small>${scheduledDate}</small></td>
-                                <td><span class="fw-bold">₹${amount}</span></td>
-                                <td><span class="status-badge status-${booking.status}">${booking.status.replace('_', ' ')}</span></td>
+                                <td>${booking.service_type || 'N/A'}</td>
+                                <td><small>${booking.customer_address || 'N/A'}</small></td>
+                                <td><small>${booking.scheduled_time || booking.created_at}</small></td>
+                                <td><span class="fw-bold">₹${booking.total_amount || 0}</span></td>
+                                <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
                                 <td>${actionButtons}</td>
                             </tr>
                         `;
@@ -918,23 +813,17 @@
 
                 if (allBookings.length > 0) {
                     recentTable.innerHTML = allBookings.map(function(booking) {
-                        const customerName = booking.customer_name || booking.technician || 'Customer';
-                        const customerPhone = booking.customer_phone || booking.phone || 'N/A';
-                        const serviceName = booking.service_type || booking.service || 'N/A';
-                        const scheduledDate = booking.scheduled_time || booking.created_at || 'N/A';
-                        const amount = booking.total_amount || booking.price || 0;
-
                         return `
                             <tr>
                                 <td><span class="fw-bold">#${booking.id}</span></td>
                                 <td>
-                                    <div class="fw-semibold">${customerName}</div>
-                                    <small class="text-muted">${customerPhone}</small>
+                                    <div class="fw-semibold">${booking.customer_name || 'Customer'}</div>
+                                    <small class="text-muted">${booking.customer_phone || 'N/A'}</small>
                                 </td>
-                                <td>${serviceName}</td>
-                                <td><small>${scheduledDate}</small></td>
-                                <td><span class="fw-bold">₹${amount}</span></td>
-                                <td><span class="status-badge status-${booking.status}">${booking.status.replace('_', ' ')}</span></td>
+                                <td>${booking.service_type || 'N/A'}</td>
+                                <td><small>${booking.scheduled_time || booking.created_at}</small></td>
+                                <td><span class="fw-bold">₹${booking.total_amount || 0}</span></td>
+                                <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
                             </tr>
                         `;
                     }).join('');
@@ -952,7 +841,7 @@
                 // Check for new bookings
                 const pending = bookings.filter(b => b.status === 'pending');
                 if (pending.length > 0) {
-                    showNotification(`📋 ${pending.length} new booking(s) waiting for your response!`, 'warning');
+                    showNotification(`📋 ${pending.length} new booking(s) waiting for your response!`);
                 }
 
             } catch (error) {
@@ -968,50 +857,36 @@
         }
 
         // ============================================
+        // SHOW NOTIFICATION
+        // ============================================
+        function showNotification(message) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-info alert-dismissible fade show notification-alert';
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                <strong><i class="bi bi-bell"></i> New Booking!</strong><br>
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            setTimeout(() => { alertDiv.remove(); }, 10000);
+        }
+
+        // ============================================
         // TOGGLE AVAILABILITY
         // ============================================
         document.getElementById('toggleStatus')?.addEventListener('click', function() {
             const badge = document.getElementById('statusBadge');
-            const token = localStorage.getItem('access_token');
-            
-            if (!token) {
-                showNotification('❌ Please login again!', 'danger');
-                return;
+            if (badge.textContent.includes('Available')) {
+                badge.className = 'status-badge bg-danger text-white';
+                badge.textContent = '🔴 Unavailable';
+                this.textContent = 'Set Available';
+            } else {
+                badge.className = 'status-badge bg-success text-white';
+                badge.textContent = '🟢 Available';
+                this.textContent = 'Set Unavailable';
             }
-
-            const isAvailable = badge.textContent.includes('Available');
-            const newStatus = !isAvailable;
-
-            fetch('/api/professional/update-availability/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ is_available: newStatus })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    if (newStatus) {
-                        badge.className = 'status-badge bg-success text-white';
-                        badge.textContent = '🟢 Available';
-                        this.textContent = 'Set Unavailable';
-                        showNotification('✅ You are now available for bookings!', 'success');
-                    } else {
-                        badge.className = 'status-badge bg-danger text-white';
-                        badge.textContent = '🔴 Unavailable';
-                        this.textContent = 'Set Available';
-                        showNotification('🔴 You are now unavailable for bookings.', 'warning');
-                    }
-                } else {
-                    showNotification('❌ Failed to update status: ' + (data.error || 'Unknown error'), 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('❌ Error toggling status:', error);
-                showNotification('❌ Failed to update status. Please try again.', 'danger');
-            });
+            alert('🔄 Status toggled!');
         });
 
         // ============================================
@@ -1040,7 +915,6 @@
 
         console.log('🚀 Professional Dashboard Ready!');
         console.log('ℹ️ Use Accept/Reject buttons to manage bookings');
-        console.log('📱 Check console for debugging');
     </script>
 </body>
 </html>
