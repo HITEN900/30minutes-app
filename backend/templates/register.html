@@ -6,55 +6,87 @@
     <title>30 Minutes - Choose Registration</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #14213d;
+            --navy-2: #1c2c52;
+            --amber: #f2a71b;
+            --amber-dark: #d88f0a;
+            --teal: #0f7173;
+            --paper: #f5f6f8;
+            --card: #ffffff;
+            --line: #e3e6ec;
+            --muted: #64748b;
+        }
         * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .logo { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.01em; }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--navy);
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px),
+                linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+            background-size: 26px 26px, cover;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-        body.dark-mode { background: #0f172a; }
+        body.dark-mode {
+            background: #0b1220;
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(135deg, #0b1220 0%, #101a2e 100%);
+            background-size: 26px 26px, cover;
+        }
         .register-wrapper { width: 100%; max-width: 700px; }
         .register-card {
-            background: #ffffff; border-radius: 24px; padding: 45px 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            background: var(--card); border-radius: 18px; padding: 45px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            border: 1px solid var(--line);
         }
-        body.dark-mode .register-card { background: #1e293b; }
+        body.dark-mode .register-card { background: #101a2e; border-color: #1e293b; }
         .register-header { text-align: center; margin-bottom: 35px; }
         .register-header .logo {
-            font-size: 32px; font-weight: 800; color: #2563eb; text-decoration: none;
+            font-size: 28px; font-weight: 700; color: var(--navy); text-decoration: none;
         }
-        body.dark-mode .register-header .logo { color: #60a5fa; }
-        .register-header h2 { font-weight: 700; font-size: 28px; margin-top: 5px; }
-        .register-header p { color: #64748b; font-size: 15px; }
+        .register-header .logo i { color: var(--amber-dark); }
+        body.dark-mode .register-header .logo { color: #e2e8f0; }
+        .register-header h2 { font-weight: 700; font-size: 26px; margin-top: 8px; color: var(--navy); }
+        body.dark-mode .register-header h2 { color: #e2e8f0; }
+        .register-header p { color: var(--muted); font-size: 15px; }
         .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 25px; }
         .option-card {
-            border: 3px solid #e2e8f0; border-radius: 20px; padding: 40px 25px;
-            text-align: center; transition: all 0.3s; background: #fafbfc;
+            border: 2px solid var(--line); border-radius: 14px; padding: 40px 25px;
+            text-align: center; transition: all 0.25s; background: var(--paper);
             text-decoration: none; display: block;
         }
-        body.dark-mode .option-card { background: #0f172a; border-color: #334155; }
-        .option-card:hover { transform: translateY(-6px); box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
-        .option-card.user:hover { border-color: #2563eb; }
-        .option-card.professional:hover { border-color: #059669; }
-        .option-card .icon { font-size: 56px; margin-bottom: 15px; display: block; }
-        .option-card.user .icon { color: #2563eb; }
-        .option-card.professional .icon { color: #059669; }
-        .option-card h4 { font-weight: 700; margin-bottom: 8px; }
-        .option-card p { color: #64748b; font-size: 14px; }
+        body.dark-mode .option-card { background: #0b1220; border-color: #263252; }
+        .option-card:hover { transform: translateY(-6px); box-shadow: 0 12px 32px rgba(20,33,61,0.12); }
+        .option-card.user:hover { border-color: var(--navy); }
+        .option-card.professional:hover { border-color: var(--teal); }
+        .option-card .icon { font-size: 52px; margin-bottom: 15px; display: block; }
+        .option-card.user .icon { color: var(--navy); }
+        .option-card.professional .icon { color: var(--teal); }
+        .option-card h4 { font-weight: 700; margin-bottom: 8px; color: var(--navy); }
+        body.dark-mode .option-card h4 { color: #e2e8f0; }
+        .option-card p { color: var(--muted); font-size: 14px; }
         .option-card .badge {
-            padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600;
+            padding: 5px 14px; border-radius: 6px; font-size: 11px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.04em;
+            font-family: 'IBM Plex Mono', monospace;
         }
-        .option-card.user .badge { background: #dbeafe; color: #2563eb; }
-        .option-card.professional .badge { background: #d1fae5; color: #059669; }
+        .option-card.user .badge { background: #eef1f6; color: var(--navy); }
+        .option-card.professional .badge { background: #e2f3f2; color: var(--teal); }
+        body.dark-mode .option-card.user .badge { background: #1c2c52; color: #9db4e6; }
+        body.dark-mode .option-card.professional .badge { background: #0c3536; color: #5fd6d3; }
         .back-link {
-            color: #64748b; text-decoration: none; font-size: 14px; font-weight: 500;
+            color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500;
         }
-        .back-link:hover { color: #2563eb; }
+        .back-link:hover { color: var(--navy); }
+        body.dark-mode .back-link:hover { color: var(--amber); }
         @media (max-width: 576px) {
             .register-card { padding: 30px 20px; }
             .option-grid { grid-template-columns: 1fr; }

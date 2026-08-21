@@ -1,6 +1,4 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,113 +6,189 @@
     <title>30 Minutes - User Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --navy: #14213d;
+            --navy-2: #1c2c52;
+            --amber: #f2a71b;
+            --amber-dark: #d88f0a;
+            --teal: #0f7173;
+            --paper: #f5f6f8;
+            --card: #ffffff;
+            --line: #e3e6ec;
+            --muted: #64748b;
+        }
         * { font-family: 'Inter', sans-serif; margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #f0f4ff; transition: all 0.3s ease; min-height: 100vh; }
-        body.dark-mode { background: #0f172a; color: #e2e8f0; }
-        .navbar { background: white !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04); padding: 10px 0; position: sticky; top: 0; z-index: 1000; }
-        body.dark-mode .navbar { background: #1e293b !important; }
-        .brand-text { font-weight: 700; font-size: 1.25rem; color: #0f172a; }
+        h1, h2, h3, h4, h5, h6, .brand-text, .logo { font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.01em; }
+
+        body { background: var(--paper); transition: all 0.3s ease; min-height: 100vh; }
+        body.dark-mode { background: #0b1220; color: #e2e8f0; }
+
+        .navbar { background: white !important; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 10px 0; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--line); }
+        body.dark-mode .navbar { background: #101a2e !important; border-bottom-color: #1e293b; }
+        .brand-text { font-weight: 700; font-size: 1.25rem; color: var(--navy); }
         body.dark-mode .brand-text { color: #e2e8f0; }
-        .nav-link { font-weight: 500; color: #64748b; padding: 8px 16px !important; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
+        .navbar-brand i { color: var(--amber-dark); }
+
+        .nav-link { font-weight: 500; color: var(--muted); padding: 8px 16px !important; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
         body.dark-mode .nav-link { color: #94a3b8; }
-        .nav-link:hover, .nav-link.active { color: #2563eb !important; background: #dbeafe; }
-        body.dark-mode .nav-link:hover, body.dark-mode .nav-link.active { background: rgba(37,99,235,0.15); color: #60a5fa !important; }
-        .dark-mode-toggle { background: transparent; border: none; color: #64748b; cursor: pointer; font-size: 20px; padding: 8px; border-radius: 50%; transition: all 0.3s; }
+        .nav-link:hover, .nav-link.active { color: var(--navy) !important; background: #eef1f6; }
+        body.dark-mode .nav-link:hover, body.dark-mode .nav-link.active { background: #1c2c52; color: #9db4e6 !important; }
+
+        .dark-mode-toggle { background: transparent; border: none; color: var(--muted); cursor: pointer; font-size: 20px; padding: 8px; border-radius: 50%; transition: all 0.3s; }
         body.dark-mode .dark-mode-toggle { color: #94a3b8; }
-        .dark-mode-toggle:hover { background: #f1f5f9; color: #2563eb; }
-        body.dark-mode .dark-mode-toggle:hover { background: #0f172a; color: #60a5fa; }
-        .service-card { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid transparent; cursor: pointer; }
-        body.dark-mode .service-card { background: #1e293b; }
-        .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: #dbeafe; }
-        .service-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px; background: #dbeafe; color: #2563eb; }
-        body.dark-mode .service-icon { background: #1e3a5f; color: #60a5fa; }
-        .technician-card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid transparent; margin-bottom: 12px; }
-        body.dark-mode .technician-card { background: #1e293b; }
-        .technician-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: #dbeafe; }
-        .btn-primary { background: #2563eb; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
-        .btn-primary:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(37,99,235,0.3); }
-        .btn-success { background: #22c55e; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
-        .btn-success:hover { background: #16a34a; transform: translateY(-2px); }
-        .btn-danger { background: #ef4444; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
-        .btn-danger:hover { background: #dc2626; transform: translateY(-2px); }
-        .btn-outline-secondary { border: 2px solid #94a3b8; color: #64748b; border-radius: 12px; font-weight: 600; }
-        .btn-outline-secondary:hover { background: #f1f5f9; }
-        .btn-outline-primary { border: 2px solid #2563eb; color: #2563eb; border-radius: 12px; font-weight: 600; transition: all 0.3s; }
-        .btn-outline-primary:hover { background: #2563eb; color: white; }
+        .dark-mode-toggle:hover { background: #eef1f6; color: var(--navy); }
+        body.dark-mode .dark-mode-toggle:hover { background: #1c2c52; color: var(--amber); }
+
+        .service-card { background: var(--card); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid var(--line); cursor: pointer; }
+        body.dark-mode .service-card { background: #101a2e; border-color: #1e293b; }
+        .service-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: var(--amber); }
+        .service-icon { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 10px; background: #eef1f6; color: var(--navy); }
+        body.dark-mode .service-icon { background: #1c2c52; color: #9db4e6; }
+
+        .technician-card { background: var(--card); border-radius: 16px; padding: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.04); transition: all 0.3s; border: 1px solid var(--line); margin-bottom: 12px; }
+        body.dark-mode .technician-card { background: #101a2e; border-color: #1e293b; }
+        .technician-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); border-color: var(--amber); }
+
+        .btn-primary { background: var(--navy); border: none; border-radius: 12px; font-weight: 700; padding: 10px 20px; transition: all 0.3s; color: var(--amber); }
+        .btn-primary:hover { background: var(--navy-2); color: var(--amber); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(20,33,61,0.3); }
+        .btn-primary:focus, .btn-primary:active { background: var(--navy-2) !important; color: var(--amber) !important; box-shadow: none; }
+
+        .btn-success { background: var(--teal); border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
+        .btn-success:hover { background: #0b5c5e; transform: translateY(-2px); }
+
+        .btn-danger { background: #b91c1c; border: none; border-radius: 12px; font-weight: 600; padding: 10px 20px; transition: all 0.3s; }
+        .btn-danger:hover { background: #991b1b; transform: translateY(-2px); }
+
+        .btn-outline-secondary { border: 2px solid #94a3b8; color: var(--muted); border-radius: 12px; font-weight: 600; }
+        .btn-outline-secondary:hover { background: #eef1f6; }
+
+        .btn-outline-primary { border: 2px solid var(--navy); color: var(--navy); border-radius: 12px; font-weight: 600; transition: all 0.3s; }
+        .btn-outline-primary:hover { background: var(--navy); color: var(--amber); }
+        body.dark-mode .btn-outline-primary { border-color: #9db4e6; color: #9db4e6; }
+        body.dark-mode .btn-outline-primary:hover { background: #1c2c52; color: var(--amber); }
+
+        .btn-outline-danger { border: 2px solid #b91c1c; color: #b91c1c; }
+        .btn-outline-danger:hover { background: #b91c1c; color: #fff; }
+
         .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; display: inline-block; }
-        .status-pending { background: #fef3c7; color: #92400e; }
-        .status-confirmed { background: #dbeafe; color: #1e40af; }
-        .status-in_progress { background: #dbeafe; color: #1e40af; }
-        .status-completed { background: #d1fae5; color: #065f46; }
-        .status-cancelled { background: #fee2e2; color: #991b1b; }
-        body.dark-mode .status-pending { background: #78350f; color: #fcd34d; }
-        body.dark-mode .status-confirmed { background: #1e3a5f; color: #60a5fa; }
-        body.dark-mode .status-in_progress { background: #1e3a5f; color: #60a5fa; }
-        body.dark-mode .status-completed { background: #064e3b; color: #34d399; }
-        body.dark-mode .status-cancelled { background: #7f1d1d; color: #f87171; }
+        .status-pending { background: #fdf1de; color: #92400e; }
+        .status-confirmed { background: #e2ecfa; color: var(--navy); }
+        .status-in_progress { background: #e2ecfa; color: var(--navy); }
+        .status-completed { background: #e2f3f2; color: var(--teal); }
+        .status-cancelled { background: #fde2e2; color: #991b1b; }
+        body.dark-mode .status-pending { background: #3a2a0f; color: #fcd34d; }
+        body.dark-mode .status-confirmed { background: #1c2c52; color: #9db4e6; }
+        body.dark-mode .status-in_progress { background: #1c2c52; color: #9db4e6; }
+        body.dark-mode .status-completed { background: #0c3536; color: #5fd6d3; }
+        body.dark-mode .status-cancelled { background: #3f1414; color: #f87171; }
+
         .loading-spinner { display: flex; justify-content: center; align-items: center; min-height: 400px; flex-direction: column; gap: 20px; }
-        .spinner { width: 50px; height: 50px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
+        .spinner { width: 50px; height: 50px; border: 4px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin 1s linear infinite; }
+        body.dark-mode .spinner { border-color: #1e293b; border-top-color: var(--amber); }
         @keyframes spin { to { transform: rotate(360deg); } }
+
         .page-section { display: none; animation: fadeIn 0.3s ease; }
         .page-section.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
         .logout-btn { cursor: pointer; transition: all 0.3s; }
         .logout-btn:hover { opacity: 0.8; transform: scale(0.98); }
-        .otp-input { width: 50px; height: 56px; text-align: center; font-size: 22px; font-weight: 700; border: 2px solid #e2e8f0; border-radius: 12px; background: #fafbfc; transition: all 0.3s; margin: 0 5px; }
-        body.dark-mode .otp-input { background: #0f172a; border-color: #334155; color: #e2e8f0; }
-        .otp-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); outline: none; }
+
+        .otp-input { width: 50px; height: 56px; text-align: center; font-size: 22px; font-weight: 700; border: 2px solid var(--line); border-radius: 12px; background: var(--paper); transition: all 0.3s; margin: 0 5px; font-family: 'IBM Plex Mono', monospace; }
+        body.dark-mode .otp-input { background: #0b1220; border-color: #263252; color: #e2e8f0; }
+        .otp-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(20,33,61,0.1); outline: none; }
+        body.dark-mode .otp-input:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(242,167,27,0.18); }
         @media (max-width: 575px) { .otp-input { width: 40px; height: 46px; font-size: 18px; } }
+
         ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-track { background: #eef1f6; }
         body.dark-mode ::-webkit-scrollbar-track { background: #1e293b; }
-        ::-webkit-scrollbar-thumb { background: #2563eb; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb { background: var(--navy); border-radius: 3px; }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: var(--amber); }
+
         .notification-badge { position: relative; }
-        .notification-badge .badge { position: absolute; top: -5px; right: -5px; font-size: 10px; }
-        .profile-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; color: white; background: linear-gradient(135deg, #667eea, #764ba2); flex-shrink: 0; }
+        .notification-badge .badge { position: absolute; top: -5px; right: -5px; font-size: 10px; background: var(--amber-dark) !important; }
+
+        .profile-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; color: white; background: linear-gradient(135deg, var(--navy), var(--teal)); flex-shrink: 0; }
+
         .no-services { text-align: center; padding: 60px 20px; }
         .no-services i { font-size: 64px; color: #94a3b8; }
-        .no-services h5 { margin-top: 16px; font-weight: 600; }
-        .no-services p { color: #64748b; }
+        .no-services h5 { margin-top: 16px; font-weight: 700; color: var(--navy); }
+        .no-services p { color: var(--muted); }
         body.dark-mode .no-services i { color: #64748b; }
+        body.dark-mode .no-services h5 { color: #e2e8f0; }
         body.dark-mode .no-services p { color: #94a3b8; }
+
         .location-badge { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-        .location-badge.active { background: #d1fae5; color: #065f46; }
-        body.dark-mode .location-badge.active { background: #064e3b; color: #34d399; }
-        .location-badge.inactive { background: #fee2e2; color: #991b1b; }
-        body.dark-mode .location-badge.inactive { background: #7f1d1d; color: #f87171; }
-        .tech-details { font-size: 13px; color: #64748b; }
+        .location-badge.active { background: #e2f3f2; color: var(--teal); }
+        body.dark-mode .location-badge.active { background: #0c3536; color: #5fd6d3; }
+        .location-badge.inactive { background: #fde2e2; color: #991b1b; }
+        body.dark-mode .location-badge.inactive { background: #3f1414; color: #f87171; }
+
+        .tech-details { font-size: 13px; color: var(--muted); }
         body.dark-mode .tech-details { color: #94a3b8; }
         .technician-card .btn-book { margin-top: 10px; width: 100%; }
+
         .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
         .section-header h5 { font-weight: 700; margin: 0; }
+
         .no-technicians { text-align: center; padding: 40px 20px; }
         .no-technicians i { font-size: 48px; color: #94a3b8; }
-        .no-technicians h6 { margin-top: 12px; font-weight: 600; }
-        .no-technicians p { color: #64748b; }
+        .no-technicians h6 { margin-top: 12px; font-weight: 700; color: var(--navy); }
+        .no-technicians p { color: var(--muted); }
         body.dark-mode .no-technicians i { color: #64748b; }
+        body.dark-mode .no-technicians h6 { color: #e2e8f0; }
         body.dark-mode .no-technicians p { color: #94a3b8; }
+
         .address-input-group { position: relative; }
         .address-input-group .location-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 10; }
-        .location-loading { display: inline-block; width: 16px; height: 16px; border: 2px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .location-loading { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--line); border-top-color: var(--navy); border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px; }
+
         .booking-loading { display: none; }
         .booking-loading.show { display: inline-block; }
-        .btn-cancel { background: #ef4444; color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
-        .btn-cancel:hover { background: #dc2626; transform: scale(1.05); }
+
+        .btn-cancel { background: #b91c1c; color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: all 0.3s; cursor: pointer; }
+        .btn-cancel:hover { background: #991b1b; transform: scale(1.05); }
         .btn-cancel:disabled { opacity: 0.5; cursor: not-allowed; }
-        .timer-text { color: #64748b; font-size: 12px; }
+
+        .timer-text { color: var(--muted); font-size: 12px; }
         body.dark-mode .timer-text { color: #94a3b8; }
-        .otp-display { background: #dbeafe; padding: 10px 16px; border-radius: 12px; display: inline-block; font-weight: 700; font-size: 18px; letter-spacing: 4px; color: #1e40af; }
-        body.dark-mode .otp-display { background: #1e3a5f; color: #60a5fa; }
+
+        .otp-display { background: #eef1f6; padding: 10px 16px; border-radius: 12px; display: inline-block; font-weight: 700; font-size: 18px; letter-spacing: 4px; color: var(--navy); font-family: 'IBM Plex Mono', monospace; }
+        body.dark-mode .otp-display { background: #1c2c52; color: #9db4e6; }
+
+        .form-control, .form-select {
+            border-radius: 8px; padding: 12px 16px; border: 1.5px solid var(--line);
+            font-size: 14px; transition: all 0.2s;
+        }
+        body.dark-mode .form-control, body.dark-mode .form-select { background: #0b1220; border-color: #263252; color: #e2e8f0; }
+        .form-control:focus, .form-select:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(20,33,61,0.1); }
+        body.dark-mode .form-control:focus, body.dark-mode .form-select:focus { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(242,167,27,0.18); }
+        body.dark-mode .form-select option { background: #101a2e; color: #e2e8f0; }
+        .form-label { font-weight: 600; font-size: 13px; color: var(--navy); }
+        body.dark-mode .form-label { color: #e2e8f0; }
+
+        .modal-content { border-radius: 16px; border: 1px solid var(--line); }
+        body.dark-mode .modal-content { background: #101a2e; border-color: #1e293b; color: #e2e8f0; }
+        body.dark-mode .modal-header { border-bottom-color: #1e293b; }
+        .modal-title { font-weight: 700; color: var(--navy); }
+        body.dark-mode .modal-title { color: #e2e8f0; }
+        body.dark-mode .btn-close { filter: invert(1); }
+
+        .alert-info { background: #eef1f6; color: var(--navy); border: none; border-radius: 12px; }
+        body.dark-mode .alert-info { background: #1c2c52; color: #9db4e6; }
+        .badge.bg-success { background: var(--teal) !important; }
+        .badge.bg-light.text-dark { background: #eef1f6 !important; color: var(--navy) !important; }
+        body.dark-mode .badge.bg-light.text-dark { background: #1c2c52 !important; color: #9db4e6 !important; }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg bg-white">
         <div class="container">
             <a class="navbar-brand fw-bold" href="/user-dashboard/">
-                <i class="bi bi-clock-history text-primary"></i>
+                <i class="bi bi-clock-history"></i>
                 <span class="brand-text">30 Minutes</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -149,14 +223,14 @@
 
         <!-- ===== SERVICES SECTION ===== -->
         <div class="page-section active" id="servicesSection">
-            <h2 class="fw-bold mb-3"><i class="bi bi-grid text-primary"></i> Available Services</h2>
+            <h2 class="fw-bold mb-3"><i class="bi bi-grid" style="color:var(--amber-dark);"></i> Available Services</h2>
             <p class="text-muted mb-4">Select a service to find professionals near you</p>
             <div class="row g-4" id="servicesGrid"></div>
 
             <!-- Technicians List -->
             <div id="techniciansContainer" style="display:none;" class="mt-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="fw-bold"><i class="bi bi-geo-alt text-success"></i> Professionals Near You (Within 5km)</h5>
+                    <h5 class="fw-bold"><i class="bi bi-geo-alt" style="color:var(--teal);"></i> Professionals Near You (Within 5km)</h5>
                     <button class="btn btn-outline-secondary btn-sm" onclick="hideTechnicians()"><i class="bi bi-arrow-left"></i> Back to Services</button>
                 </div>
                 <div class="row g-4" id="techniciansGrid"></div>
@@ -165,7 +239,7 @@
 
         <!-- ===== BOOKINGS SECTION ===== -->
         <div class="page-section" id="bookingsSection">
-            <h2 class="fw-bold mb-3"><i class="bi bi-calendar-check text-primary"></i> My Bookings</h2>
+            <h2 class="fw-bold mb-3"><i class="bi bi-calendar-check" style="color:var(--amber-dark);"></i> My Bookings</h2>
             <p class="text-muted mb-4">View and manage your bookings</p>
             <div id="bookingsList">
                 <div class="text-center text-muted py-5">
@@ -178,7 +252,7 @@
 
         <!-- ===== NOTIFICATIONS SECTION ===== -->
         <div class="page-section" id="notificationsSection">
-            <h2 class="fw-bold mb-3"><i class="bi bi-bell text-primary"></i> Notifications</h2>
+            <h2 class="fw-bold mb-3"><i class="bi bi-bell" style="color:var(--amber-dark);"></i> Notifications</h2>
             <p class="text-muted mb-4">Your notifications and alerts</p>
             <div id="notificationsList">
                 <div class="text-center text-muted py-5">
@@ -195,7 +269,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-calendar-check text-primary"></i> Book Service</h5>
+                    <h5 class="modal-title"><i class="bi bi-calendar-check"></i> Book Service</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
@@ -243,7 +317,7 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-shield-lock text-success"></i> Verify OTP</h5>
+                    <h5 class="modal-title"><i class="bi bi-shield-lock" style="color:var(--teal);"></i> Verify OTP</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body text-center">
@@ -463,13 +537,13 @@
             };
 
             var serviceColors = {
-                'plumber': '#2563eb',
-                'electrician': '#f59e0b',
-                'carpenter': '#22c55e',
-                'mechanic': '#ef4444',
-                'painter': '#0ea5e9',
+                'plumber': '#14213d',
+                'electrician': '#d88f0a',
+                'carpenter': '#0f7173',
+                'mechanic': '#b91c1c',
+                'painter': '#14213d',
                 'cleaner': '#64748b',
-                'hvac': '#8b5cf6',
+                'hvac': '#0f7173',
                 'others': '#94a3b8'
             };
 
@@ -477,7 +551,7 @@
             for (var serviceType in servicesMap) {
                 var count = servicesMap[serviceType].length;
                 var icon = serviceIcons[serviceType] || 'bi-tools';
-                var color = serviceColors[serviceType] || '#2563eb';
+                var color = serviceColors[serviceType] || '#14213d';
                 var name = serviceType.charAt(0).toUpperCase() + serviceType.slice(1);
                 
                 html += '<div class="col-lg-4 col-md-6">' +
@@ -554,14 +628,14 @@
                 html += '<div class="col-md-6 col-lg-4">' +
                     '<div class="technician-card">' +
                     '<div class="d-flex align-items-start gap-3">' +
-                    '<div class="profile-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;flex-shrink:0;">' + tech.image + '</div>' +
+                    '<div class="profile-avatar" style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#14213d,#0f7173);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:white;flex-shrink:0;">' + tech.image + '</div>' +
                     '<div class="flex-grow-1">' +
                     '<div class="d-flex justify-content-between align-items-start">' +
                     '<h6 class="fw-bold mb-0">' + tech.name + '</h6>' +
                     statusBadge +
                     '</div>' +
                     '<div class="d-flex align-items-center gap-2">' +
-                    '<span class="text-warning">⭐ ' + tech.rating + '</span>' +
+                    '<span style="color:var(--amber-dark);">⭐ ' + tech.rating + '</span>' +
                     '<span class="text-muted small"><i class="bi bi-geo-alt"></i> ' + tech.distance + '</span>' +
                     '</div>' +
                     '<p class="tech-details mb-0">₹' + tech.price + '/hour • ' + tech.experience + ' exp</p>' +
