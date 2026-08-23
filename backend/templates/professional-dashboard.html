@@ -267,6 +267,12 @@
         .btn-finish { background: var(--amber-dark); color: white; border: none; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; transition: all 0.2s; cursor: pointer; }
         .btn-finish:hover { background: #b87c08; transform: scale(1.05); }
 
+        .btn-start:disabled, .btn-finish:disabled, .btn-accept:disabled, .btn-reject:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         /* ===== OTP MODAL ===== */
         .modal-content { border-radius: 14px; border: none; }
         .modal-header { border-bottom: 1px solid var(--line); }
@@ -645,7 +651,6 @@
                         
                         console.log('📍 Professional location:', lat, lng);
                         
-                        // Save location to API
                         saveProfessionalLocation(lat, lng);
                         
                         professionalLocationOn = true;
@@ -688,12 +693,10 @@
                     }
                 );
             } else {
-                // Turn off location
                 professionalLocationOn = false;
                 localStorage.removeItem('professional_lat');
                 localStorage.removeItem('professional_lng');
                 
-                // Remove location from API
                 saveProfessionalLocation(null, null);
                 
                 btn.className = 'btn btn-primary btn-sm rounded-pill px-4 btn-location-toggle';
@@ -799,34 +802,87 @@
         }
 
         // ============================================
-        // ACCEPT BOOKING
+        // 🔧 FIX: SHARED, DEFENSIVE STATUS-UPDATE HELPER
         // ============================================
-        function acceptBooking(bookingId) {
-            if (!confirm('Accept this booking?')) return;
-
+        // Root cause of "Start Work not working": the old code called
+        // response.json() unconditionally. If the server ever replies with
+        // something that isn't valid JSON (a 500/404 HTML error page, an
+        // empty body, etc.) for that particular status transition,
+        // response.json() throws — and the .catch() block then shows a
+        // confusing "Unexpected token <" style message instead of the real
+        // problem. This helper reads the response as text first, so you
+        // always see the actual server response in the console + alert,
+        // and never get a silent/opaque failure.
+        function updateBookingStatus(bookingId, newStatus) {
             const token = localStorage.getItem('access_token');
 
-            fetch('/api/bookings/' + bookingId + '/update-status/', {
+            if (!bookingId && bookingId !== 0) {
+                return Promise.reject(new Error('Booking ID is missing.'));
+            }
+            if (!token) {
+                return Promise.reject(new Error('You are not logged in. Please log in again.'));
+            }
+
+            const url = '/api/bookings/' + encodeURIComponent(bookingId) + '/update-status/';
+            console.log('📤 PUT', url, '→', newStatus);
+
+            return fetch(url, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
                 },
-                body: JSON.stringify({ status: 'accepted' })
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                if (data.message) {
-                    alert('✅ ' + data.message);
-                    loadDashboard();
-                } else {
-                    alert('❌ ' + (data.error || 'Failed to accept booking'));
-                }
-            })
-            .catch(function(error) {
-                console.error('Error:', error);
-                alert('❌ Failed to accept booking');
+                body: JSON.stringify({ status: newStatus })
+            }).then(function(response) {
+                return response.text().then(function(rawText) {
+                    console.log('📥 Status:', response.status, '| Raw response:', rawText);
+
+                    let data = null;
+                    if (rawText) {
+                        try {
+                            data = JSON.parse(rawText);
+                        } catch (parseErr) {
+                            // Server did not return JSON (e.g. HTML error page).
+                            // Surface the raw text so the real problem is visible
+                            // instead of a cryptic "Unexpected token <" error.
+                            throw new Error(
+                                'Server returned an unexpected response (status ' +
+                                response.status + '). Raw response logged to console.'
+                            );
+                        }
+                    }
+
+                    if (!response.ok) {
+                        throw new Error((data && (data.error || data.message)) ||
+                            'Request failed with status ' + response.status);
+                    }
+
+                    return data || {};
+                });
             });
+        }
+
+        // ============================================
+        // ACCEPT BOOKING
+        // ============================================
+        function acceptBooking(bookingId) {
+            if (!confirm('Accept this booking?')) return;
+
+            const buttons = document.querySelectorAll('[data-booking-id="' + bookingId + '"][data-action="accept"]');
+            buttons.forEach(function(btn) { btn.disabled = true; btn.textContent = '⏳...'; });
+
+            updateBookingStatus(bookingId, 'accepted')
+                .then(function(data) {
+                    alert('✅ ' + (data.message || 'Booking accepted.'));
+                    loadDashboard();
+                })
+                .catch(function(error) {
+                    console.error('❌ acceptBooking error:', error);
+                    alert('❌ ' + error.message);
+                })
+                .finally(function() {
+                    buttons.forEach(function(btn) { btn.disabled = false; btn.textContent = 'Accept'; });
+                });
         }
 
         // ============================================
@@ -835,66 +891,54 @@
         function rejectBooking(bookingId) {
             if (!confirm('Reject this booking?')) return;
 
-            const token = localStorage.getItem('access_token');
+            const buttons = document.querySelectorAll('[data-booking-id="' + bookingId + '"][data-action="reject"]');
+            buttons.forEach(function(btn) { btn.disabled = true; btn.textContent = '⏳...'; });
 
-            fetch('/api/bookings/' + bookingId + '/update-status/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({ status: 'rejected' })
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                if (data.message) {
-                    alert('❌ ' + data.message);
+            updateBookingStatus(bookingId, 'rejected')
+                .then(function(data) {
+                    alert('❌ ' + (data.message || 'Booking rejected.'));
                     loadDashboard();
-                } else {
-                    alert('❌ ' + (data.error || 'Failed to reject booking'));
-                }
-            })
-            .catch(function(error) {
-                console.error('Error:', error);
-                alert('❌ Failed to reject booking');
-            });
+                })
+                .catch(function(error) {
+                    console.error('❌ rejectBooking error:', error);
+                    alert('❌ ' + error.message);
+                })
+                .finally(function() {
+                    buttons.forEach(function(btn) { btn.disabled = false; btn.textContent = 'Reject'; });
+                });
         }
 
         // ============================================
         // START WORK
         // ============================================
         function startWork(bookingId) {
+            console.log('🔄 Starting work on booking:', bookingId);
+
             if (!confirm('Start work on this booking?')) return;
 
-            const token = localStorage.getItem('access_token');
+            const buttons = document.querySelectorAll('[data-booking-id="' + bookingId + '"][data-action="start"]');
+            buttons.forEach(function(btn) { btn.disabled = true; btn.textContent = '⏳ Starting...'; });
 
-            fetch('/api/bookings/' + bookingId + '/update-status/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({ status: 'in_progress' })
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                if (data.message) {
-                    alert('🔄 ' + data.message);
+            updateBookingStatus(bookingId, 'in_progress')
+                .then(function(data) {
+                    console.log('✅ Start work response:', data);
+                    alert('🔄 ' + (data.message || 'Work started.'));
                     loadDashboard();
-                } else {
-                    alert('❌ ' + (data.error || 'Failed to start work'));
-                }
-            })
-            .catch(function(error) {
-                console.error('Error:', error);
-                alert('❌ Failed to start work');
-            });
+                })
+                .catch(function(error) {
+                    console.error('❌ startWork error:', error);
+                    alert('❌ Failed to start work: ' + error.message);
+                })
+                .finally(function() {
+                    buttons.forEach(function(btn) { btn.disabled = false; btn.textContent = 'Start Work'; });
+                });
         }
 
         // ============================================
         // FINISH WORK
         // ============================================
         function finishWork(bookingId) {
+            console.log('✅ Finishing work on booking:', bookingId);
             currentBookingId = bookingId;
             document.getElementById('otpError').style.display = 'none';
             for (let i = 1; i <= 4; i++) {
@@ -917,29 +961,23 @@
             }
 
             document.getElementById('otpError').style.display = 'none';
-            alert('✅ OTP Verified! Work completed successfully.');
             bootstrap.Modal.getInstance(document.getElementById('otpModal'))?.hide();
 
-            const token = localStorage.getItem('access_token');
+            const buttons = document.querySelectorAll('[data-booking-id="' + currentBookingId + '"][data-action="finish"]');
+            buttons.forEach(function(btn) { btn.disabled = true; btn.textContent = '⏳...'; });
 
-            fetch('/api/bookings/' + currentBookingId + '/update-status/', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + token
-                },
-                body: JSON.stringify({ status: 'completed' })
-            })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
-                if (data.message) {
+            updateBookingStatus(currentBookingId, 'completed')
+                .then(function(data) {
                     alert('✅ Work completed!');
                     loadDashboard();
-                }
-            })
-            .catch(function(error) {
-                console.error('Error:', error);
-            });
+                })
+                .catch(function(error) {
+                    console.error('❌ verifyOTP error:', error);
+                    alert('❌ ' + error.message);
+                })
+                .finally(function() {
+                    buttons.forEach(function(btn) { btn.disabled = false; btn.textContent = 'Finish Work'; });
+                });
         }
 
         // ============================================
@@ -1026,19 +1064,22 @@
                 if (pendingBookings.length > 0) {
                     pendingTable.innerHTML = pendingBookings.map(function(booking) {
                         let actionButtons = '';
-                        
+
+                        // 🔧 FIX: booking IDs are now passed via data-* attributes and
+                        // read with dataset (never interpolated unquoted into onclick),
+                        // so a non-numeric or unexpected ID can never break the button.
                         if (booking.status === 'pending') {
                             actionButtons = `
-                                <button class="btn-accept me-1" onclick="acceptBooking(${booking.id})">Accept</button>
-                                <button class="btn-reject" onclick="rejectBooking(${booking.id})">Reject</button>
+                                <button class="btn-accept me-1" data-booking-id="${booking.id}" data-action="accept" onclick="acceptBooking(this.dataset.bookingId)">Accept</button>
+                                <button class="btn-reject" data-booking-id="${booking.id}" data-action="reject" onclick="rejectBooking(this.dataset.bookingId)">Reject</button>
                             `;
                         } else if (booking.status === 'accepted') {
                             actionButtons = `
-                                <button class="btn-start" onclick="startWork(${booking.id})">Start Work</button>
+                                <button class="btn-start" data-booking-id="${booking.id}" data-action="start" onclick="startWork(this.dataset.bookingId)">Start Work</button>
                             `;
                         } else if (booking.status === 'in_progress') {
                             actionButtons = `
-                                <button class="btn-finish" onclick="finishWork(${booking.id})">Finish Work</button>
+                                <button class="btn-finish" data-booking-id="${booking.id}" data-action="finish" onclick="finishWork(this.dataset.bookingId)">Finish Work</button>
                             `;
                         }
 
@@ -1163,6 +1204,7 @@
 
         console.log('🚀 Professional Dashboard Ready!');
         console.log('📍 Turn on location to let customers find you within 5km');
+        console.log('ℹ️ Click Start Work to begin a job');
     </script>
 </body>
 </html>
